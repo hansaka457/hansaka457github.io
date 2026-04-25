@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEVERSE</title>
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0f0f0f;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    padding: 20px;
+}
+
+/* GRADIENT TITLE */
+.title {
+    font-size: 4rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #FF006E, #8338EC, #3A86FF, #06FFB4, #FFBE0B);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientMove 5s infinite linear;
+    text-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+@keyframes gradientMove {
+    0% {background-position: 0%;}
+    100% {background-position: 300%;}
+}
+
+.subtitle {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+/* SEARCH */
+.search-box {
+    margin: 20px 0;
+}
+
+.search-box input {
+    padding: 12px 20px;
+    width: 280px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+/* BUTTONS */
+.buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(45deg, #FF006E, #8338EC);
+    transition: 0.3s;
+    box-shadow: 0 0 10px #8338EC;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #FF006E, 0 0 40px #8338EC;
+}
+
+/* GRID */
+.movies {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* CARD */
+.card {
+    background: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.card img {
+    width: 100%;
+    display: block;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 20px #3A86FF, 0 0 40px #06FFB4;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+/* PARTICLES */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* RESPONSIVE */
+@media(max-width: 600px) {
+    .title {
+        font-size: 2.5rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="hero">
+
+    <h1 class="title">CINEVERSE</h1>
+    <!-- Replace this text later -->
+
+    <p class="subtitle">Your Ultimate Film Universe</p>
+    <!-- Replace this text later -->
+
+    <div class="search-box">
+        <input type="text" placeholder="Search for movies, series...">
+    </div>
+
+    <div class="buttons">
+        <button class="btn">Trending Now</button>
+        <button class="btn">Top Rated</button>
+        <button class="btn">Coming Soon</button>
+    </div>
+
+    <div class="movies">
+        <!-- Replace this text later -->
+        <div class="card"><img src="https://picsum.photos/300/450?1"></div>
+        <div class="card"><img src="https://picsum.photos/300/450?2"></div>
+        <div class="card"><img src="https://picsum.photos/300/450?3"></div>
+        <div class="card"><img src="https://picsum.photos/300/450?4"></div>
+        <div class="card"><img src="https://picsum.photos/300/450?5"></div>
+        <div class="card"><img src="https://picsum.photos/300/450?6"></div>
+    </div>
+
+    <footer>
+        © 2026 CINEVERSE | Content coming soon...
+        <!-- Replace this text later -->
+    </footer>
+
+</div>
+
+<script>
+/* PARTICLE BACKGROUND */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray = [];
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+    }
+
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if(this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if(this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+
+    draw() {
+        ctx.fillStyle = "#8338EC";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function init() {
+    particlesArray = [];
+    for(let i = 0; i < 100; i++) {
+        particlesArray.push(new Particle());
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for(let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+    }
+
+    requestAnimationFrame(animate);
+}
+
+init();
+animate();
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+});
+</script>
+
+</body>
+</html>
