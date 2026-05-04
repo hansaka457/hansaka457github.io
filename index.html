@@ -35,14 +35,14 @@
      .search-container {padding:20px 4%; background:#141414; position:relative; z-index:5}
      .search-box {width:100%; max-width:500px; padding:12px 20px; font-size:16px; border:1px solid #333; background:#000; color:#fff; border-radius:4px}
 
-     .wednesday-box-container {padding:30px 4%; margin-top:-80px; position:relative; z-index:2}
-     .wednesday-card-box {background:#1a1a1a; border-radius:8px; overflow:hidden; margin:20px 0; border:1px solid #333; position:relative}
-     .wednesday-card-content {display:flex; gap:20px; padding:25px; align-items:center}
-     .wednesday-poster {width:150px; height:225px; border-radius:6px; object-fit:cover; flex-shrink:0}
-     .wednesday-info {flex:1}
-     .wednesday-info h3 {font-size:2rem; margin-bottom:10px; font-weight:700}
-     .wednesday-info p {color:#ccc; font-size:0.95rem; line-height:1.5; margin-bottom:15px}
-     .wednesday-meta {color:#999; font-size:0.85rem; margin-bottom:15px}
+     .series-box-container {padding:30px 4%; margin-top:-80px; position:relative; z-index:2}
+     .series-card-box {background:#1a1a1a; border-radius:8px; overflow:hidden; margin:20px 0; border:1px solid #333; position:relative}
+     .series-card-content {display:flex; gap:20px; padding:25px; align-items:center}
+     .series-poster {width:150px; height:225px; border-radius:6px; object-fit:cover; flex-shrink:0}
+     .series-info {flex:1}
+     .series-info h3 {font-size:2rem; margin-bottom:10px; font-weight:700}
+     .series-info p {color:#ccc; font-size:0.95rem; line-height:1.5; margin-bottom:15px}
+     .series-meta {color:#999; font-size:0.85rem; margin-bottom:15px}
      .see-subs-btn {background:#E50914; color:#fff; padding:10px 24px; border-radius:4px; text-decoration:none; font-size:1rem; font-weight:700; transition:0.2s; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px}
      .see-subs-btn:hover {background:#f40612}
 
@@ -79,7 +79,7 @@
      .season-tab:hover {background:#404040}
      .season-tab.active:hover {background:#f40612}
      .episodes-list {display:flex; flex-direction:column; gap:2px; position:relative; z-index:1}
-     .episode-row {background:rgba(47,47,0.9); padding:15px; display:flex; gap:15px; align-items:center; transition:0.2s; cursor:pointer; border-left:4px solid transparent}
+     .episode-row {background:rgba(47,47,47,0.9); padding:15px; display:flex; gap:15px; align-items:center; transition:0.2s; cursor:pointer; border-left:4px solid transparent}
      .episode-row:hover {background:rgba(56,56,56,0.95); border-left-color:#E50914}
      .episode-num {font-size:1.5rem; font-weight:700; color:#808080; min-width:35px; text-align:center}
      .episode-details {flex:1}
@@ -101,8 +101,8 @@
         .volume-btn {bottom:120px; right:20px}
         .subtitle-btn {bottom:120px; right:70px}
         .hero-video::cue {font-size:0.9rem}
-        .wednesday-card-content {flex-direction:column; text-align:center}
-        .wednesday-poster {width:120px; height:180px}
+        .series-card-content {flex-direction:column; text-align:center}
+        .series-poster {width:120px; height:180px}
         .subtitles-panel {max-width:100%}
         .subtitles-banner {height:150px}
         .episode-row {flex-direction:column; align-items:flex-start}
@@ -147,16 +147,29 @@
         <input type="text" class="search-box" id="searchInput" placeholder="Search series..." onkeyup="searchContent()">
     </div>
 
-    <div class="wednesday-box-container">
-        <div class="wednesday-card-box">
-            <div class="wednesday-card-content">
-                <img src="wednesday-s123.jpg" alt="Wednesday" class="wednesday-poster">
-                <div class="wednesday-info">
+    <div class="series-box-container">
+        <div class="series-card-box">
+            <div class="series-card-content">
+                <img src="wednesday-s123.jpg" alt="Wednesday" class="series-poster">
+                <div class="series-info">
                     <h3>WEDNESDAY</h3>
-                    <div class="wednesday-meta">2022 • Mystery • Comedy • Supernatural • 2 Seasons</div>
+                    <div class="series-meta">2022 • Mystery • Comedy • Supernatural • 2 Seasons</div>
                     <p>A sleuthing, supernaturally infused mystery charting Wednesday Addams' years as a student at Nevermore Academy. She attempts to master her emerging psychic ability, thwart a monstrous killing spree and solve the supernatural mystery that embroiled her parents 25 years ago.</p>
                     <p style="color:#E50914;font-weight:600;margin-bottom:15px">Starring: Jenna Ortega, Gwendoline Christie, Riki Lindhome</p>
                     <button class="see-subs-btn" onclick="openSubtitles('wednesday')">📝 See Subtitles</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="series-card-box">
+            <div class="series-card-content">
+                <img src="https://image.tmdb.org/t/p/w500/6U9IoVqXh4WGHe3V5RmE3nJQh6F.jpg" alt="FROM" class="series-poster">
+                <div class="series-info">
+                    <h3>FROM</h3>
+                    <div class="series-meta">2022 • Mystery • Horror • Sci-Fi • 4 Seasons</div>
+                    <p>Unravel the mystery of a city in middle U.S.A. that imprisons everyone who enters. As the residents struggle to maintain a sense of normalcy and seek a way out, they must also survive the threats of the surrounding forest.</p>
+                    <p style="color:#E50914;font-weight:600;margin-bottom:15px">Starring: Harold Perrineau, Catalina Sandino Moreno, Eion Bailey</p>
+                    <button class="see-subs-btn" onclick="openSubtitles('from')">📝 See Subtitles</button>
                 </div>
             </div>
         </div>
@@ -379,7 +392,7 @@
                             {num: 4, name: "There and Back Again", date: "Oct 13, 2024", runtime: "58m"},
                             {num: 5, name: "The Light of Day", date: "Oct 20, 2024", runtime: "54m"},
                             {num: 6, name: "Scar Tissue", date: "Oct 27, 2024", runtime: "56m"},
-                            {num: 7, name: "These Fragile Lives", date: "Nov 3, 2024", runtime: "57m"},
+                                                        {num: 7, name: "These Fragile Lives", date: "Nov 3, 2024", runtime: "57m"},
                             {num: 8, name: "Thresholds", date: "Nov 10, 2024", runtime: "59m"},
                             {num: 9, name: "Revelations: Chapter One", date: "Nov 17, 2024", runtime: "58m"},
                             {num: 10, name: "Revelations: Chapter Two", date: "Nov 24, 2024", runtime: "60m"}
@@ -394,7 +407,6 @@
                         episodes: [
                             {num: 1, name: "Episode 1", date: "TBA", runtime: "TBA"},
                             {num: 2, name: "Episode 2", date: "TBA", runtime: "TBA"},
-                            {num: 3, name: "Episode 3", date: "TBA",
                             {num: 3, name: "Episode 3", date: "TBA", runtime: "TBA"}
                         ]
                     }
