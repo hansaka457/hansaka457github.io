@@ -53,8 +53,9 @@
      .details-tags {display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; font-size: 0.9rem;}
      .details-tags span {background: #2f2f2f; padding: 5px 12px; border-radius: 4px;}
      .cast-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px;}
-     .cast-card {text-align: center;}
-     .cast-card img {width: 100%; height: 195px; border-radius: 6px; margin-bottom: 8px; object-fit: cover;}
+     .cast-card {text-align: center; transition: transform 0.3s;}
+     .cast-card:hover {transform: scale(1.05);}
+     .cast-card img {width: 100%; height: 195px; border-radius: 6px; margin-bottom: 8px; object-fit: cover; background: #333;}
      .cast-card h3 {font-size: 15px; margin: 5px 0; color: #fff; font-weight: 500;}
      .cast-card p {font-size: 13px; color: #aaa; margin: 0;}
 
@@ -162,7 +163,7 @@
     </div>
 
     <div class="series-box-container">
-        <!-- WEDNESDAY CARD -->
+        <!-- WEDNESDAY CARD - UPDATED WITH YOUR PHOTOS -->
         <div class="series-card-box">
             <div class="series-card-content">
                 <img src="wednesday-s123.jpg" alt="Wednesday" class="series-poster">
@@ -175,7 +176,7 @@
                 </div>
             </div>
             
-            <!-- WEDNESDAY Details + Cast Section -->
+            <!-- WEDNESDAY Details + Cast Section - FIXED -->
             <div class="series-details-section">
                 <h2 class="details-title">About Wednesday</h2>
                 <p class="details-desc">
@@ -192,32 +193,32 @@
                 <h2 class="details-title">Main Cast</h2>
                 <div class="cast-grid">
                     <div class="cast-card">
-                        <img src="https://image.tmdb.org/t/p/w185/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg" alt="Jenna Ortega">
+                        <img src="data/jenna-Ortega.jpg" alt="Jenna Ortega" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Jenna'">
                         <h3>Jenna Ortega</h3>
                         <p>Wednesday Addams</p>
                     </div>
                     <div class="cast-card">
-                        <img src="https://image.tmdb.org/t/p/w185/6BAzx3kHNGtNrB9xqgHz34k1iEn.jpg" alt="Emma Myers">
+                        <img src="data/emma-myers.jpg" alt="Emma Myers" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Emma'">
                         <h3>Emma Myers</h3>
                         <p>Enid Sinclair</p>
                     </div>
                     <div class="cast-card">
-                        <img src="https://image.tmdb.org/t/p/w185/6sIzr0BfXfYfFH5pYcL8GqX2WqY.jpg" alt="Hunter Doohan">
+                        <img src="data/hunter-doohan.jpg" alt="Hunter Doohan" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Hunter'">
                         <h3>Hunter Doohan</h3>
                         <p>Tyler Galpin</p>
                     </div>
                     <div class="cast-card">
-                        <img src="https://image.tmdb.org/t/p/w185/fJ1d1B3yO5Bv3s1a5o8q5sY2q7o.jpg" alt="Joy Sunday">
+                        <img src="data/joy-sunday.jpg" alt="Joy Sunday" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Joy'">
                         <h3>Joy Sunday</h3>
                         <p>Bianca Barclay</p>
                     </div>
                     <div class="cast-card">
-                        <img src="https://image.tmdb.org/t/p/w185/5qHNjhtjMD4YWH3UP0rm4tK8HnO.jpg" alt="Catherine Zeta-Jones">
+                        <img src="data/catherine-zeta-jones.jpg" alt="Catherine Zeta-Jones" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Morticia'">
                         <h3>Catherine Zeta-Jones</h3>
                         <p>Morticia Addams</p>
                     </div>
                     <div class="cast-card">
-                        <img src="https://image.tmdb.org/t/p/w185/k2L6gYVA0uYXgJhJ7v3jS7N3vJk.jpg" alt="Luis Guzmán">
+                        <img src="data/luis-guzman.jpg" alt="Luis Guzmán" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Gomez'">
                         <h3>Luis Guzmán</h3>
                         <p>Gomez Addams</p>
                     </div>
@@ -401,7 +402,7 @@
                             {num: 5, name: "You Reap What You Woe", date: "Nov 23, 2022", runtime: "49m"},
                             {num: 6, name: "Quid Pro Woe", date: "Nov 23, 2022", runtime: "50m"},
                             {num: 7, name: "If You Don't Woe Me By Now", date: "Nov 23, 2022", runtime: "50m"},
-                            {num: 8, name: "A Murder of Woes", date: "Nov 23, 2022", runtime: "50m"}
+                                                         {num: 8, name: "A Murder of Woes", date: "Nov 23, 2022", runtime: "50m"}
                         ]
                     },
                     2: {
