@@ -1,153 +1,3745 @@
 <!DOCTYPE html>
-<html lang="si">
+
+
+
+<html lang="en">
+
+
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyFlix - TV Series</title>
-  <style>
-    body { background:#141414; color:white; font-family:'Segoe UI'; margin:0; }
-    header { padding:20px 40px; background:#000; display:flex; justify-content:space-between; align-items:center; position:fixed; width:100%; z-index:100; }
-    .logo { color:#E50914; font-size:32px; font-weight:bold; }
 
-    .row-title { padding: 60px 40px 10px; font-size:24px; }
-    .row { display:flex; overflow-x:auto; gap:15px; padding:0 40px 30px; }
-    .poster { width:210px; border-radius:10px; cursor:pointer; transition:0.3s; }
-    .poster:hover { transform:scale(1.12); }
 
-    /* Modal */
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; overflow-y:auto; }
-    .modal-content { max-width:1100px; margin:40px auto; background:#1f1f1f; border-radius:12px; overflow:hidden; }
-    .hero-video { position:relative; height:70vh; }
-    .hero-video video { width:100%; height:100%; object-fit:cover; }
-    .close { position:absolute; top:20px; right:30px; font-size:40px; cursor:pointer; z-index:10; }
 
-    .cast { display:flex; flex-wrap:wrap; gap:25px; padding:30px; }
-    .cast-member img { width:130px; height:130px; border-radius:50%; object-fit:cover; border:3px solid #E50914; }
-    .subtitle-item { background:#333; padding:15px; margin:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; }
-    .download-btn { background:#E50914; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; }
-  </style>
+    <meta charset="UTF-8">
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>CINEMAX - Watch Movies & TV Shows Online</title>
+
+
+
+    <style>
+
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Bebas+Neue&display=swap');
+
+
+
+
+
+
+
+        * {margin:0; padding:0; box-sizing:border-box}
+
+
+
+        body,html {margin:0!important; padding:0!important; font-family:'Roboto',Arial,sans-serif; background:#141414; color:#fff; overflow-x:hidden}
+
+
+
+
+
+
+
+     .netflix-header {position:fixed; top:0; width:100%; height:70px; background:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,transparent 100%); z-index:1000; display:flex; align-items:center; padding:0 4%; transition:background 0.3s}
+
+
+
+     .netflix-header.scrolled {background:#141414}
+
+
+
+     .netflix-logo {color:#E50914; font-size:32px; font-weight:900; font-family:'Bebas Neue',sans-serif; letter-spacing:2px; cursor:pointer}
+
+
+
+
+
+
+
+     .hero-banner {position:relative; height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:90px 4% 120px 4%; width:100%; overflow:hidden}
+
+
+
+     .hero-video {position:absolute; top:50%; left:50%; min-width:100%; min-height:100%; width:auto; height:auto; transform:translate(-50%,-50%); object-fit:cover; filter:brightness(0.5) contrast(1.2) saturate(0.9)}
+
+
+
+     .hero-video::cue {background:rgba(0,0,0,0.8); color:#fff; font-size:1.3rem; font-family:'Roboto',sans-serif; font-weight:700; text-shadow:2px 2px 4px rgba(0,0,0,1); padding:5px 10px; border-radius:4px}
+
+
+
+     .hero-overlay {position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to top,#141414 0%,rgba(0,0,0,0.4) 40%,rgba(0,0,0,0.6) 100%); z-index:1}
+
+
+
+     .hero-content {max-width:600px; z-index:2; position:relative}
+
+
+
+     .hero-title {font-size:5rem; font-weight:900; margin-bottom:15px; text-shadow:2px 2px 4px rgba(0,0,0,0.8); line-height:1; font-family:'Bebas Neue',sans-serif; letter-spacing:2px}
+
+
+
+     .hero-meta {display:flex; gap:15px; align-items:center; margin-bottom:15px; font-size:1rem; color:#ccc; font-weight:600; flex-wrap:wrap}
+
+
+
+     .hero-badge {background:#E50914; padding:3px 8px; border-radius:3px; font-weight:700; font-size:0.85rem}
+
+
+
+     .hero-desc {font-size:1.1rem; margin-bottom:25px; text-shadow:2px 2px 4px rgba(0,0,0,0.8); font-weight:400; line-height:1.5; max-width:500px}
+
+
+
+     .hero-buttons {display:flex; gap:15px; flex-wrap:wrap}
+
+
+
+     .btn-play {background:#fff; color:#000; border:none; padding:10px 28px; font-size:1.1rem; border-radius:4px; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:10px; transition:0.2s; text-decoration:none}
+
+
+
+     .btn-play:hover {background:rgba(255,255,255,0.75)}
+
+
+
+     .volume-btn {position:absolute; right:4%; bottom:140px; z-index:3; width:40px; height:40px; border-radius:50%; border:2px solid #fff; background:rgba(0,0,0,0.5); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:0.2s}
+
+
+
+     .volume-btn:hover {background:rgba(255,255,255,0.2)}
+
+
+
+     .subtitle-btn {position:absolute; right:calc(4% + 50px); bottom:140px; z-index:3; width:40px; height:40px; border-radius:50%; border:2px solid #fff; background:rgba(0,0,0,0.5); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; transition:0.2s}
+
+
+
+     .subtitle-btn:hover {background:rgba(255,255,255,0.2)}
+
+
+
+     .subtitle-btn.active {background:#E50914; border-color:#E50914}
+
+
+
+
+
+
+
+     .search-container {padding:20px 4%; background:#141414; position:relative; z-index:5}
+
+
+
+     .search-box {width:100%; max-width:500px; padding:12px 20px; font-size:16px; border:1px solid #333; background:#000; color:#fff; border-radius:4px}
+
+
+
+
+
+
+
+     .series-box-container {padding:30px 4%; margin-top:-80px; position:relative; z-index:2}
+
+
+
+     .series-card-box {background:#1a1a1a; border-radius:8px; overflow:hidden; margin:20px 0; border:1px solid #333; position:relative}
+
+
+
+     .series-card-content {display:flex; gap:20px; padding:25px; align-items:center}
+
+
+
+     .series-poster {width:150px; height:225px; border-radius:6px; object-fit:cover; flex-shrink:0}
+
+
+
+     .series-info {flex:1}
+
+
+
+     .series-info h3 {font-size:2rem; margin-bottom:10px; font-weight:700}
+
+
+
+     .series-info p {color:#ccc; font-size:0.95rem; line-height:1.5; margin-bottom:15px}
+
+
+
+     .series-meta {color:#999; font-size:0.85rem; margin-bottom:15px}
+
+
+
+     .see-subs-btn {background:#E50914; color:#fff; padding:10px 24px; border-radius:4px; text-decoration:none; font-size:1rem; font-weight:700; transition:0.2s; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px}
+
+
+
+     .see-subs-btn:hover {background:#f40612}
+
+
+
+
+
+
+
+     .series-details-section {padding: 0 25px 25px 25px; border-top: 1px solid #333; margin-top: 20px;}
+
+
+
+     .details-title {color: #E50914; margin: 20px 0 10px 0; font-size: 22px; font-weight: 700;}
+
+
+
+     .details-desc {line-height: 1.6; margin-bottom: 20px; color: #ccc; font-size: 0.95rem;}
+
+
+
+     .details-tags {display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; font-size: 0.9rem;}
+
+
+
+     .details-tags span {background: #2f2f2f; padding: 5px 12px; border-radius: 4px;}
+
+
+
+     .cast-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px;}
+
+
+
+     .cast-card {text-align: center; transition: transform 0.3s;}
+
+
+
+     .cast-card:hover {transform: scale(1.05);}
+
+
+
+     .cast-card img {width: 100%; height: 195px; border-radius: 6px; margin-bottom: 8px; object-fit: cover; background: #333;}
+
+
+
+     .cast-card h3 {font-size: 15px; margin: 5px 0; color: #fff; font-weight: 500;}
+
+
+
+     .cast-card p {font-size: 13px; color: #aaa; margin: 0;}
+
+
+
+
+
+
+
+     .section-title {font-size:1.8rem; font-weight:700; padding:40px 4% 20px 4%; color:#fff}
+
+
+
+     .series-grid {display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; padding:0 4% 40px 4%}
+
+
+
+     .series-box {background:#1a1a1a; border-radius:8px; overflow:hidden; transition:transform 0.3s; cursor:pointer}
+
+
+
+     .series-box:hover {transform:scale(1.05)}
+
+
+
+     .series-poster-small {width:100%; height:170px; object-fit:cover; background:#2f2f2f; display:block}
+
+
+
+     .series-details {padding:15px}
+
+
+
+     .series-details h3 {font-size:1.1rem; margin-bottom:8px; color:#fff}
+
+
+
+     .series-details p {font-size:0.85rem; color:#999; line-height:1.4; margin-bottom:10px}
+
+
+
+     .subs-btn {display:inline-block; background:#E50914; color:#fff; padding:8px 16px; border-radius:4px; text-decoration:none; font-size:0.9rem; font-weight:700; transition:0.2s; border:none; cursor:pointer}
+
+
+
+     .subs-btn:hover {background:#f40612}
+
+
+
+
+
+
+
+     .subtitles-panel {position:fixed; top:0; right:-100%; width:100%; max-width:600px; height:100vh; background:#141414; z-index:2000; transition:right 0.4s ease; overflow-y:auto; box-shadow:-5px 0 20px rgba(0,0,0,0.5)}
+
+
+
+     .subtitles-panel.active {right:0}
+
+
+
+     .subtitles-banner {position:relative; width:100%; height:200px; overflow:hidden}
+
+
+
+     .subtitles-banner-img {width:100%; height:100%; object-fit:cover}
+
+
+
+     .subtitles-banner-overlay {position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to top,#141414 0%,transparent 100%)}
+
+
+
+     .subtitles-banner-title {position:absolute; bottom:15px; left:20px; font-size:2rem; font-weight:900; font-family:'Bebas Neue',sans-serif; text-shadow:2px 2px 4px rgba(0,0,0,0.8)}
+
+
+
+     .subtitles-header {position:sticky; top:0; background:#1a1a1a; padding:20px; border-bottom:1px solid #333; display:flex; justify-content:space-between; align-items:center; z-index:10}
+
+
+
+     .subtitles-header h2 {font-size:1.3rem}
+
+
+
+     .close-btn {background:none; border:none; color:#fff; font-size:24px; cursor:pointer; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:0.2s}
+
+
+
+     .close-btn:hover {background:#333}
+
+
+
+     .subtitles-content {padding:20px; position:relative; z-index:1}
+
+
+
+     .subtitles-bg {position:absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; opacity:0.08; z-index:0}
+
+
+
+     .subtitles-youtube {width:100%; aspect-ratio:16/9; margin-bottom:20px; border-radius:8px; overflow:hidden; background:#000; position:relative; z-index:1}
+
+
+
+     .subtitles-youtube iframe {width:100%; height:100%; border:none}
+
+
+
+     .download-all-btn {background:#E50914; color:#fff; padding:12px 20px; border-radius:4px; text-decoration:none; font-size:0.95rem; font-weight:700; transition:0.2s; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin-bottom:20px; position:relative; z-index:1}
+
+
+
+     .download-all-btn:hover {background:#f40612}
+
+
+
+     .season-tabs {display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:1; flex-wrap:wrap}
+
+
+
+     .season-tab {background:#2f2f2f; color:#fff; padding:10px 20px; border-radius:4px; border:none; cursor:pointer; font-weight:700; transition:0.2s; font-size:0.95rem}
+
+
+
+     .season-tab.active {background:#E50914}
+
+
+
+     .season-tab:hover {background:#404040}
+
+
+
+     .season-tab.active:hover {background:#f40612}
+
+
+
+     .episodes-list {display:flex; flex-direction:column; gap:2px; position:relative; z-index:1}
+
+
+
+     .episode-row {background:rgba(47,47,47,0.9); padding:15px; display:flex; gap:15px; align-items:center; transition:0.2s; cursor:pointer; border-left:4px solid transparent}
+
+
+
+     .episode-row:hover {background:rgba(56,56,56,0.95); border-left-color:#E50914}
+
+
+
+     .episode-num {font-size:1.5rem; font-weight:700; color:#808080; min-width:35px; text-align:center}
+
+
+
+     .episode-details {flex:1}
+
+
+
+     .episode-title {font-size:0.95rem; font-weight:700; margin-bottom:4px; color:#fff}
+
+
+
+     .episode-meta {font-size:0.8rem; color:#808080}
+
+
+
+     .ep-btn {padding:8px 16px; border-radius:4px; text-decoration:none; font-size:0.85rem; font-weight:700; transition:0.2s; display:flex; align-items:center; gap:6px; border:none; cursor:pointer; background:#fff; color:#000; white-space:nowrap}
+
+
+
+     .ep-btn:hover {background:rgba(255,255,255,0.75)}
+
+
+
+     .netflix-footer {padding:60px 4%; background:#141414; border-top:1px solid #333; text-align:center; color:#808080; font-size:0.85rem; margin-top:50px}
+
+
+
+
+
+
+
+        @media (max-width:768px) {
+
+
+
+        .netflix-header {padding:0 20px}
+
+
+
+        .netflix-logo {font-size:24px}
+
+
+
+        .hero-banner {height:100svh; padding:90px 20px 100px 20px; justify-content:flex-end}
+
+
+
+        .hero-title {font-size:2.5rem; margin-bottom:10px}
+
+
+
+        .hero-meta {font-size:0.85rem}
+
+
+
+        .hero-desc {font-size:0.85rem; margin-bottom:15px}
+
+
+
+        .hero-buttons {flex-direction:column; width:100%}
+
+
+
+        .btn-play {width:100%; justify-content:center; padding:12px 20px}
+
+
+
+        .volume-btn {bottom:120px; right:20px}
+
+
+
+        .subtitle-btn {bottom:120px; right:70px}
+
+
+
+        .hero-video::cue {font-size:0.9rem}
+
+
+
+        .series-card-content {flex-direction:column; text-align:center}
+
+
+
+        .series-poster {width:120px; height:180px}
+
+
+
+        .cast-grid {grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px;}
+
+
+
+        .cast-card img {height: 150px;}
+
+
+
+        .subtitles-panel {max-width:100%}
+
+
+
+        .subtitles-banner {height:150px}
+
+
+
+        .episode-row {flex-direction:column; align-items:flex-start}
+
+
+
+        .episode-num {min-width:auto}
+
+
+
+        .ep-btn {width:100%; justify-content:center}
+
+
+
+        .series-grid {grid-template-columns:1fr; padding:0 20px 30px 20px}
+
+
+
+        }
+
+
+
+    </style>
+
+
+
 </head>
+
+
+
 <body>
 
-<header>
-  <div class="logo">MyFlix</div>
-</header>
 
-<h2 class="row-title">Popular Series</h2>
-<div class="row" id="seriesRow"></div>
 
-<!-- DETAIL MODAL -->
-<div class="modal" id="detailModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">×</span>
-    <div class="hero-video" id="modalHero"></div>
-    <div style="padding:30px;" id="modalBody"></div>
-  </div>
-</div>
+    <div style="position:fixed;top:18px;right:4%;z-index:2001;">
 
-<script>
-// === All Series Data ===
-const seriesData = [
-  {
-    id: "wonderfools",
-    title: "The WONDERfools",
-    year: "2026",
-    poster: "https://i.imgur.com/wonderfools-poster.jpg",
-    video: "thewonderfools_sinhala.mp4",
-    description: "A goofy group of townies stumble into superpowers...",
-    cast: [
-      {name:"Park Eun-bin", role:"Eun Chae-ni", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Park_Eun-bin_in_2022.jpg/800px-Park_Eun-bin_in_2022.jpg"},
-      {name:"Cha Eun-woo", role:"Lee Un-jeong", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Cha_Eun-woo_in_2022.jpg/800px-Cha_Eun-woo_in_2022.jpg"}
-    ],
-    subtitles: ["thewonderfools_1_1_sinhala.srt", "thewonderfools_1_2_sinhala.srt", "thewonderfools_1_3_sinhala.srt"]
-  },
-  {
-    id: "wednesday",
-    title: "Wednesday",
-    year: "2022",
-    poster: "https://i.imgur.com/wednesday-poster.jpg",
-    video: "wednesday-edit.mp4",
-    description: "Wednesday Addams investigates murders at Nevermore Academy.",
-    cast: [
-      {name:"Jenna Ortega", role:"Wednesday Addams", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Jenna_Ortega_2024.jpg/800px-Jenna_Ortega_2024.jpg"},
-      {name:"Emma Myers", role:"Enid Sinclair", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Emma_Myers_2024.jpg/800px-Emma_Myers_2024.jpg"},
-      {name:"Catherine Zeta-Jones", role:"Morticia Addams", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Catherine_Zeta-Jones_2012.jpg/800px-Catherine_Zeta-Jones_2012.jpg"}
-    ],
-    subtitles: ["wednesday_1_1_sinhala.srt", "wednesday_1_2_sinhala.srt"]
-  },
-  {
-    id: "from",
-    title: "From",
-    year: "2022",
-    poster: "https://i.imgur.com/from-poster.jpg",
-    video: "from_sinhala.mp4",  // ඔයාගේ file එක නම දාන්න
-    description: "A mysterious town traps its residents who can't leave.",
-    cast: [
-      {name:"Harold Perrineau", role:"Boyd Stevens", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Harold_Perrineau_2019.jpg/800px-Harold_Perrineau_2019.jpg"},
-      {name:"Catalina Sandino Moreno", role:"Tabitha Matthews", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Catalina_Sandino_Moreno_2015.jpg/800px-Catalina_Sandino_Moreno_2015.jpg"},
-      {name:"Eion Bailey", role:"Jim Matthews", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Eion_Bailey_2015.jpg/800px-Eion_Bailey_2015.jpg"}
-    ],
-    subtitles: ["from_1_1_sinhala.srt", "from_1_2_sinhala.srt"]
-  }
-  // ඔයාට ඕන 50+ series මෙතන add කරන්න
-];
 
-function renderSeries() {
-  const container = document.getElementById('seriesRow');
-  container.innerHTML = '';
-  
-  seriesData.forEach(show => {
-    const div = document.createElement('div');
-    div.innerHTML = `<img class="poster" src="\( {show.poster}" onclick="openDetail(' \){show.id}')">`;
-    container.appendChild(div);
-  });
-}
 
-function openDetail(id) {
-  const show = seriesData.find(s => s.id === id);
-  if (!show) return;
+        <select id="languageSwitcher" onchange="changeLanguage(this.value)" style="padding:8px 14px;border:none;border-radius:5px;background:#111;color:#fff;font-weight:700;cursor:pointer;">
 
-  // Hero Video
-  document.getElementById('modalHero').innerHTML = `
-    <video autoplay muted loop style="width:100%; height:100%; object-fit:cover;">
-      <source src="${show.video}" type="video/mp4">
-    </video>
-  `;
 
-  // Body Content
-  let castHTML = show.cast.map(c => `
-    <div class="cast-member" style="text-align:center; width:140px;">
-      <img src="${c.img}"><br>
-      <strong>\( {c.name}</strong><br><small> \){c.role}</small>
+
+            <option value="en">🇺🇸 English</option>
+
+
+
+            <option value="si">🇱🇰 Sinhala</option>
+
+
+
+            <option value="ko">🇰🇷 Korean</option>
+
+
+
+            <option value="ja">🇯🇵 Japanese</option>
+
+
+
+        </select>
+
+
+
     </div>
-  `).join('');
 
-  let subsHTML = show.subtitles.map(file => `
-    <div class="subtitle-item">
-      📄 ${file}
-      <a href="\( {file}" download=" \){file}" class="download-btn">Download</a>
+
+
+
+
+
+
+    <header class="netflix-header" id="header">
+
+
+
+        <div class="netflix-logo">CINEMAX</div>
+
+
+
+    </header>
+
+
+
+
+
+
+
+    <div class="hero-banner">
+
+
+
+        <video class="hero-video" autoplay muted playsinline id="heroVideo">
+
+
+
+            <source src="wednesday-edit.mp4" type="video/mp4">
+
+
+
+            <track kind="subtitles" src="data/wednesday-edit.vtt" srclang="si" label="Sinhala" default>
+
+
+
+        </video>
+
+
+
+        <div class="hero-overlay"></div>
+
+
+
+        <div class="hero-content">
+
+
+
+            <h1 class="hero-title" id="heroTitle">WEDNESDAY</h1>
+
+
+
+            <div class="hero-meta" id="heroMeta">
+
+
+
+                <span class="hero-badge">NEW</span>
+
+
+
+                <span>2022</span>
+
+
+
+                <span>2 Seasons</span>
+
+
+
+                <span>TV-14</span>
+
+
+
+            </div>
+
+
+
+            <p class="hero-desc" id="heroDesc">Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends and foes at Nevermore Academy.</p>
+
+
+
+            <div class="hero-buttons">
+
+
+
+                <button class="btn-play" id="heroPlayBtn" onclick="openSubtitles(currentHeroSeries)">
+
+
+
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+
+
+
+                    Play
+
+
+
+                </button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <button class="subtitle-btn" id="subtitleBtn" onclick="toggleSubtitles()">CC</button>
+
+
+
+        <button class="volume-btn" id="volumeBtn" onclick="toggleMute()">🔇</button>
+
+
+
     </div>
-  `).join('');
 
-  document.getElementById('modalBody').innerHTML = `
-    <h1>\( {show.title} ( \){show.year})</h1>
-    <p>${show.description}</p>
-    <h2>Cast</h2>
-    <div class="cast">${castHTML}</div>
-    <h2>Subtitles</h2>
-    ${subsHTML}
-  `;
 
-  document.getElementById('detailModal').style.display = 'block';
+
+
+
+
+
+    <div class="search-container">
+
+
+
+        <input type="text" class="search-box" id="searchInput" placeholder="Search series..." onkeyup="searchContent()">
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="series-box-container">
+
+
+
+        <!-- THE WONDERFOOLS CARD -->
+
+
+
+        <div class="series-card-box">
+
+
+
+            <div class="series-card-content">
+
+
+
+                <img src="thewonderfools.jpg" alt="The Wonderfools" class="series-poster" onerror="this.src='https://via.placeholder.com/150x225/E50914/FFFFFF?text=Wonderfools'">
+
+
+
+                <div class="series-info">
+
+
+
+                    <h3>THE WONDERFOOLS</h3>
+
+
+
+                    <div class="series-meta">2025 • Drama • Mystery • Thriller • 1 Season</div>
+
+
+
+                    <p>A group of extraordinary individuals with hidden powers come together to uncover dark secrets in their city. As they battle supernatural forces, they must also confront their own pasts and the price of being different.</p>
+
+
+
+                    <p style="color:#E50914;font-weight:600;margin-bottom:15px">Starring: TBD</p>
+
+
+
+                    <button class="see-subs-btn" onclick="openSubtitles('thewonderfools')">📝 See Subtitles</button>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+            
+
+
+
+            <div class="series-details-section">
+
+
+
+                <h2 class="details-title">About The Wonderfools</h2>
+
+
+
+                <p class="details-desc">
+
+
+
+                    <b>The Wonderfools</b> කියන්නේ අලුත් Mystery Thriller Series එකක්. විශේෂ බලයන් තියෙන කණ්ඩායමක් නගරයේ තියෙන අඳුරු රහස් හොයන කතාවක්. Supernatural Forces එක්ක සටන් කරන ගමන් තමන්ගේ අතීතයටත් මුහුණ දෙන්න වෙනවා. <b>Season 1 එක දැන් Available.</b>
+
+
+
+                </p>
+
+
+
+                
+
+
+
+                <div class="details-tags">
+
+
+
+                    <span><b>IMDb:</b> 8.5/10</span>
+
+
+
+                    <span><b>Genre:</b> Drama, Mystery, Thriller</span>
+
+
+
+                    <span><b>Creator:</b> TBD</span>
+
+
+
+                    <span><b>Episodes:</b> 8</span>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <h2 class="details-title">Main Cast</h2>
+
+
+
+                <div class="cast-grid">
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="https://via.placeholder.com/185x278/E50914/FFFFFF?text=TBD" alt="Cast">
+
+
+
+                        <h3>TBD</h3>
+
+
+
+                        <p>Lead Role</p>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- WEDNESDAY CARD -->
+
+
+
+        <div class="series-card-box">
+
+
+
+            <div class="series-card-content">
+
+
+
+                <img src="wednesday-s123.jpg" alt="Wednesday" class="series-poster">
+
+
+
+                <div class="series-info">
+
+
+
+                    <h3>WEDNESDAY</h3>
+
+
+
+                    <div class="series-meta">2022 • Mystery • Comedy • Supernatural • 2 Seasons</div>
+
+
+
+                    <p>A sleuthing, supernaturally infused mystery charting Wednesday Addams' years as a student at Nevermore Academy. She attempts to master her emerging psychic ability, thwart a monstrous killing spree and solve the supernatural mystery that embroiled her parents 25 years ago.</p>
+
+
+
+                    <p style="color:#E50914;font-weight:600;margin-bottom:15px">Starring: Jenna Ortega, Gwendoline Christie, Riki Lindhome</p>
+
+
+
+                    <button class="see-subs-btn" onclick="openSubtitles('wednesday')">📝 See Subtitles</button>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+            
+
+
+
+            <div class="series-details-section">
+
+
+
+                <h2 class="details-title">About Wednesday</h2>
+
+
+
+                <p class="details-desc">
+
+
+
+                    <b>Wednesday</b> කියන්නේ Netflix එකෙන් 2022 දී Release කරපු Supernatural Comedy Horror TV Series එකක්. Tim Burton Director කරපු මේ Series එකේ <b>Wednesday Addams</b> එයාගේ අලුත් ඉස්කෝලේ Nevermore Academy එකේ වෙන මිනීමැරුම් රැල්ලක් ගැන හොයන ගමන් එයාගේ Psychic Abilities Master කරගන්න හැටි ගැන කතාවක්. Smart, Sarcastic, Dark Humor වලින් පිරිච්ච කතාවක්. <b>Season 2 එක 2025 දී ආවා.</b>
+
+
+
+                </p>
+
+
+
+                     <b>Wednesday</b> 는 Netflix에서 2022년에 공개한 초자연 코미디 호러 TV 시리즈입니다. Tim Burton이 감독한 이 시리즈는 <b>웨ンズ데이 아담스</b>가 새로운 학교인 Nevermore Academy에서 발생하는 연쇄 살인 사건을 조사하면서 자신의 초능력을 익혀가는 이야기를 담고 있습니다. 똑똑한 풍자와 다크 유머, 미스터리가 가득한 작품입니다. <b>시즌 2는 2025년에 공개되었습니다.</b>
+
+
+
+            </p>                
+
+
+
+                <div class="details-tags">
+
+
+
+                    <span><b>IMDb:</b> 8.1/10</span>
+
+
+
+                    <span><b>Genre:</b> Comedy, Crime, Fantasy</span>
+
+
+
+                    <span><b>Creator:</b> Alfred Gough, Miles Millar</span>
+
+
+
+                    <span><b>Episodes:</b> 16</span>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <h2 class="details-title">Main Cast</h2>
+
+
+
+                <div class="cast-grid">
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="data/jenna-Ortega.jpg" alt="Jenna Ortega" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Jenna'">
+
+
+
+                        <h3>Jenna Ortega</h3>
+
+
+
+                        <p>Wednesday Addams</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="data/emma-myers.jpg" alt="Emma Myers" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Emma'">
+
+
+
+                        <h3>Emma Myers</h3>
+
+
+
+                        <p>Enid Sinclair</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="data/hunter-doohan.jpg" alt="Hunter Doohan" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Hunter'">
+
+
+
+                        <h3>Hunter Doohan</h3>
+
+
+
+                        <p>Tyler Galpin</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="data/joy-sunday.jpg" alt="Joy Sunday" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Joy'">
+
+
+
+                        <h3>Joy Sunday</h3>
+
+
+
+                        <p>Bianca Barclay</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="data/catherine-zeta-jones.jpg" alt="Catherine Zeta-Jones" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Morticia'">
+
+
+
+                        <h3>Catherine Zeta-Jones</h3>
+
+
+
+                        <p>Morticia Addams</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="data/luis-guzman.jpg" alt="Luis Guzmán" onerror="this.src='https://via.placeholder.com/185x278/E50914/FFFFFF?text=Gomez'">
+
+
+
+                        <h3>Luis Guzmán</h3>
+
+
+
+                        <p>Gomez Addams</p>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- FROM CARD -->
+
+
+
+        <div class="series-card-box">
+
+
+
+            <div class="series-card-content">
+
+
+
+                <img src="from-s222.jpg" alt="FROM" class="series-poster">
+
+
+
+                <div class="series-info">
+
+
+
+                    <h3>FROM</h3>
+
+
+
+                    <div class="series-meta">2022 • Mystery • Horror • Sci-Fi • 4 Seasons</div>
+
+
+
+                    <p>Unravel the mystery of a city in middle U.S.A. that imprisons everyone who enters. As the residents struggle to maintain a sense of normalcy and seek a way out, they must also survive the threats of the surrounding forest.</p>
+
+
+
+                    <p style="color:#E50914;font-weight:600;margin-bottom:15px">Starring: Harold Perrineau, Catalina Sandino Moreno, Eion Bailey</p>
+
+
+
+                    <button class="see-subs-btn" onclick="openSubtitles('from')">📝 See Subtitles</button>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="series-details-section">
+
+
+
+                <h2 class="details-title">About FROM</h2>
+
+
+
+                <p class="details-desc">
+
+
+
+                    <b>FROM</b> කියන්නේ 2022 දී Release වුන American Sci-Fi Horror TV Series එකක්. මැද ඇමරිකාවේ අභිරහස් නගරයක හිරවෙන මිනිස්සු ටිකක් ගැන කතාවක්. නගරයට ඇතුල් වුන හැමෝම හිරවෙනවා. පිට වෙන්න බෑ. රෑට කැලෙන් එන බයානක ජීවීන්ගෙන් බේරිලා ජීවත් වෙන්න වෙනවා. <b>Season 4 එක Coming Soon.</b>
+
+
+
+                </p>
+
+
+
+                
+
+
+
+                <div class="details-tags">
+
+
+
+                    <span><b>IMDb:</b> 7.8/10</span>
+
+
+
+                    <span><b>Genre:</b> Horror, Mystery, Sci-Fi</span>
+
+
+
+                    <span><b>Creator:</b> John Griffin</span>
+
+
+
+                    <span><b>Episodes:</b> 33</span>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <h2 class="details-title">Main Cast</h2>
+
+
+
+                <div class="cast-grid">
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="https://image.tmdb.org/t/p/w185/4avO6V7sQJZ8yL5iVEpU2oQ2K1d.jpg" alt="Harold Perrineau">
+
+
+
+                        <h3>Harold Perrineau</h3>
+
+
+
+                        <p>Boyd Stevens</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="https://image.tmdb.org/t/p/w185/k8yJbY7z7L2H9J5Qj8Z4Jk1vG6f.jpg" alt="Catalina Sandino Moreno">
+
+
+
+                        <h3>Catalina Sandino Moreno</h3>
+
+
+
+                        <p>Tabitha Matthews</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="https://image.tmdb.org/t/p/w185/zvNv8tYjv8wH5Q6j9Y5K8j6N3L0.jpg" alt="Eion Bailey">
+
+
+
+                        <h3>Eion Bailey</h3>
+
+
+
+                        <p>Jim Matthews</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="https://image.tmdb.org/t/p/w185/qE4GgQ7v4H9L5Xz8V1J9v3K7N2p.jpg" alt="Hannah Cheramy">
+
+
+
+                        <h3>Hannah Cheramy</h3>
+
+
+
+                        <p>Julie Matthews</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg" alt="Simon Webster">
+
+
+
+                        <h3>Simon Webster</h3>
+
+
+
+                        <p>Ethan Matthews</p>
+
+
+
+                    </div>
+
+
+
+                    <div class="cast-card">
+
+
+
+                        <img src="https://image.tmdb.org/t/p/w185/p3L5n2R8k7J6h4M9x1W8v2K4N6s.jpg" alt="Ricky He">
+
+
+
+                        <h3>Ricky He</h3>
+
+
+
+                        <p>Kenny Liu</p>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <h2 class="section-title">Popular on CINEMAX</h2>
+
+
+
+    <div class="series-grid" id="seriesGrid">
+
+
+
+        <div class="series-box searchable" data-name="the wonderfools">
+
+
+
+            <img src="thewonderfools.jpg" alt="The Wonderfools" class="series-poster-small" onerror="this.src='https://via.placeholder.com/500x170/E50914/FFFFFF?text=Wonderfools'">
+
+
+
+            <div class="series-details">
+
+
+
+                <h3>The Wonderfools</h3>
+
+
+
+                <p>Drama • Mystery • Thriller<br>Season 1 Available</p>
+
+
+
+                <button class="subs-btn" onclick="openSubtitles('thewonderfools')">Get Subtitles</button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="series-box searchable" data-name="wednesday">
+
+
+
+            <img src="wednesday-s123.jpg" alt="Wednesday" class="series-poster-small">
+
+
+
+            <div class="series-details">
+
+
+
+                <h3>Wednesday</h3>
+
+
+
+                <p>Mystery • Comedy • Supernatural<br>Season 2 Available</p>
+
+
+
+                <button class="subs-btn" onclick="openSubtitles('wednesday')">Get Subtitles</button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="series-box searchable" data-name="from">
+
+
+
+            <img src="from-s222.jpg" alt="FROM" class="series-poster-small">
+
+
+
+            <div class="series-details">
+
+
+
+                <h3>FROM</h3>
+
+
+
+                <p>Mystery • Horror • Sci-Fi<br>4 Seasons Available</p>
+
+
+
+                <button class="subs-btn" onclick="openSubtitles('from')">Get Subtitles</button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="series-box searchable" data-name="stranger things">
+
+
+
+            <img src="https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg" alt="Stranger Things" class="series-poster-small">
+
+
+
+            <div class="series-details">
+
+
+
+                <h3>Stranger Things</h3>
+
+
+
+                <p>Sci-Fi • Horror • Drama<br>Season 5 Coming Soon</p>
+
+
+
+                <button class="subs-btn" onclick="openSubtitles('strangerthings')">Get Subtitles</button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="series-box searchable" data-name="one piece">
+
+
+
+            <img src="https://image.tmdb.org/t/p/w500/cMD9Ygz11zjJzAovURpO75Qg7rT.jpg" alt="One Piece" class="series-poster-small">
+
+
+
+            <div class="series-details">
+
+
+
+                <h3>One Piece</h3>
+
+
+
+                <p>Adventure • Action • Fantasy<br>Live Action Series</p>
+
+
+
+                <button class="subs-btn" onclick="openSubtitles('onepiece')">Get Subtitles</button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="series-box searchable" data-name="sweet home">
+
+
+
+            <img src="https://image.tmdb.org/t/p/w500/5rJ0VPZC3ozKEs1RJ0GMoDq5q1Q.jpg" alt="Sweet Home" class="series-poster-small">
+
+
+
+            <div class="series-details">
+
+
+
+                <h3>Sweet Home</h3>
+
+
+
+                <p>Horror • Thriller • Action<br>Season 3 Available</p>
+
+
+
+                <button class="subs-btn" onclick="openSubtitles('sweethome')">Get Subtitles</button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="series-box searchable" data-name="my demon">
+
+
+
+            <img src="https://image.tmdb.org/t/p/w500/8pb1cfGZXo7X6NuMrfv6DJnxpRy.jpg" alt="My Demon" class="series-poster-small">
+
+
+
+            <div class="series-details">
+
+
+
+                <h3>My Demon</h3>
+
+
+
+                <p>Romance • Fantasy • Comedy<br>Complete Series</p>
+
+
+
+                <button class="subs-btn" onclick="openSubtitles('mydemon')">Get Subtitles</button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="subtitles-panel" id="subtitlesPanel">
+
+
+
+        <div class="subtitles-bg" id="subtitlesBg"></div>
+
+
+
+        <div class="subtitles-banner">
+
+
+
+                        <img src="wednesday-s123.jpg" alt="Banner" class="subtitles-banner-img" id="subtitlesBannerImg">
+
+
+
+            <div class="subtitles-banner-overlay"></div>
+
+
+
+            <div class="subtitles-banner-title" id="subtitlesBannerTitle">WEDNESDAY</div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="subtitles-header">
+
+
+
+            <h2 id="subtitlesTitle">Wednesday - Subtitles</h2>
+
+
+
+            <button class="close-btn" onclick="closeSubtitles()">×</button>
+
+
+
+        </div>
+
+
+
+        <div class="subtitles-content">
+
+
+
+            <div class="subtitles-youtube">
+
+
+
+                <iframe id="subtitlesYoutube" src="" allow="autoplay; encrypted-media"></iframe>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="season-tabs" id="seasonTabs"></div>
+
+
+
+            <button class="download-all-btn" onclick="downloadAllSRT()">⬇️ Download All Subtitles</button>
+
+
+
+
+
+
+
+            <div class="episodes-list" id="subtitlesEpisodesList"></div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="netflix-footer">
+
+
+
+        <p>Fan Made Website by hansaka457 🖤</p>
+
+
+
+        <p style="margin-top:10px">Questions? Contact us on WhatsApp</p>
+
+
+
+        <p style="margin-top:20px; font-size:0.75rem">© 2026 CINEMAX. All rights reserved.</p>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <script>
+
+
+
+        let currentSeries = 'wednesday';
+
+
+
+        let currentSeason = 1;
+
+
+
+        let currentHeroSeries = 'wednesday';
+
+
+
+
+
+
+
+        const heroPlaylist = [
+
+
+
+            {
+
+
+
+                video: 'wednesday-edit.mp4',
+
+
+
+                series: 'wednesday',
+
+
+
+                title: 'WEDNESDAY',
+
+
+
+                meta: '<span class="hero-badge">NEW</span><span>2022</span><span>2 Seasons</span><span>TV-14</span>',
+
+
+
+                desc: 'Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends and foes at Nevermore Academy.'
+
+
+
+            },
+
+
+
+            {
+
+
+
+                video: 'thewonderfools_sinhala.mp4',
+
+
+
+                series: 'thewonderfools',
+
+
+
+                title: 'THE WONDERFOOLS',
+
+
+
+                meta: '<span class="hero-badge">NEW</span><span>2025</span><span>1 Season</span><span>TV-MA</span>',
+
+
+
+                desc: 'A group of extraordinary individuals with hidden powers come together to uncover dark secrets in their city while battling supernatural forces.'
+
+
+
+            }
+
+
+
+        ];
+
+
+
+        let currentHeroIndex = 0;
+
+
+
+
+
+
+
+        const seriesData = {
+
+
+
+            thewonderfools: {
+
+
+
+                title: 'The Wonderfools',
+
+
+
+                banner: 'thewonderfools.jpg',
+
+
+
+                youtubeShort: 'jD9cuue_gT4',
+
+
+
+                bgImage: 'thewonderfools.jpg',
+
+
+
+                seasons: {
+
+
+
+                    1: {
+
+
+
+                        subtitles: {
+
+
+
+                            1: 'thewonderfools_1-1_sinhala.srt',
+
+
+
+                            2: 'thewonderfools_1-2_Sinhala.srt',
+
+
+
+                            3: 'thewonderfools_1-3_Sinhala.srt',
+
+
+
+                            4: 'thewonderfools_1-4_Sinhala.srt',
+
+
+
+                            5: 'thewonderfools_1-5_Sinhala.srt',
+
+
+
+                            6: 'thewonderfools_1-6_Sinhala.srt',
+
+
+
+                            7: 'thewonderfools_1-7_Sinhala.srt',
+
+
+
+                            8: 'thewonderfools_1-8_Sinhala.srt'
+
+
+
+                        },
+
+
+
+                        episodes: [
+
+
+
+                            {num: 1, name: "The Awakening", date: "TBA", runtime: "50m"},
+
+
+
+                            {num: 2, name: "Hidden Powers", date: "TBA", runtime: "48m"},
+
+
+
+                            {num: 3, name: "Dark Secrets", date: "TBA", runtime: "52m"},
+
+
+
+                            {num: 4, name: "The Hunt Begins", date: "TBA", runtime: "49m"},
+
+
+
+                            {num: 5, name: "Betrayal", date: "TBA", runtime: "51m"},
+
+
+
+                            {num: 6, name: "Into The Shadows", date: "TBA", runtime: "53m"},
+
+
+
+                            {num: 7, name: "The Final Stand", date: "TBA", runtime: "55m"},
+
+
+
+                            {num: 8, name: "New Dawn", date: "TBA", runtime: "58m"}
+
+
+
+                        ]
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            },
+
+
+
+            wednesday: {
+
+
+
+                title: 'Wednesday',
+
+
+
+                banner: 'wednesday-s123.jpg',
+
+
+
+                youtubeShort: 'lO9vxgaIw3A',
+
+
+
+                bgImage: 'wednesday-s123.jpg',
+
+
+
+                seasons: {
+
+
+
+                    1: {
+
+
+
+                        subtitles: {
+
+
+
+                            1: 'data/wednesday_1-1_sinhala.srt',
+
+
+
+                            2: 'data/wednesday_1-2_sinhala.srt',
+
+
+
+                            3: 'data/wednesday_1-3_sinhala.srt',
+
+
+
+                            4: 'data/wednesday_1-4_sinhala.srt',
+
+
+
+                            5: 'data/wednesday_1-5_sinhala.srt',
+
+
+
+                            6: 'data/wednesday_1-6_sinhala.srt',
+
+
+
+                            7: 'data/wednesday_1-7_sinhala.srt',
+
+
+
+                            8: 'data/wednesday_1-8_sinhala.srt'
+
+
+
+                        },
+
+
+
+                        episodes: [
+
+
+
+                            {num: 1, name: "Wednesday's Child Is Full of Woe", date: "Nov 23, 2022", runtime: "51m"},
+
+
+
+                            {num: 2, name: "Woe Is the Loneliest Number", date: "Nov 23, 2022", runtime: "47m"},
+
+
+
+                            {num: 3, name: "Friend or Woe", date: "Nov 23, 2022", runtime: "46m"},
+
+
+
+                            {num: 4, name: "Woe What a Night", date: "Nov 23, 2022", runtime: "47m"},
+
+
+
+                            {num: 5, name: "You Reap What You Woe", date: "Nov 23, 2022", runtime: "49m"},
+
+
+
+                            {num: 6, name: "Quid Pro Woe", date: "Nov 23, 2022", runtime: "50m"},
+
+
+
+                            {num: 7, name: "If You Don't Woe Me By Now", date: "Nov 23, 2022", runtime: "50m"},
+
+
+
+                            {num: 8, name: "A Murder of Woes", date: "Nov 23, 2022", runtime: "50m"}
+
+
+
+                        ]
+
+
+
+                    },
+
+
+
+                    2: {
+
+
+
+                        subtitles: {
+
+
+
+                            1: 'data/wednesday_2-1_sinhala.srt',
+
+
+
+                            2: 'data/wednesday_2-2_sinhala.srt',
+
+
+
+                            3: 'data/wednesday_2-3_sinhala.srt',
+
+
+
+                            4: 'data/wednesday_2-4_sinhala.srt',
+
+
+
+                            5: 'data/wednesday_2-5_sinhala.srt',
+
+
+
+                            6: 'data/wednesday_2-6_sinhala.srt',
+
+
+
+                            7: 'data/wednesday_2-7_sinhala.srt',
+
+
+
+                            8: 'data/wednesday_2-8_sinhala.srt'
+
+
+
+                        },
+
+
+
+                        episodes: [
+
+
+
+                            {num: 1, name: "Here We Woe Again", date: "Aug 6, 2025", runtime: "54m"},
+
+
+
+                            {num: 2, name: "If These Woes Could Talk", date: "Aug 6, 2025", runtime: "52m"},
+
+
+
+                            {num: 3, name: "Call It Woe", date: "Aug 6, 2025", runtime: "48m"},
+
+
+
+                            {num: 4, name: "Woe Me Once", date: "Aug 6, 2025", runtime: "51m"},
+
+
+
+                            {num: 5, name: "You Woe Me", date: "Sep 3, 2025", runtime: "50m"},
+
+
+
+                            {num: 6, name: "Woe Is Me", date: "Sep 3, 2025", runtime: "53m"},
+
+
+
+                            {num: 7, name: "Woe-ga What a Night", date: "Sep 3, 2025", runtime: "49m"},
+
+
+
+                            {num: 8, name: "A Woe New World", date: "Sep 3, 2025", runtime: "55m"}
+
+
+
+                        ]
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            },
+
+
+
+            from: {
+
+
+
+                title: 'FROM',
+
+
+
+                banner: 'from-s222.jpg',
+
+
+
+                youtubeShort: 'dhb6UkSulqI',
+
+
+
+                bgImage: 'from-s222.jpg',
+
+
+
+                seasons: {
+
+
+
+                    1: {
+
+
+
+                        subtitles: {
+
+
+
+                            1: 'data/From_1-4_Sinhala.srt',
+
+
+
+                            2: 'data/from_1-2_sinhala.srt',
+
+
+
+                            3: 'data/from_1-3_sinhala.srt',
+
+
+
+                            4: 'data/from_1-4_Sinhala.srt',
+
+
+
+                            5: 'data/from_1-5_sinhala.srt',
+
+
+
+                            6: 'data/from_1-6_sinhala.srt',
+
+
+
+                            7: 'data/from_1-7_sinhala.srt',
+
+
+
+                            8: 'data/from_1-8_sinhala.srt',
+
+
+
+                            9: 'data/from_1-9_sinhala.srt',
+
+
+
+                            10: 'data/from_1-10_sinhala.srt'
+
+
+
+                        },
+
+
+
+                        episodes: [
+
+
+
+                            {num: 1, name: "Long Day's Journey Into Night", date: "Feb 20, 2022", runtime: "58m"},
+
+
+
+                            {num: 2, name: "The Way Things Are Now", date: "Feb 27, 2022", runtime: "56m"},
+
+
+
+                            {num: 3, name: "Choosing Day", date: "Mar 6, 2022", runtime: "57m"},
+
+
+
+                            {num: 4, name: "A Rock and a Farway", date: "Mar 13, 2022", runtime: "54m"},
+
+
+
+                            {num: 5, name: "Silhouettes", date: "Mar 20, 2022", runtime: "55m"},
+
+
+
+                            {num: 6, name: "Book 74", date: "Mar 27, 2022", runtime: "56m"},
+
+
+
+                            {num: 7, name: "All Good Things...", date: "Apr 3, 2022", runtime: "58m"},
+
+
+
+                            {num: 8, name: "Broken Windows, Open Doors", date: "Apr 10, 2022", runtime: "59m"},
+
+
+
+                            {num: 9, name: "Into The Woods", date: "Apr 10, 2022", runtime: "57m"},
+
+
+
+                            {num: 10, name: "Oh, the Places We'll Go", date: "Apr 10, 2022", runtime: "59m"}
+
+
+
+                        ]
+
+
+
+                    },
+
+
+
+                    2: {
+
+
+
+                        subtitles: {
+
+
+
+                            1: 'data/from_2-1_sinhala.srt',
+
+
+
+                            2: 'data/from_2-2_sinhala.srt',
+
+
+
+                            3: 'data/from_2-3_sinhala.srt',
+
+
+
+                            4: 'data/from_2-4_sinhala.srt',
+
+
+
+                            5: 'data/from_2-5_sinhala.srt',
+
+
+
+                            6: 'data/from_2-6_sinhala.srt',
+
+
+
+                            7: 'data/from_2-7_sinhala.srt',
+
+
+
+                            8: 'data/from_2-8_sinhala.srt',
+
+
+
+                            9: 'data/from_2-9_sinhala.srt',
+
+
+
+                            10: 'data/from_2-10_sinhala.srt'
+
+
+
+                        },
+
+
+
+                        episodes: [
+
+
+
+                            {num: 1, name: "Strangers in a Strange Land", date: "Apr 23, 2023", runtime: "55m"},
+
+
+
+                            {num: 2, name: "The Kindness of Strangers", date: "Apr 30, 2023", runtime: "56m"},
+
+
+
+                            {num: 3, name: "Tether", date: "May 7, 2023", runtime: "54m"},
+
+
+
+                            {num: 4, name: "This Way, Gone", date: "May 14, 2023", runtime: "57m"},
+
+
+
+                            {num: 5, name: "Lullaby", date: "May 21, 2023", runtime: "55m"},
+
+
+
+                            {num: 6, name: "Pas de Deux", date: "May 28, 2023", runtime: "58m"},
+
+
+
+                            {num: 7, name: "Belly of the Beast", date: "Jun 4, 2023", runtime: "56m"},
+
+
+
+                            {num: 8, name: "Forest for the Trees", date: "Jun 11, 2023", runtime: "54m"},
+
+
+
+                            {num: 9, name: "Ball of Magic Fire", date: "Jun 18, 2023", runtime: "59m"},
+
+
+
+                            {num: 10, name: "Once Upon a Time...", date: "Jun 25, 2023", runtime: "60m"}
+
+
+
+                        ]
+
+
+
+                    },
+
+
+
+                    3: {
+
+
+
+                        subtitles: {
+
+
+
+                            1: 'data/from_3-1_sinhala.srt',
+
+
+
+                            2: 'data/from_3-2_sinhala.srt',
+
+
+
+                            3: 'data/from_3-3_sinhala.srt',
+
+
+
+                            4: 'data/from_3-4_sinhala.srt',
+
+
+
+                            5: 'data/from_3-5_sinhala.srt',
+
+
+
+                            6: 'data/from_3-6_sinhala.srt',
+
+
+
+                            7: 'data/from_3-7_sinhala.srt',
+
+
+
+                            8: 'data/from_3-8_sinhala.srt',
+
+
+
+                            9: 'data/from_3-9_sinhala.srt',
+
+
+
+                            10: 'data/from_3-10_sinhala.srt'
+
+
+
+                        },
+
+
+
+                        episodes: [
+
+
+
+                            {num: 1, name: "Shatter", date: "Sep 22, 2024", runtime: "57m"},
+
+
+
+                            {num: 2, name: "When We Go", date: "Sep 29, 2024", runtime: "56m"},
+
+
+
+                            {num: 3, name: "Mouse Trap", date: "Oct 6, 2024", runtime: "55m"},
+
+
+
+                            {num: 4, name: "There and Back Again", date: "Oct 13, 2024", runtime: "58m"},
+
+
+
+                            {num: 5, name: "The Light of Day", date: "Oct 20, 2024", runtime: "54m"},
+
+
+
+                            {num: 6, name: "Scar Tissue", date: "Oct 27, 2024", runtime: "56m"},
+
+
+
+                            {num: 7, name: "These Fragile Lives", date: "Nov 3, 2024", runtime: "57m"},
+
+
+
+                            {num: 8, name: "Thresholds", date: "Nov 10, 2024", runtime: "59m"},
+
+
+
+                            {num: 9, name: "Revelations: Chapter One", date: "Nov 17, 2024", runtime: "58m"},
+
+
+
+                            {num: 10, name: "Revelations: Chapter Two", date: "Nov 24, 2024", runtime: "60m"}
+
+
+
+                        ]
+
+
+
+                    },
+
+
+
+                    4: {
+
+
+
+                        subtitles: {
+
+
+
+                            1: 'data/from_4-1_sinhala-1.srt',
+
+
+
+                            2: 'data/from_4-2_sinhala-1.srt',
+
+
+
+                            3: 'data/from_4-3_sinhala.srt'
+
+
+
+                        },
+
+
+
+                        episodes: [
+
+
+
+                            {num: 1, name: "Episode 1", date: "TBA", runtime: "TBA"},
+
+
+
+                            {num: 2, name: "Episode 2", date: "TBA", runtime: "TBA"},
+
+
+
+                            {num: 3, name: "Episode 3", date: "TBA", runtime: "TBA"}
+
+
+
+                        ]
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            },
+
+
+
+            strangerthings: {title: 'Stranger Things', banner: 'https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg', youtubeShort: 'b9EkMc79ZSU', bgImage: 'https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg', seasons: {}},
+
+
+
+            onepiece: {title: 'One Piece', banner: 'https://image.tmdb.org/t/p/w500/cMD9Ygz11zjJzAovURpO75Qg7rT.jpg', youtubeShort: 'fcoZidKzoBU', bgImage: 'https://image.tmdb.org/t/p/w500/cMD9Ygz11zjJzAovURpO75Qg7rT.jpg', seasons: {}},
+
+
+
+            sweethome: {title: 'Sweet Home', banner: 'https://image.tmdb.org/t/p/w500/5rJ0VPZC3ozKEs1RJ0GMoDq5q1Q.jpg', youtubeShort: 'kUA7bOotN8E', bgImage: 'https://image.tmdb.org/t/p/w500/5rJ0VPZC3ozKEs1RJ0GMoDq5q1Q.jpg', seasons: {}},
+
+
+
+            mydemon: {title: 'My Demon', banner: 'https://image.tmdb.org/t/p/w500/8pb1cfGZXo7X6NuMrfv6DJnxpRy.jpg', youtubeShort: 'KbGN-PxXq9M', bgImage: 'https://image.tmdb.org/t/p/w500/8pb1cfGZXo7X6NuMrfv6DJnxpRy.jpg', seasons: {}}
+
+
+
+        };
+
+
+
+
+
+
+
+        window.addEventListener('scroll', function() {
+
+
+
+            const header = document.getElementById('header');
+
+
+
+            if (window.scrollY > 50) {
+
+
+
+                header.classList.add('scrolled');
+
+
+
+            } else {
+
+
+
+                header.classList.remove('scrolled');
+
+
+
+            }
+
+
+
+        });
+
+
+
+
+
+
+
+        function toggleMute() {
+
+
+
+            const video = document.getElementById('heroVideo');
+
+
+
+            const btn = document.getElementById('volumeBtn');
+
+
+
+            if (video) {
+
+
+
+                if (video.muted) {
+
+
+
+                    video.muted = false;
+
+
+
+                    btn.innerHTML = '🔊';
+
+
+
+                } else {
+
+
+
+                    video.muted = true;
+
+
+
+                    btn.innerHTML = '🔇';
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        function toggleSubtitles() {
+
+
+
+            const video = document.getElementById('heroVideo');
+
+
+
+            const btn = document.getElementById('subtitleBtn');
+
+
+
+            const track = video.textTracks[0];
+
+
+
+            if (track) {
+
+
+
+                if (track.mode === 'showing') {
+
+
+
+                    track.mode = 'hidden';
+
+
+
+                    btn.classList.remove('active');
+
+
+
+                } else {
+
+
+
+                    track.mode = 'showing';
+
+
+
+                    btn.classList.add('active');
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        function playNextHeroVideo() {
+
+
+
+            currentHeroIndex = (currentHeroIndex + 1) % heroPlaylist.length;
+
+
+
+            const video = document.getElementById('heroVideo');
+
+
+
+            const current = heroPlaylist[currentHeroIndex];
+
+
+
+            video.src = current.video;
+
+
+
+            document.getElementById('heroTitle').textContent = current.title;
+
+
+
+            document.getElementById('heroMeta').innerHTML = current.meta;
+
+
+
+            document.getElementById('heroDesc').textContent = current.desc;
+
+
+
+            currentHeroSeries = current.series;
+
+
+
+            video.load();
+
+
+
+            video.play();
+
+
+
+        }
+
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+
+
+            const video = document.getElementById('heroVideo');
+
+
+
+            if(video){
+
+
+
+                video.addEventListener('ended', playNextHeroVideo);
+
+
+
+                video.addEventListener('loadedmetadata', function() {
+
+
+
+                    if (video.textTracks[0]) {
+
+
+
+                        video.textTracks[0].mode = 'showing';
+
+
+
+                        document.getElementById('subtitleBtn').classList.add('active');
+
+
+
+                    }
+
+
+
+                });
+
+
+
+            }
+
+
+
+        });
+
+
+
+
+
+
+
+        function openSubtitles(seriesName) {
+
+
+
+            currentSeries = seriesName;
+
+
+
+            currentSeason = 1;
+
+
+
+            const panel = document.getElementById('subtitlesPanel');
+
+
+
+            const data = seriesData[seriesName];
+
+
+
+            if (!data) return;
+
+
+
+
+
+
+
+            document.getElementById('subtitlesTitle').textContent = data.title + ' - Subtitles';
+
+
+
+            document.getElementById('subtitlesBannerTitle').textContent = data.title.toUpperCase();
+
+
+
+            document.getElementById('subtitlesBannerImg').src = data.banner;
+
+
+
+            document.getElementById('subtitlesBg').style.backgroundImage = `url('${data.bgImage}')`;
+
+
+
+            document.getElementById('subtitlesYoutube').src = `https://www.youtube.com/embed/${data.youtubeShort}?autoplay=1&mute=1&loop=1&playlist=${data.youtubeShort}&controls=1`;
+
+
+
+
+
+
+
+            renderSeasonTabs(seriesName);
+
+
+
+            renderEpisodes(seriesName, currentSeason);
+
+
+
+
+
+
+
+            panel.classList.add('active');
+
+
+
+            document.body.style.overflow = 'hidden';
+
+
+
+        }
+
+
+
+
+
+
+
+        function renderSeasonTabs(seriesName) {
+
+
+
+            const data = seriesData[seriesName];
+
+
+
+            const tabsContainer = document.getElementById('seasonTabs');
+
+
+
+            tabsContainer.innerHTML = '';
+
+
+
+            if (data.seasons && Object.keys(data.seasons).length > 0) {
+
+
+
+                Object.keys(data.seasons).forEach(seasonNum => {
+
+
+
+                    const tab = document.createElement('button');
+
+
+
+                    tab.className = 'season-tab' + (seasonNum == currentSeason? ' active' : '');
+
+
+
+                    tab.textContent = `Season ${seasonNum}`;
+
+
+
+                    tab.onclick = () => switchSeason(seriesName, parseInt(seasonNum));
+
+
+
+                    tabsContainer.appendChild(tab);
+
+
+
+                });
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        function switchSeason(seriesName, seasonNum) {
+
+
+
+            currentSeason = seasonNum;
+
+
+
+            renderSeasonTabs(seriesName);
+
+
+
+            renderEpisodes(seriesName, seasonNum);
+
+
+
+        }
+
+
+
+
+
+
+
+        function renderEpisodes(seriesName, seasonNum) {
+
+
+
+            const data = seriesData[seriesName];
+
+
+
+            const episodesList = document.getElementById('subtitlesEpisodesList');
+
+
+
+            episodesList.innerHTML = '';
+
+
+
+            if (!data.seasons ||!data.seasons[seasonNum]) {
+
+
+
+                episodesList.innerHTML = '<p style="text-align:center; color:#999; padding:20px; position:relative; z-index:1">Subtitles coming soon...</p>';
+
+
+
+                return;
+
+
+
+            }
+
+
+
+            const seasonData = data.seasons[seasonNum];
+
+
+
+            if (seasonData.episodes.length === 0) {
+
+
+
+                episodesList.innerHTML = '<p style="text-align:center; color:#999; padding:20px; position:relative; z-index:1">Subtitles coming soon...</p>';
+
+
+
+            } else {
+
+
+
+                seasonData.episodes.forEach(ep => {
+
+
+
+                    const epRow = document.createElement('div');
+
+
+
+                    epRow.className = 'episode-row';
+
+
+
+                    epRow.innerHTML = `
+
+
+
+                        <div class="episode-num">${ep.num}</div>
+
+
+
+                        <div class="episode-details">
+
+
+
+                            <div class="episode-title">${ep.name}</div>
+
+
+
+                            <div class="episode-meta">${ep.date} • ${ep.runtime}</div>
+
+
+
+                        </div>
+
+
+
+                        <button class="ep-btn" onclick="downloadSRT('${seriesName}', ${seasonNum}, ${ep.num})">⬇️ SRT</button>
+
+
+
+                    `;
+
+
+
+                    episodesList.appendChild(epRow);
+
+
+
+                });
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        function closeSubtitles() {
+
+
+
+            const panel = document.getElementById('subtitlesPanel');
+
+
+
+            document.getElementById('subtitlesYoutube').src = '';
+
+
+
+            panel.classList.remove('active');
+
+
+
+            document.body.style.overflow = 'auto';
+
+
+
+        }
+
+
+
+
+
+
+
+        function downloadSRT(seriesName, seasonNum, epNum) {
+
+
+
+            const data = seriesData[seriesName];
+
+
+
+            if (!data.seasons ||!data.seasons[seasonNum]) {
+
+
+
+                alert('Subtitle not available yet!');
+
+
+
+                return;
+
+
+
+            }
+
+
+
+            const srtUrl = data.seasons[seasonNum].subtitles[epNum];
+
+
+
+            if (srtUrl) {
+
+
+
+                const link = document.createElement('a');
+
+
+
+                link.href = srtUrl;
+
+
+
+                link.download = `${seriesName}_S${seasonNum}E${epNum}_sinhala.srt`;
+
+
+
+                link.target = '_blank';
+
+
+
+                document.body.appendChild(link);
+
+
+
+                link.click();
+
+
+
+                document.body.removeChild(link);
+
+
+
+            } else {
+
+
+
+                alert('Subtitle not available yet!');
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        function downloadAllSRT() {
+
+
+
+            const data = seriesData[currentSeries];
+
+
+
+            if (!data.seasons ||!data.seasons[currentSeason]) {
+
+
+
+                alert('No subtitles available yet!');
+
+
+
+                return;
+
+
+
+            }
+
+
+
+            const subs = data.seasons[currentSeason].subtitles;
+
+
+
+            if (Object.keys(subs).length === 0) {
+
+
+
+                alert('No subtitles available yet!');
+
+
+
+                return;
+
+
+
+            }
+
+
+
+            Object.keys(subs).forEach((epNum, index) => {
+
+
+
+                setTimeout(() => {
+
+
+
+                    downloadSRT(currentSeries, currentSeason, epNum);
+
+
+
+                }, index * 500);
+
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+        function searchContent() {
+
+
+
+            const input = document.getElementById('searchInput');
+
+
+
+            const filter = input.value.toLowerCase();
+
+
+
+            const items = document.querySelectorAll('.searchable');
+
+
+
+            items.forEach(item => {
+
+
+
+                const name = item.getAttribute('data-name');
+
+
+
+                if (name && name.toLowerCase().indexOf(filter) > -1) {
+
+
+
+                    item.style.display = '';
+
+
+
+                } else {
+
+
+
+                    item.style.display = 'none';
+
+
+
+                }
+
+
+
+            });
+
+
+
+        }
+
+
+
+    </script>
+
+
+
+    <script>
+
+
+
+const translations = {
+
+
+
+    en: {
+
+
+
+        pageTitle: "CINEMAX - Watch Movies & TV Shows Online",
+
+
+
+        newText: "NEW",
+
+
+
+        play: "Play",
+
+
+
+        search: "Search series...",
+
+
+
+        seeSubs: "📝 See Subtitles",
+
+
+
+        popular: "Popular on CINEMAX",
+
+
+
+        getSubs: "Get Subtitles",
+
+
+
+        downloadAll: "⬇️ Download All Subtitles",
+
+
+
+        footer1: "Fan Made Website by hansaka457 🖤",
+
+
+
+        footer2: "Questions? Contact us on WhatsApp",
+
+
+
+        heroDesc: "Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends and foes at Nevermore Academy.",
+
+
+
+        wedAbout: "About Wednesday",
+
+
+
+        cast: "Main Cast",
+
+
+
+        fromAbout: "About FROM",
+
+
+
+        wonderfoolsAbout: "About The Wonderfools"
+
+
+
+    },
+
+
+
+    si: {
+
+
+
+        pageTitle: "CINEMAX - චිත්‍රපට සහ TV Series නරඹන්න",
+
+
+
+        newText: "අලුත්",
+
+
+
+        play: "Play කරන්න",
+
+
+
+        search: "Series Search කරන්න...",
+
+
+
+        seeSubs: "📝 උපසිරැසි බලන්න",
+
+
+
+        popular: "CINEMAX ජනප්‍රිය ඒවා",
+
+
+
+        getSubs: "උපසිරැසි ගන්න",
+
+
+
+        downloadAll: "⬇️ සියලු උපසිරැසි Download කරන්න",
+
+
+
+        footer1: "hansaka457 විසින් සාදන ලද Fan Website 🖤",
+
+
+
+        footer2: "ප්‍රශ්න තිබේද? WhatsApp හරහා අමතන්න",
+
+
+
+        heroDesc: "Wednesday Addams Nevermore Academy එකේදී අභිරහස් මිනීමැරුම් ගැන පරීක්ෂා කරන අතර අලුත් යාළුවන් සහ සතුරන් හමුවෙයි.",
+
+
+
+        wedAbout: "Wednesday ගැන",
+
+
+
+        cast: "ප්‍රධාන නළු නිළියන්",
+
+
+
+        fromAbout: "FROM ගැන",
+
+
+
+        wonderfoolsAbout: "The Wonderfools ගැන"
+
+
+
+    },
+
+
+
+    ko: {
+
+
+
+        pageTitle: "CINEMAX - 영화 및 TV 시리즈 시청",
+
+
+
+        newText: "NEW",
+
+
+
+        play: "재생",
+
+
+
+        search: "시리즈 검색...",
+
+
+
+        seeSubs: "📝 자막 보기",
+
+
+
+        popular: "CINEMAX 인기 콘텐츠",
+
+
+
+        getSubs: "자막 받기",
+
+
+
+        downloadAll: "⬇️ 모든 자막 다운로드",
+
+
+
+        footer1: "hansaka457 제작 팬 사이트 🖤",
+
+
+
+        footer2: "문의사항? WhatsApp으로 연락하세요",
+
+
+
+        heroDesc: "웬즈데이 아담스는 네버모어 아카데미에서 살인 사건을 조사하며 새로운 친구와 적들을 만난다.",
+
+
+
+        wedAbout: "Wednesday 소개",
+
+
+
+        cast: "주요 출연진",
+
+
+
+        fromAbout: "FROM 소개",
+
+
+
+        wonderfoolsAbout: "The Wonderfools 소개"
+
+
+
+    },
+
+
+
+    ja: {
+
+
+
+        pageTitle: "CINEMAX - 映画とテレビ番組をオンラインで視聴",
+
+
+
+        newText: "新着",
+
+
+
+        play: "再生",
+
+
+
+        search: "シリーズを検索...",
+
+
+
+        seeSubs: "📝 字幕を見る",
+
+
+
+        popular: "CINEMAXで人気",
+
+
+
+        getSubs: "字幕を取得",
+
+
+
+        downloadAll: "⬇️ すべての字幕をダウンロード",
+
+
+
+        footer1: "hansaka457 によるファンメイドサイト 🖤",
+
+
+
+        footer2: "ご質問は WhatsApp でお問い合わせください",
+
+
+
+        heroDesc: "頭が良く、皮肉屋で少し影のあるウェンズデー・アダムスが、ネヴァーモア学園で新たな友人や敵と出会いながら連続殺人事件を расследනします。",
+
+
+
+        wedAbout: "ウェンズデーについて",
+
+
+
+        cast: "メインキャスト",
+
+
+
+        fromAbout: "FROMについて",
+
+
+
+        wonderfoolsAbout: "ワンダーフールズについて"
+
+
+
+    }
+
+
+
+};
+
+
+
+
+
+
+
+function changeLanguage(lang) {
+
+
+
+    const t = translations[lang];
+
+
+
+    document.title = t.pageTitle;
+
+
+
+    document.querySelector('.hero-badge').innerText = t.newText;
+
+
+
+    document.getElementById('heroPlayBtn').innerHTML = `
+
+
+
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+
+
+
+            <path d="M8 5v14l11-7z"/>
+
+
+
+        </svg>
+
+
+
+        ${t.play}
+
+
+
+    `;
+
+
+
+    document.getElementById('searchInput').placeholder = t.search;
+
+
+
+    document.querySelectorAll('.see-subs-btn').forEach(btn => {
+
+
+
+        btn.innerHTML = t.seeSubs;
+
+
+
+    });
+
+
+
+    document.querySelectorAll('.subs-btn').forEach(btn => {
+
+
+
+        btn.innerHTML = t.getSubs;
+
+
+
+    });
+
+
+
+    document.querySelector('.section-title').innerText = t.popular;
+
+
+
+    document.querySelector('.download-all-btn').innerHTML = t.downloadAll;
+
+
+
+    document.querySelector('.netflix-footer p:nth-child(1)').innerHTML = t.footer1;
+
+
+
+    document.querySelector('.netflix-footer p:nth-child(2)').innerHTML = t.footer2;
+
+
+
+    const detailsTitles = document.querySelectorAll('.details-title');
+
+
+
+    if(detailsTitles[0]) detailsTitles[0].innerText = t.wonderfoolsAbout;
+
+
+
+    if(detailsTitles[2]) detailsTitles[2].innerText = t.wedAbout;
+
+
+
+    if(detailsTitles[4]) detailsTitles[4].innerText = t.fromAbout;
+
+
+
+    document.querySelectorAll('.cast').forEach(el => el.innerText = t.cast);
+
+
+
+    localStorage.setItem('cinemax_lang', lang);
+
+
+
 }
 
-function closeModal() {
-  document.getElementById('detailModal').style.display = 'none';
-}
 
-// Initialize
-renderSeries();
-</script>
+
+
+
+
+
+window.addEventListener('DOMContentLoaded', () => {
+
+
+
+    const savedLang = localStorage.getItem('cinemax_lang') || 'en';
+
+
+
+    document.getElementById('languageSwitcher').value = savedLang;
+
+
+
+    changeLanguage(savedLang);
+
+
+
+});
+
+
+
+    </script>
+
+
 
 </body>
-</html>
+
+
+
+  </html>
