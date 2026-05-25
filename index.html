@@ -44,7 +44,7 @@
        .imdb-badge {background:#F5C518; color:#000; padding:2px 6px; border-radius:3px; font-weight:700; font-size:12px}
        .details-buttons {display:flex; gap:12px; margin-bottom:20px}
        .btn-primary {background:#fff; color:#000; border:none; padding:12px 28px; font-size:16px; border-radius:6px; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:8px; transition:0.2s}
-       .btn-primary:hover {background:rgba(255,255,255,0.85)}
+       .btn-primary:hover {background:rgba(255,255,0.85)}
        .btn-secondary {background:rgba(109,109,110,0.7); color:#fff; border:none; padding:12px 28px; font-size:16px; border-radius:6px; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:8px}
        .btn-secondary:hover {background:rgba(109,109,110,0.5)}
        .details-desc {font-size:15px; line-height:1.6; color:#d2d2d2; max-width:700px; margin-bottom:25px}
@@ -65,7 +65,7 @@
        .related-card {flex-shrink:0; width:160px; cursor:pointer}
        .related-card:hover {transform:scale(1.05)}
        .related-poster {width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:6px}
-       .related-title {font-size:13px; margin-top:8px; color:#e5e5}
+       .related-title {font-size:13px; margin-top:8px; color:#e5e5e5}
        .related-year {font-size:12px; color:#808080}
 
        .episodes-page {display:none; min-height:100vh; background:#0B0B0B; position:relative}
@@ -75,272 +75,475 @@
        .episodes-header {margin-bottom:25px}
        .episodes-title {font-size:2.5rem; font-weight:900; margin-bottom:5px}
        .episodes-subtitle {font-size:14px; color:#999; margin-bottom:20px}
-       .season-dropdown {background:#1E1E1E; border:1px solid #333; color:#fff; padding:10px 35px 10px 15px; border-radius:25px; font-size:14px; font-weight:500; cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0
+       .season-dropdown {background:#1E1E1E; border:1px solid #333; color:#fff; padding:10px 35px 10px 15px; border-radius:25px; font-size:14px; font-weight:500; cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='white' stroke-width='2'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center}
+       .episodes-list {display:flex; flex-direction:column; gap:15px; margin-top:30px}
+       .episode-card {display:flex; gap:15px; background:rgba(30,30,30,0.6); backdrop-filter:blur(10px); padding:15px; border-radius:8px; cursor:pointer; transition:0.2s}
+       .episode-card:hover {background:rgba(40,40,40,0.8)}
+       .episode-thumb {width:160px; height:90px; object-fit:cover; border-radius:6px; flex-shrink:0; background:#1a1a1a; position:relative}
+       .episode-num {position:absolute; bottom:6px; left:6px; background:rgba(0,0,0,0.8); padding:2px 6px; border-radius:3px; font-size:11px; font-weight:700}
+       .episode-info {flex:1}
+       .episode-name {font-size:16px; font-weight:700; margin-bottom:8px; color:#fff}
+       .episode-desc {font-size:13px; color:#b3b3b3; line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+       .episode-duration {font-size:12px; color:#808080; margin-top:8px}
+       .ep-download-btn {background:#E50914; color:#fff; padding:8px 16px; border-radius:4px; border:none; cursor:pointer; font-size:13px; font-weight:700; margin-top:8px}
+       .ep-download-btn:hover {background:#f40612}
 
-                                   {name:'Harold Perrineau', character:'Boyd Stevens', img:'https://image.tmdb.org/t/p/w185/4avO6V7sQJZ8yL5iVEpU2oQ2K1d.jpg'},
-                        {name:'Catalina Sandino Moreno', character:'Tabitha Matthews', img:'https://image.tmdb.org/t/p/w185/k8yJbY7z7L2H9J5Qj8Z4Jk1vG6f.jpg'},
-                        {name:'Eion Bailey', character:'Jim Matthews', img:'https://image.tmdb.org/t/p/w185/zvNv8tYjv8wH5Q6j9Y5K8j6N3L0.jpg'},
-                        {name:'Hannah Cheramy', character:'Julie Matthews', img:'https://image.tmdb.org/t/p/w185/qE4GgQ7v4H9L5Xz8V1J9v3K7N2p.jpg'},
-                        {name:'Simon Webster', character:'Ethan Matthews', img:'https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg'},
-                        {name:'Ricky He', character:'Kenny Liu', img:'https://image.tmdb.org/t/p/w185/p3L5n2R8k7J6h4M9x1W8v2K4N6s.jpg'}
+       .back-btn {position:fixed; top:70px; left:4%; z-index:1001; background:rgba(0,0,0,0.7); border:none; color:#fff; width:40px; height:40px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:20px}
+       .back-btn:hover {background:rgba(0,0,0,0.9)}
+
+        @media (max-width:768px) {
+           .shows-grid {grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:10px}
+           .details-title {font-size:2rem}
+           .details-hero {height:60vh}
+           .episode-card {flex-direction:column}
+           .episode-thumb {width:100%; height:180px}
+           .cast-avatar {width:80px; height:80px}
+           .filter-bar {padding:15px 20px}
+           .filter-select, .search-input {font-size:13px; padding:8px 30px 8px 12px}
+           .search-input {width:100%}
+        }
+    </style>
+</head>
+<body>
+    <header class="netflix-header">
+        <div class="netflix-logo" onclick="showHome()">CINEMAX</div>
+        <div class="header-icons">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+        </div>
+    </header>
+
+    <div class="filter-bar" id="filterBar">
+        <select class="filter-select" id="networkFilter">
+            <option>Network</option>
+            <option>Netflix</option>
+            <option>Prime Video</option>
+            <option>HBO</option>
+        </select>
+        <select class="filter-select" id="typeFilter">
+            <option>Type</option>
+            <option>Series</option>
+            <option>Movie</option>
+        </select>
+        <select class="filter-select" id="genreFilter">
+            <option>All Genres</option>
+            <option selected>Drama</option>
+            <option>Action</option>
+            <option>Comedy</option>
+            <option>Horror</option>
+            <option>Sci-Fi</option>
+        </select>
+        <select class="filter-select" id="yearFilter">
+            <option>All Years</option>
+            <option>2026</option>
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+        </select>
+        <select class="filter-select" id="sortFilter">
+            <option>by Popularity</option>
+            <option>by Rating</option>
+            <option>by Year</option>
+        </select>
+        <input type="text" class="search-input" id="usernameFilter" placeholder="Username filter..." />
+    </div>
+
+    <div class="main-content" id="homePage">
+        <div class="shows-grid" id="showsGrid"></div>
+    </div>
+
+    <div class="details-page" id="detailsPage">
+        <button class="back-btn" onclick="showHome()">←</button>
+        <div class="details-hero">
+            <img class="details-hero-img" id="detailsHeroImg" src="">
+            <div class="details-hero-gradient"></div>
+            <div class="details-hero-content">
+                <h1 class="details-title" id="detailsTitle"></h1>
+                <div class="details-meta" id="detailsMeta"></div>
+                <div class="details-buttons">
+                    <button class="btn-primary" onclick="showEpisodes()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        PLAY
+                    </button>
+                    <button class="btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 22v-20l18 10-18 10z"/></svg>
+                        Trailer
+                    </button>
+                </div>
+                <p class="details-desc" id="detailsDesc"></p>
+                <div class="details-info"><strong>WRITTEN BY</strong> <span id="detailsWriter"></span></div>
+                <div class="details-info"><strong>CREATED BY</strong> <span id="detailsCreator"></span></div>
+            </div>
+        </div>
+        <div class="details-section">
+            <h2 class="section-heading">CAST</h2>
+            <div class="cast-scroll" id="castScroll"></div>
+        </div>
+        <div class="details-section">
+            <h2 class="section-heading" id="moreShowsTitle">MORE SHOWS</h2>
+            <div class="related-scroll" id="moreShows"></div>
+        </div>
+        <div class="details-section">
+            <h2 class="section-heading">YOU MAY ALSO LIKE</h2>
+            <div class="related-scroll" id="relatedShows"></div>
+        </div>
+    </div>
+
+    <div class="episodes-page" id="episodesPage">
+        <button class="back-btn" onclick="showDetails()">←</button>
+        <div class="episodes-bg" id="episodesBg"></div>
+        <div class="episodes-content">
+            <div class="episodes-header">
+                <h1 class="episodes-title" id="episodesTitle"></h1>
+                <p class="episodes-subtitle" id="episodesSubtitle"></p>
+                <select class="season-dropdown" id="seasonDropdown" onchange="changeSeason(this.value)"></select>
+            </div>
+            <div class="episodes-list" id="episodesList"></div>
+        </div>
+    </div>
+
+    <script>
+        const allShows = [
+            {id:'wonderfools', title:'The WONDERfools', year:2026, poster:'https://via.placeholder.com/400x600/1E90FF/FFFFFF?text=WONDERFOOLS', genre:'Action, Comedy, Sci-Fi, Drama', network:'Netflix', type:'Series', rating:9.2, username:'kamatj8'},
+            {id:'wednesday', title:'Wednesday', year:2022, poster:'wednesday-s123.jpg', genre:'Mystery, Comedy, Drama', network:'Netflix', type:'Series', rating:8.1, username:'hansaka457'},
+            {id:'strangerthings', title:'Stranger Things', year:2016, poster:'https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg', genre:'Sci-Fi, Horror, Drama', network:'Netflix', type:'Series', rating:8.7, username:'netflix_user'},
+            {id:'from', title:'FROM', year:2022, poster:'from-s222.jpg', genre:'Mystery, Horror, Drama', network:'Prime Video', type:'Series', rating:7.8, username:'prime_user'},
+            {id:'berlin', title:'Berlin', year:2023, poster:'https://via.placeholder.com/400x600/FF6B00/FFFFFF?text=BERLIN', genre:'Crime, Drama', network:'Netflix', type:'Series', rating:7.5, username:'kamatj8'},
+            {id:'lucifer', title:'Lucifer', year:2016, poster:'https://via.placeholder.com/400x600/8B0000/FFFFFF?text=LUCIFER', genre:'Crime, Fantasy, Drama', network:'Netflix', type:'Series', rating:8.1, username:'kamatj8'},
+            {id:'punisher', title:'Marvel\'s The Punisher', year:2017, poster:'https://via.placeholder.com/400x600/000000/FFFFFF?text=PUNISHER', genre:'Action, Crime, Drama', network:'Netflix', type:'Series', rating:8.5, username:'marvel_fan'},
+            {id:'squidgame', title:'Squid Game', year:2021, poster:'https://via.placeholder.com/400x600/FF1493/FFFFFF?text=SQUID+GAME', genre:'Thriller, Drama', network:'Netflix', type:'Series', rating:8.0, username:'kamatj8'},
+            {id:'you', title:'You', year:2018, poster:'https://via.placeholder.com/400x600/FF0000/FFFFFF?text=YOU', genre:'Crime, Drama, Thriller', network:'Netflix', type:'Series', rating:7.7, username:'netflix_user'},
+            {id:'bloodhounds', title:'Bloodhounds', year:2023, poster:'https://via.placeholder.com/400x600/8B0000/FFFFFF?text=BLOODHOUNDS', genre:'Action, Crime, Drama', network:'Netflix', type:'Series', rating:7.8, username:'kamatj8'},
+            {id:'boroughs', title:'The Boroughs', year:2026, poster:'https://via.placeholder.com/400x600/4169E1/FFFFFF?text=BOROUGHS', genre:'Sci-Fi, Drama, Mystery', network:'Netflix', type:'Series', rating:8.3, username:'kamatj8'}
+        ];
+
+        const showDetails = {
+            wonderfools: {
+                title:'The WONDERfools', year:2026, seasons:1, rating:'TV-14', genres:'Action & Adventure, Comedy, Sci-Fi, Drama', imdb:9.2,
+                desc:'A goofy group of townies stumbles into superpowers and fights rising evil as doomsday panic grows in this wild, turn-of-the-century action comedy.',
+                writer:'Huh Dah-joong', creator:'Kang Eun-kyung, Yoo In-sik, Huh Dah-joong', heroImg:'https://via.placeholder.com/1920x1080/1E90FF/FFFFFF?text=WONDERFOOLS+HERO',
+                cast:[
+                    {name:'Park Eun-bin', character:'Eun Chae-ni', img:'https://image.tmdb.org/t/p/w185/dYh7QhWG7tqJ8F8c1V8s8L8s8L8.jpg'},
+                    {name:'Cha Eun-woo', character:'Lee Un-jeong', img:'https://image.tmdb.org/t/p/w185/bBRq0Kjp8F8c1V8s8L8s8L8s8L8.jpg'},
+                    {name:'Choi Dae-hoon', character:'Son Gyeong-hun', img:'https://image.tmdb.org/t/p/w185/k8yJbY7z7L2H9J5Qj8Z4Jk1vG6f.jpg'},
+                    {name:'Im Su-jeong', character:'Kang Ro-bin', img:'https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg'}
+                ],
+                episodes:{1:[
+                    {num:1, title:'Every Life Comes With a Surprise Twist', desc:'When news of the apocalypse spreads in Haeseong City, a cash-strapped and terminally ill young woman devises a kidnapping plot with two clumsy sidekicks.', duration:'68 min', thumb:'https://via.placeholder.com/320x180/FF6B6B/FFFFFF?text=S1E1', srt:'thewonderfools_1-1_sinhala.srt'},
+                    {num:2, title:'Secrets Are Meant To Be Kept', desc:'Eun Chae-ni and her quirky friends Son Gyeong-hun and Kang Ro-bin are baffled by their sudden abilities. A wary Lee Un-jeong confronts his doubts.', duration:'61 min', thumb:'https://via.placeholder.com/320x180/4ECDC4/FFFFFF?text=S1E2', srt:'thewonderfools_1-2_Sinhala.srt'},
+                    {num:3, title:'Brutes and Bad Luck Do Come in Droves', desc:'The gang witnesses Un-jeong\'s superpower in a crisis. While they\'re thrilled after a daring rescue, Un-jeong senses danger nearby.', duration:'71 min', thumb:'https://via.placeholder.com/320x180/45B7D1/FFFFFF?text=S1E3', srt:'thewonderfools_1-3_Sinhala.srt'},
+                    {num:4, title:'Boon the King Duck vs Wunderkinder', desc:'Dr. Ha Won-do returns after 20 years, chasing secrets of the Child of Eternity. Later, the gang faces an attack — still unsure of their powers.', duration:'60 min', thumb:'https://via.placeholder.com/320x180/F7DC6F/FFFFFF?text=S1E4', srt:'thewonderfools_1-4_Sinhala.srt'},
+                    {num:5, title:'All We Need Is You', desc:'Un-jeong leads a bootcamp for the gang to tap into their abilities. Chae-ni confronts her grandma about the superpower\'s secret.', duration:'72 min', thumb:'https://via.placeholder.com/320x180/BB8FCE/FFFFFF?text=S1E5', srt:'thewonderfools_1-5_Sinhala.srt'},
+                    {num:6, title:'All Roads Lead to Chae-ni', desc:'Chae-ni wakes up to danger — but finds a surprise lifeline in her pocket. Un-jeong plans with Gyeong-hun and Ro-bin to rescue Chae-ni.', duration:'77 min', thumb:'https://via.placeholder.com/320x180/85C1E2/FFFFFF?text=S1E6', srt:'thewonderfools_1-6_Sinhala.srt'},
+                    {num:7, title:'Episode 7', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/85C1E2/FFFFFF?text=S1E7', srt:'thewonderfools_1-7_Sinhala.srt'},
+                    {num:8, title:'Episode 8', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/85C1E2/FFFFFF?text=S1E8', srt:'thewonderfools_1-8_Sinhala.srt'}
+                ]}
+            },
+            wednesday: {
+                title:'Wednesday', year:2022, seasons:2, rating:'TV-14', genres:'Mystery, Comedy, Supernatural, Drama', imdb:8.1,
+                desc:'Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends and foes at Nevermore Academy.',
+                writer:'Alfred Gough, Miles Millar', creator:'Alfred Gough, Miles Millar', heroImg:'wednesday-s123.jpg',
+                cast:[
+                    {name:'Jenna Ortega', character:'Wednesday Addams', img:'https://image.tmdb.org/t/p/w185/q1NRzyZQlYdblkQKE0dT8wH5xL3.jpg'},
+                    {name:'Emma Myers', character:'Enid Sinclair', img:'https://image.tmdb.org/t/p/w185/bIKxc9jOLG6xQqVpXV8r8h2L5Rz.jpg'},
+                    {name:'Hunter Doohan', character:'Tyler Galpin', img:'https://image.tmdb.org/t/p/w185/4KzK2y7x1kL9J8v6R3z2X8N7qF1a.jpg'},
+                    {name:'Joy Sunday', character:'Bianca Barclay', img:'https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg'},
+                    {name:'Catherine Zeta-Jones', character:'Morticia Addams', img:'https://image.tmdb.org/t/p/w185/c5hJ5X3Z9kL9J8v6R3z2X8N7qF1a.jpg'},
+                    {name:'Luis Guzmán', character:'Gomez Addams', img:'https://image.tmdb.org/t/p/w185/p3L5n2R8k7J6h4M9x1W8v2K4N6s.jpg'}
+                ],
+                episodes:{
+                    1:[
+                        {num:1, title:'Wednesday\'s Child Is Full of Woe', desc:'Wednesday Addams begins her new life at Nevermore Academy.', duration:'51m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E1', srt:'data/wednesday_1-1_sinhala.srt'},
+                        {num:2, title:'Woe Is the Loneliest Number', desc:'Wednesday tries to master her psychic ability.', duration:'47m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E2', srt:'data/wednesday_1-2_sinhala.srt'},
+                        {num:3, title:'Friend or Woe', desc:'Wednesday makes a new friend.', duration:'46m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E3', srt:'data/wednesday_1-3_sinhala.srt'},
+                        {num:4, title:'Woe What a Night', desc:'The Rave\'N dance.', duration:'47m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E4', srt:'data/wednesday_1-4_sinhala.srt'},
+                        {num:5, title:'You Reap What You Woe', desc:'Family secrets revealed.', duration:'49m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E5', srt:'data/wednesday_1-5_sinhala.srt'},
+                        {num:6, title:'Quid Pro Woe', desc:'Wednesday gets closer to the truth.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E6', srt:'data/wednesday_1-6_sinhala.srt'},
+                        {num:7, title:'If You Don\'t Woe Me By Now', desc:'The monster\'s identity revealed.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E7', srt:'data/wednesday_1-7_sinhala.srt'},
+                        {num:8, title:'A Murder of Woes', desc:'Season finale.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E8', srt:'data/wednesday_1-8_sinhala.srt'}
                     ],
-                    episodes:{
-                        1:[
-                            {num:1, title:'Long Day\'s Journey Into Night', desc:'The Matthews family arrives in town.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E1', srt:'data/From_1-4_Sinhala.srt'},
-                            {num:2, title:'The Way Things Are Now', desc:'Boyd tries to keep order.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E2', srt:'data/from_1-2_sinhala.srt'},
-                            {num:3, title:'Choosing Day', desc:'The townspeople make decisions.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E3', srt:'data/from_1-3_sinhala.srt'},
-                            {num:4, title:'A Rock and a Farway', desc:'Secrets in the forest.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E4', srt:'data/from_1-4_Sinhala.srt'},
-                            {num:5, title:'Silhouettes', desc:'Night creatures attack.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E5', srt:'data/from_1-5_sinhala.srt'},
-                            {num:6, title:'Book 74', desc:'Jim finds clues.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E6', srt:'data/from_1-6_sinhala.srt'},
-                            {num:7, title:'All Good Things...', desc:'Hope and despair.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E7', srt:'data/from_1-7_sinhala.srt'},
-                            {num:8, title:'Broken Windows, Open Doors', desc:'Escape attempts.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E8', srt:'data/from_1-8_sinhala.srt'},
-                            {num:9, title:'Into The Woods', desc:'Into the unknown.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E9', srt:'data/from_1-9_sinhala.srt'},
-                            {num:10, title:'Oh, the Places We\'ll Go', desc:'Season 1 finale.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E10', srt:'data/from_1-10_sinhala.srt'}
-                        ],
-                        2:[
-                            {num:1, title:'Strangers in a Strange Land', desc:'New arrivals.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E1', srt:'data/from_2-1_sinhala.srt'},
-                            {num:2, title:'The Kindness of Strangers', desc:'Alliances form.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E2', srt:'data/from_2-2_sinhala.srt'},
-                            {num:3, title:'Tether', desc:'Connections revealed.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E3', srt:'data/from_2-3_sinhala.srt'},
-                            {num:4, title:'This Way, Gone', desc:'Someone disappears.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E4', srt:'data/from_2-4_sinhala.srt'},
-                            {num:5, title:'Lullaby', desc:'Dreams and nightmares.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E5', srt:'data/from_2-5_sinhala.srt'},
-                            {num:6, title:'Pas de Deux', desc:'Dance of death.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E6', srt:'data/from_2-6_sinhala.srt'},
-                            {num:7, title:'Belly of the Beast', desc:'Into danger.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E7', srt:'data/from_2-7_sinhala.srt'},
-                            {num:8, title:'Forest for the Trees', desc:'Lost in the woods.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E8', srt:'data/from_2-8_sinhala.srt'},
-                            {num:9, title:'Ball of Magic Fire', desc:'Fire and fury.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E9', srt:'data/from_2-9_sinhala.srt'},
-                            {num:10, title:'Once Upon a Time...', desc:'Season 2 finale.', duration:'60m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E10', srt:'data/from_2-10_sinhala.srt'}
-                        ],
-                        3:[
-                            {num:1, title:'Shatter', desc:'Everything breaks.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E1', srt:'data/from_3-1_sinhala.srt'},
-                            {num:2, title:'When We Go', desc:'Goodbyes.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E2', srt:'data/from_3-2_sinhala.srt'},
-                            {num:3, title:'Mouse Trap', desc:'Trapped.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E3', srt:'data/from_3-3_sinhala.srt'},
-                            {num:4, title:'There and Back Again', desc:'A journey.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E4', srt:'data/from_3-4_sinhala.srt'},
-                            {num:5, title:'The Light of Day', desc:'Hope emerges.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E5', srt:'data/from_3-5_sinhala.srt'},
-                            {num:6, title:'Scar Tissue', desc:'Old wounds.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E6', srt:'data/from_3-6_sinhala.srt'},
-                            {num:7, title:'These Fragile Lives', desc:'Life is fragile.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E7', srt:'data/from_3-7_sinhala.srt'},
-                            {num:8, title:'Thresholds', desc:'Crossing lines.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E8', srt:'data/from_3-8_sinhala.srt'},
-                            {num:9, title:'Revelations: Chapter One', desc:'Truth revealed.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E9', srt:'data/from_3-9_sinhala.srt'},
-                            {num:10, title:'Revelations: Chapter Two', desc:'Season 3 finale.', duration:'60m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E10', srt:'data/from_3-10_sinhala.srt'}
-                        ],
-                        4:[
-                            {num:1, title:'Episode 1', desc:'Season 4 begins.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E1', srt:'data/from_4-1_sinhala-1.srt'},
-                            {num:2, title:'Episode 2', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E2', srt:'data/from_4-2_sinhala-1.srt'},
-                            {num:3, title:'Episode 3', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E3', srt:'data/from_4-3_sinhala.srt'}
-                        ]
-                    }
+                    2:[
+                        {num:1, title:'Here We Woe Again', desc:'Wednesday returns to Nevermore.', duration:'54m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E1', srt:'data/wednesday_2-1_sinhala.srt'},
+                        {num:2, title:'If These Woes Could Talk', desc:'New mysteries emerge.', duration:'52m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E2', srt:'data/wednesday_2-2_sinhala.srt'},
+                        {num:3, title:'Call It Woe', desc:'Wednesday investigates.', duration:'48m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E3', srt:'data/wednesday_2-3_sinhala.srt'},
+                        {num:4, title:'Woe Me Once', desc:'Twists and turns.', duration:'51m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E4', srt:'data/wednesday_2-4_sinhala.srt'},
+                        {num:5, title:'You Woe Me', desc:'Secrets unfold.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E5', srt:'data/wednesday_2-5_sinhala.srt'},
+                        {num:6, title:'Woe Is Me', desc:'Danger approaches.', duration:'53m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E6', srt:'data/wednesday_2-6_sinhala.srt'},
+                        {num:7, title:'Woe-ga What a Night', desc:'Another dance.', duration:'49m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E7', srt:'data/wednesday_2-7_sinhala.srt'},
+                                                {num:8, title:'A Woe New World', desc:'Season 2 finale.', duration:'55m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E8', srt:'data/wednesday_2-8_sinhala.srt'}
+                    ]
                 }
-            };
+            },
+            from: {
+                title:'FROM', year:2022, seasons:4, rating:'TV-MA', genres:'Mystery, Horror, Sci-Fi, Drama', imdb:7.8,
+                desc:'Unravel the mystery of a city in middle U.S.A. that imprisons everyone who enters. As the residents struggle to maintain a sense of normalcy and seek a way out, they must also survive the threats of the surrounding forest.',
+                writer:'John Griffin', creator:'John Griffin', heroImg:'from-s222.jpg',
+                cast:[
+                    {name:'Harold Perrineau', character:'Boyd Stevens', img:'https://image.tmdb.org/t/p/w185/4avO6V7sQJZ8yL5iVEpU2oQ2K1d.jpg'},
+                    {name:'Catalina Sandino Moreno', character:'Tabitha Matthews', img:'https://image.tmdb.org/t/p/w185/k8yJbY7z7L2H9J5Qj8Z4Jk1vG6f.jpg'},
+                    {name:'Eion Bailey', character:'Jim Matthews', img:'https://image.tmdb.org/t/p/w185/zvNv8tYjv8wH5Q6j9Y5K8j6N3L0.jpg'},
+                    {name:'Hannah Cheramy', character:'Julie Matthews', img:'https://image.tmdb.org/t/p/w185/qE4GgQ7v4H9L5Xz8V1J9v3K7N2p.jpg'},
+                    {name:'Simon Webster', character:'Ethan Matthews', img:'https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg'},
+                    {name:'Ricky He', character:'Kenny Liu', img:'https://image.tmdb.org/t/p/w185/p3L5n2R8k7J6h4M9x1W8v2K4N6s.jpg'}
+                ],
+                episodes:{
+                    1:[
+                        {num:1, title:'Long Day\'s Journey Into Night', desc:'The Matthews family arrives in town.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E1', srt:'data/From_1-4_Sinhala.srt'},
+                        {num:2, title:'The Way Things Are Now', desc:'Boyd tries to keep order.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E2', srt:'data/from_1-2_sinhala.srt'},
+                        {num:3, title:'Choosing Day', desc:'The townspeople make decisions.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E3', srt:'data/from_1-3_sinhala.srt'},
+                        {num:4, title:'A Rock and a Farway', desc:'Secrets in the forest.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E4', srt:'data/from_1-4_Sinhala.srt'},
+                        {num:5, title:'Silhouettes', desc:'Night creatures attack.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E5', srt:'data/from_1-5_sinhala.srt'},
+                        {num:6, title:'Book 74', desc:'Jim finds clues.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E6', srt:'data/from_1-6_sinhala.srt'},
+                        {num:7, title:'All Good Things...', desc:'Hope and despair.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E7', srt:'data/from_1-7_sinhala.srt'},
+                        {num:8, title:'Broken Windows, Open Doors', desc:'Escape attempts.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E8', srt:'data/from_1-8_sinhala.srt'},
+                        {num:9, title:'Into The Woods', desc:'Into the unknown.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E9', srt:'data/from_1-9_sinhala.srt'},
+                        {num:10, title:'Oh, the Places We\'ll Go', desc:'Season 1 finale.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E10', srt:'data/from_1-10_sinhala.srt'}
+                    ],
+                    2:[
+                        {num:1, title:'Strangers in a Strange Land', desc:'New arrivals.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E1', srt:'data/from_2-1_sinhala.srt'},
+                        {num:2, title:'The Kindness of Strangers', desc:'Alliances form.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E2', srt:'data/from_2-2_sinhala.srt'},
+                        {num:3, title:'Tether', desc:'Connections revealed.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E3', srt:'data/from_2-3_sinhala.srt'},
+                        {num:4, title:'This Way, Gone', desc:'Someone disappears.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E4', srt:'data/from_2-4_sinhala.srt'},
+                        {num:5, title:'Lullaby', desc:'Dreams and nightmares.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E5', srt:'data/from_2-5_sinhala.srt'},
+                        {num:6, title:'Pas de Deux', desc:'Dance of death.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E6', srt:'data/from_2-6_sinhala.srt'},
+                        {num:7, title:'Belly of the Beast', desc:'Into danger.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E7', srt:'data/from_2-7_sinhala.srt'},
+                        {num:8, title:'Forest for the Trees', desc:'Lost in the woods.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E8', srt:'data/from_2-8_sinhala.srt'},
+                        {num:9, title:'Ball of Magic Fire', desc:'Fire and fury.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E9', srt:'data/from_2-9_sinhala.srt'},
+                        {num:10, title:'Once Upon a Time...', desc:'Season 2 finale.', duration:'60m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E10', srt:'data/from_2-10_sinhala.srt'}
+                    ],
+                    3:[
+                        {num:1, title:'Shatter', desc:'Everything breaks.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E1', srt:'data/from_3-1_sinhala.srt'},
+                        {num:2, title:'When We Go', desc:'Goodbyes.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E2', srt:'data/from_3-2_sinhala.srt'},
+                        {num:3, title:'Mouse Trap', desc:'Trapped.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E3', srt:'data/from_3-3_sinhala.srt'},
+                        {num:4, title:'There and Back Again', desc:'A journey.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E4', srt:'data/from_3-4_sinhala.srt'},
+                        {num:5, title:'The Light of Day', desc:'Hope emerges.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E5', srt:'data/from_3-5_sinhala.srt'},
+                        {num:6, title:'Scar Tissue', desc:'Old wounds.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E6', srt:'data/from_3-6_sinhala.srt'},
+                        {num:7, title:'These Fragile Lives', desc:'Life is fragile.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E7', srt:'data/from_3-7_sinhala.srt'},
+                        {num:8, title:'Thresholds', desc:'Crossing lines.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E8', srt:'data/from_3-8_sinhala.srt'},
+                        {num:9, title:'Revelations: Chapter One', desc:'Truth revealed.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E9', srt:'data/from_3-9_sinhala.srt'},
+                        {num:10, title:'Revelations: Chapter Two', desc:'Season 3 finale.', duration:'60m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E10', srt:'data/from_3-10_sinhala.srt'}
+                    ],
+                    4:[
+                        {num:1, title:'Episode 1', desc:'Season 4 begins.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E1', srt:'data/from_4-1_sinhala-1.srt'},
+                        {num:2, title:'Episode 2', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E2', srt:'data/from_4-2_sinhala-1.srt'},
+                        {num:3, title:'Episode 3', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E3', srt:'data/from_4-3_sinhala.srt'}
+                    ]
+                }
+            }
+        };
 
-            let currentShowId = null;
-            let currentSeasonNum = 1;
+        let currentShowId = null;
+        let currentSeasonNum = 1;
 
-            function applyFilters() {
-                const network = document.getElementById('networkFilter').value;
-                const type = document.getElementById('typeFilter').value;
-                const genre = document.getElementById('genreFilter').value;
-                const year = document.getElementById('yearFilter').value;
-                const sort = document.getElementById('sortFilter').value;
-                const username = document.getElementById('usernameFilter').value.toLowerCase().trim();
+        function applyFilters() {
+            const network = document.getElementById('networkFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const genre = document.getElementById('genreFilter').value;
+            const year = document.getElementById('yearFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+            const username = document.getElementById('usernameFilter').value.toLowerCase().trim();
 
-                let filtered = [...allShows];
+            let filtered = [...allShows];
 
-                if(network!== 'Network') {
-                    filtered = filtered.filter(show => show.network === network);
-                }
-                if(type!== 'Type') {
-                    filtered = filtered.filter(show => show.type === type);
-                }
-                if(genre!== 'All Genres') {
-                    filtered = filtered.filter(show => show.genre.includes(genre));
-                }
-                if(year!== 'All Years') {
-                    filtered = filtered.filter(show => show.year == year);
-                }
-                if(username!== '') {
-                    filtered = filtered.filter(show => show.username && show.username.toLowerCase().includes(username));
-                }
-
-                if(sort === 'by Popularity' || sort === 'by Rating') {
-                    filtered.sort((a,b) => b.rating - a.rating);
-                } else if(sort === 'by Year') {
-                    filtered.sort((a,b) => b.year - a.year);
-                }
-
-                renderGrid(filtered);
+            if(network!== 'Network') {
+                filtered = filtered.filter(show => show.network === network);
+            }
+            if(type!== 'Type') {
+                filtered = filtered.filter(show => show.type === type);
+            }
+            if(genre!== 'All Genres') {
+                filtered = filtered.filter(show => show.genre.includes(genre));
+            }
+            if(year!== 'All Years') {
+                filtered = filtered.filter(show => show.year == year);
+            }
+            if(username!== '') {
+                filtered = filtered.filter(show => show.username && show.username.toLowerCase().includes(username));
             }
 
-            function renderGrid(shows = null) {
-                if(shows === null) {
-                    shows = allShows.filter(show => show.genre.includes('Drama'));
-                }
-                const grid = document.getElementById('showsGrid');
-                grid.innerHTML = '';
-                
-                if(shows.length === 0) {
-                    grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#808080; padding:40px">No shows found for these filters</p>';
-                    return;
-                }
-
-                shows.forEach(show => {
-                    const card = document.createElement('div');
-                    card.className = 'show-card';
-                    card.onclick = () => showDetailsPage(show.id);
-                    card.innerHTML = `
-                        <div style="position:relative">
-                            <img src="${show.poster}" alt="${show.title}" class="show-poster" onerror="this.src='https://via.placeholder.com/400x600/1a1a1a/666?text=No+Image'">
-                            <span class="tv-badge">TV</span>
-                            ${show.username? `<span class="username-badge">@${show.username}</span>` : ''}
-                        </div>
-                        <div class="show-title">${show.title}</div>
-                        <div class="show-year">${show.year}</div>
-                    `;
-                    grid.appendChild(card);
-                });
+            if(sort === 'by Popularity' || sort === 'by Rating') {
+                filtered.sort((a,b) => b.rating - a.rating);
+            } else if(sort === 'by Year') {
+                filtered.sort((a,b) => b.year - a.year);
             }
 
-            function showHome() {
-                document.getElementById('homePage').style.display = 'block';
-                document.getElementById('filterBar').style.display = 'flex';
-                document.getElementById('detailsPage').classList.remove('active');
-                document.getElementById('episodesPage').classList.remove('active');
-                window.scrollTo(0,0);
+            renderGrid(filtered);
+        }
+
+        function renderGrid(shows = null) {
+            if(shows === null) {
+                shows = allShows.filter(show => show.genre.includes('Drama'));
+            }
+            const grid = document.getElementById('showsGrid');
+            grid.innerHTML = '';
+            
+            if(shows.length === 0) {
+                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#808080; padding:40px">No shows found for these filters</p>';
+                return;
             }
 
-            function showDetailsPage(showId) {
-                currentShowId = showId;
-                const data = showDetails[showId] || allShows.find(s=>s.id===showId);
-                if(!data) return;
-                
-                document.getElementById('homePage').style.display = 'none';
-                document.getElementById('filterBar').style.display = 'none';
-                document.getElementById('episodesPage').classList.remove('active');
-                document.getElementById('detailsPage').classList.add('active');
-                
-                document.getElementById('detailsHeroImg').src = data.heroImg || data.poster;
-                document.getElementById('detailsTitle').textContent = data.title;
-                document.getElementById('detailsMeta').innerHTML = `
-                    <span class="meta-badge">${data.rating || 'TV-MA'}</span>
-                    <span>${data.year}</span>
-                    <span>${data.seasons || 1} season${data.seasons>1?'s':''}</span>
-                    <span>${data.genres}</span>
-                    <span class="imdb-badge">IMDb ${data.imdb || '8.0'}</span>
+            shows.forEach(show => {
+                const card = document.createElement('div');
+                card.className = 'show-card';
+                card.onclick = () => showDetailsPage(show.id);
+                card.innerHTML = `
+                    <div style="position:relative">
+                        <img src="${show.poster}" alt="${show.title}" class="show-poster" onerror="this.src='https://via.placeholder.com/400x600/1a1a1a/666?text=No+Image'">
+                        <span class="tv-badge">TV</span>
+                        ${show.username? `<span class="username-badge">@${show.username}</span>` : ''}
+                    </div>
+                    <div class="show-title">${show.title}</div>
+                    <div class="show-year">${show.year}</div>
                 `;
-                document.getElementById('detailsDesc').textContent = data.desc || 'No description available.';
-                document.getElementById('detailsWriter').textContent = data.writer || 'TBA';
-                document.getElementById('detailsCreator').textContent = data.creator || 'TBA';
-                
-                const castScroll = document.getElementById('castScroll');
-                castScroll.innerHTML = '';
-                if(data.cast) {
-                    data.cast.forEach(actor => {
-                        castScroll.innerHTML += `
-                            <div class="cast-member">
-                                <img src="${actor.img}" class="cast-avatar" onerror="this.src='https://via.placeholder.com/200x200/333/999?text=?'">
-                                <div class="cast-name">${actor.name}</div>
-                                <div class="cast-character">${actor.character}</div>
-                            </div>
-                        `;
-                    });
-                }
-                
-                document.getElementById('moreShowsTitle').textContent = `MORE SHOWS WITH ${data.cast?data.cast[0].name.toUpperCase():'ACTOR'}`;
-                renderRelated('moreShows', allShows.slice(0,6));
-                renderRelated('relatedShows', allShows.slice(6,12));
-                window.scrollTo(0,0);
-            }
-
-            function renderRelated(containerId, shows) {
-                const container = document.getElementById(containerId);
-                container.innerHTML = '';
-                shows.forEach(show => {
-                    container.innerHTML += `
-                        <div class="related-card" onclick="showDetailsPage('${show.id}')">
-                            <img src="${show.poster}" class="related-poster" onerror="this.src='https://via.placeholder.com/400x600/1a1a1a/666?text=?'">
-                            <div class="related-title">${show.title}</div>
-                            <div class="related-year">${show.year}</div>
-                        </div>
-                    `;
-                });
-            }
-
-            function showDetails() {
-                document.getElementById('episodesPage').classList.remove('active');
-                document.getElementById('detailsPage').classList.add('active');
-                window.scrollTo(0,0);
-            }
-
-            function showEpisodes() {
-                const data = showDetails[currentShowId];
-                if(!data ||!data.episodes) return;
-                
-                document.getElementById('detailsPage').classList.remove('active');
-                document.getElementById('episodesPage').classList.add('active');
-                
-                document.getElementById('episodesBg').style.backgroundImage = `url('${data.heroImg || data.poster}')`;
-                document.getElementById('episodesTitle').textContent = data.title;
-                document.getElementById('episodesSubtitle').textContent = `${data.year} • ${data.seasons} Seasons`;
-                
-                const seasonDropdown = document.getElementById('seasonDropdown');
-                seasonDropdown.innerHTML = '';
-                Object.keys(data.episodes).forEach(s => {
-                    seasonDropdown.innerHTML += `<option value="${s}">Season ${s}</option>`;
-                });
-                
-                currentSeasonNum = 1;
-                renderEpisodes();
-                window.scrollTo(0,0);
-            }
-
-            function changeSeason(season) {
-                currentSeasonNum = season;
-                renderEpisodes();
-            }
-
-            function renderEpisodes() {
-                const data = showDetails[currentShowId];
-                const episodes = data.episodes[currentSeasonNum];
-                const list = document.getElementById('episodesList');
-                list.innerHTML = '';
-                episodes.forEach(ep => {
-                    list.innerHTML += `
-                        <div class="episode-card">
-                            <div style="position:relative">
-                                <img src="${ep.thumb}" class="episode-thumb" onerror="this.src='https://via.placeholder.com/320x180/1a1a1a/666?text=Episode'">
-                                <span class="episode-num">S${currentSeasonNum}E${ep.num}</span>
-                            </div>
-                            <div class="episode-info">
-                                <div class="episode-name">${ep.title}</div>
-                                <div class="episode-desc">${ep.desc}</div>
-                                <div class="episode-duration">(${ep.duration})</div>
-                                <button class="ep-download-btn" onclick="downloadSRT('${ep.srt}')">⬇️ Download SRT</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            function downloadSRT(srtFile) {
-                if(!srtFile) {
-                    alert('Subtitle not available yet!');
-                    return;
-                }
-                const link = document.createElement('a');
-                link.href = srtFile;
-                link.download = srtFile.split('/').pop();
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('networkFilter').addEventListener('change', applyFilters);
-                document.getElementById('typeFilter').addEventListener('change', applyFilters);
-                document.getElementById('genreFilter').addEventListener('change', applyFilters);
-                document.getElementById('yearFilter').addEventListener('change', applyFilters);
-                document.getElementById('sortFilter').addEventListener('change', applyFilters);
-                document.getElementById('usernameFilter').addEventListener('input', applyFilters);
-                applyFilters();
+                grid.appendChild(card);
             });
-        </script>
-    </body>
-    </html>
+        }
+
+        function showHome() {
+            document.getElementById('homePage').style.display = 'block';
+            document.getElementById('filterBar').style.display = 'flex';
+            document.getElementById('detailsPage').classList.remove('active');
+            document.getElementById('episodesPage').classList.remove('active');
+            window.scrollTo(0,0);
+        }
+
+        function showDetailsPage(showId) {
+            currentShowId = showId;
+            const data = showDetails[showId] || allShows.find(s=>s.id===showId);
+            if(!data) return;
+            
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('filterBar').style.display = 'none';
+            document.getElementById('episodesPage').classList.remove('active');
+            document.getElementById('detailsPage').classList.add('active');
+            
+            document.getElementById('detailsHeroImg').src = data.heroImg || data.poster;
+            document.getElementById('detailsTitle').textContent = data.title;
+            document.getElementById('detailsMeta').innerHTML = `
+                <span class="meta-badge">${data.rating || 'TV-MA'}</span>
+                <span>${data.year}</span>
+                <span>${data.seasons || 1} season${data.seasons>1?'s':''}</span>
+                <span>${data.genres}</span>
+                <span class="imdb-badge">IMDb ${data.imdb || '8.0'}</span>
+            `;
+            document.getElementById('detailsDesc').textContent = data.desc || 'No description available.';
+            document.getElementById('detailsWriter').textContent = data.writer || 'TBA';
+            document.getElementById('detailsCreator').textContent = data.creator || 'TBA';
+            
+            const castScroll = document.getElementById('castScroll');
+            castScroll.innerHTML = '';
+            if(data.cast) {
+                data.cast.forEach(actor => {
+                    castScroll.innerHTML += `
+                        <div class="cast-member">
+                            <img src="${actor.img}" class="cast-avatar" onerror="this.src='https://via.placeholder.com/200x200/333/999?text=?'">
+                            <div class="cast-name">${actor.name}</div>
+                            <div class="cast-character">${actor.character}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('moreShowsTitle').textContent = `MORE SHOWS WITH ${data.cast?data.cast[0].name.toUpperCase():'ACTOR'}`;
+            renderRelated('moreShows', allShows.slice(0,6));
+            renderRelated('relatedShows', allShows.slice(6,12));
+            window.scrollTo(0,0);
+        }
+
+        function renderRelated(containerId, shows) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            shows.forEach(show => {
+                container.innerHTML += `
+                    <div class="related-card" onclick="showDetailsPage('${show.id}')">
+                        <img src="${show.poster}" class="related-poster" onerror="this.src='https://via.placeholder.com/400x600/1a1a1a/666?text=?'">
+                        <div class="related-title">${show.title}</div>
+                        <div class="related-year">${show.year}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function showDetails() {
+            document.getElementById('episodesPage').classList.remove('active');
+            document.getElementById('detailsPage').classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function showEpisodes() {
+            const data = showDetails[currentShowId];
+            if(!data ||!data.episodes) return;
+            
+            document.getElementById('detailsPage').classList.remove('active');
+            document.getElementById('episodesPage').classList.add('active');
+            
+            document.getElementById('episodesBg').style.backgroundImage = `url('${data.heroImg || data.poster}')`;
+            document.getElementById('episodesTitle').textContent = data.title;
+            document.getElementById('episodesSubtitle').textContent = `${data.year} • ${data.seasons} Seasons`;
+            
+            const seasonDropdown = document.getElementById('seasonDropdown');
+            seasonDropdown.innerHTML = '';
+            Object.keys(data.episodes).forEach(s => {
+                seasonDropdown.innerHTML += `<option value="${s}">Season ${s}</option>`;
+            });
+            
+            currentSeasonNum = 1;
+            renderEpisodes();
+            window.scrollTo(0,0);
+        }
+
+        function changeSeason(season) {
+            currentSeasonNum = season;
+            renderEpisodes();
+        }
+
+        function renderEpisodes() {
+            const data = showDetails[currentShowId];
+            const episodes = data.episodes[currentSeasonNum];
+            const list = document.getElementById('episodesList');
+            list.innerHTML = '';
+            episodes.forEach(ep => {
+                list.innerHTML += `
+                    <div class="episode-card">
+                        <div style="position:relative">
+                            <img src="${ep.thumb}" class="episode-thumb" onerror="this.src='https://via.placeholder.com/320x180/1a1a1a/666?text=Episode'">
+                            <span class="episode-num">S${currentSeasonNum}E${ep.num}</span>
+                        </div>
+                        <div class="episode-info">
+                            <div class="episode-name">${ep.title}</div>
+                            <div class="episode-desc">${ep.desc}</div>
+                            <div class="episode-duration">(${ep.duration})</div>
+                            <button class="ep-download-btn" onclick="downloadSRT('${ep.srt}')">⬇️ Download SRT</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function downloadSRT(srtFile) {
+            if(!srtFile) {
+                alert('Subtitle not available yet!');
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = srtFile;
+            link.download = srtFile.split('/').pop();
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('networkFilter').addEventListener('change', applyFilters);
+            document.getElementById('typeFilter').addEventListener('change', applyFilters);
+            document.getElementById('genreFilter').addEventListener('change', applyFilters);
+            document.getElementById('yearFilter').addEventListener('change', applyFilters);
+            document.getElementById('sortFilter').addEventListener('change', applyFilters);
+            document.getElementById('usernameFilter').addEventListener('input', applyFilters);
+            applyFilters();
+        });
+    </script>
+</body>
+</html>
