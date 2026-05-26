@@ -1,549 +1,643 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CINEMAX - Browse</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Bebas+Neue&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEMAX</title>
 
-        * {margin:0; padding:0; box-sizing:border-box}
-        body,html {margin:0!important; padding:0!important; font-family:'Roboto',Arial,sans-serif; background:#0B0B0B; color:#fff; overflow-x:hidden}
-        
-       .netflix-header {position:fixed; top:0; width:100%; height:60px; background:#0B0B; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:0 4%; border-bottom:1px solid #1a1a}
-       .netflix-logo {color:#E50914; font-size:28px; font-weight:900; font-family:'Bebas Neue',sans-serif; letter-spacing:2px; cursor:pointer}
-       .header-icons {display:flex; gap:20px; align-items:center}
-       .header-icons svg {width:22px; height:22px; cursor:pointer; opacity:0.8}
-       .header-icons svg:hover {opacity:1}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-       .filter-bar {margin-top:60px; background:#0B0B; padding:20px 4%; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; border-bottom:1px solid #1a1a1a; position:sticky; top:60px; z-index:900}
-       .filter-select {background:#1E1E1E; border:1px solid #333; color:#fff; padding:10px 35px 10px 15px; border-radius:25px; font-size:14px; font-weight:500; cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='white' stroke-width='2'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center}
-       .filter-select:hover {background-color:#2a2a2a}
-       .search-input {background:#1E; border:1px solid #333; color:#fff; padding:10px 15px; border-radius:25px; font-size:14px; font-weight:500; width:200px}
-       .search-input::placeholder {color:#666}
+<style>
 
-       .main-content {padding:20px 4% 40px 4%}
-       .shows-grid {display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px}
-       .show-card {cursor:pointer; transition:transform 0.2s; position:relative}
-       .show-card:hover {transform:scale(1.05); z-index:10}
-       .show-poster {width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:6px; background:#1a1a1a}
-       .show-title {font-size:13px; font-weight:500; margin-top:8px; color:#e5e5e5; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-       .show-year {font-size:12px; color:#808080; margin-top:2px}
-       .tv-badge {position:absolute; top:8px; right:8px; background:rgba(0,0,0.7); color:#fff; font-size:10px; font-weight:700; padding:3px 6px; border-radius:3px}
-       .username-badge {position:absolute; top:8px; left:8px; background:#E50914; color:#fff; font-size:10px; font-weight:700; padding:3px 6px; border-radius:3px}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-       .details-page {display:none; min-height:100vh; background:#0B0B0B}
-       .details-page.active {display:block}
-       .details-hero {position:relative; height:70vh; overflow:hidden}
-       .details-hero-img {width:100%; height:100%; object-fit:cover; object-position:center 20%}
-       .details-hero-gradient {position:absolute; bottom:0; left:0; right:0; height:60%; background:linear-gradient(to top, #0B0B 0%, transparent 100%)}
-       .details-hero-content {position:absolute; bottom:0; left:0; right:0; padding:0 4% 40px 4%}
-       .details-title {font-size:3rem; font-weight:900; margin-bottom:10px; text-shadow:2px 2px 8px rgba(0,0,0,0.8)}
-       .details-meta {display:flex; gap:15px; align-items:center; margin-bottom:15px; font-size:14px; color:#ccc; flex-wrap:wrap}
-       .meta-badge {background:#333; padding:2px 8px; border-radius:3px; font-weight:600; font-size:12px}
-       .imdb-badge {background:#F5C518; color:#000; padding:2px 6px; border-radius:3px; font-weight:700; font-size:12px}
-       .details-buttons {display:flex; gap:12px; margin-bottom:20px}
-       .btn-primary {background:#fff; color:#000; border:none; padding:12px 28px; font-size:16px; border-radius:6px; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:8px; transition:0.2s}
-       .btn-primary:hover {background:rgba(255,255,255,0.85)}
-       .btn-secondary {background:rgba(109,109,110,0.7); color:#fff; border:none; padding:12px 28px; font-size:16px; border-radius:6px; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:8px}
-       .btn-secondary:hover {background:rgba(109,109,110,0.5)}
-       .details-desc {font-size:15px; line-height:1.6; color:#d2d2d2; max-width:700px; margin-bottom:25px}
-       .details-info {font-size:13px; color:#999; margin-bottom:8px}
-       .details-info strong {color:#fff; font-weight:500}
-        
-       .details-section {padding:40px 4%}
-       .section-heading {font-size:20px; font-weight:700; margin-bottom:20px}
-       .cast-scroll {display:flex; gap:20px; overflow-x:auto; padding-bottom:10px}
-       .cast-scroll::-webkit-scrollbar {height:6px}
-       .cast-scroll::-webkit-scrollbar-thumb {background:#333; border-radius:3px}
-       .cast-member {text-align:center; flex-shrink:0}
-       .cast-avatar {width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:10px; background:#1a1a1a}
-       .cast-name {font-size:14px; font-weight:500; color:#fff}
-       .cast-character {font-size:12px; color:#808080; margin-top:2px}
-        
-       .related-scroll {display:flex; gap:15px; overflow-x:auto; padding-bottom:10px}
-       .related-card {flex-shrink:0; width:160px; cursor:pointer}
-       .related-card:hover {transform:scale(1.05)}
-       .related-poster {width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:6px}
-       .related-title {font-size:13px; margin-top:8px; color:#e5e5e5}
-       .related-year {font-size:12px; color:#808080}
+body{
+background:#050505;
+font-family:'Poppins',sans-serif;
+color:white;
+overflow-x:hidden;
+}
 
-       .episodes-page {display:none; min-height:100vh; background:#0B0B0B; position:relative}
-       .episodes-page.active {display:block}
-       .episodes-bg {position:fixed; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; opacity:0.15; filter:blur(20px); z-index:0}
-       .episodes-content {position:relative; z-index:1; padding:80px 4% 40px 4%}
-       .episodes-header {margin-bottom:25px}
-       .episodes-title {font-size:2.5rem; font-weight:900; margin-bottom:5px}
-       .episodes-subtitle {font-size:14px; color:#999; margin-bottom:20px}
-       .season-dropdown {background:#1E1E1E; border:1px solid #333; color:#fff; padding:10px 35px 10px 15px; border-radius:25px; font-size:14px; font-weight:500; cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='white' stroke-width='2'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center}
-       .episodes-list {display:flex; flex-direction:column; gap:15px; margin-top:30px}
-       .episode-card {display:flex; gap:15px; background:rgba(30,30,30,0.6); backdrop-filter:blur(10px); padding:15px; border-radius:8px; cursor:pointer; transition:0.2s}
-       .episode-card:hover {background:rgba(40,40,0.8)}
-       .episode-thumb {width:160px; height:90px; object-fit:cover; border-radius:6px; flex-shrink:0; background:#1a1a1a; position:relative}
-       .episode-num {position:absolute; bottom:6px; left:6px; background:rgba(0,0,0,0.8); padding:2px 6px; border-radius:3px; font-size:11px; font-weight:700}
-       .episode-info {flex:1}
-       .episode-name {font-size:16px; font-weight:700; margin-bottom:8px; color:#fff}
-       .episode-desc {font-size:13px; color:#b3b3b3; line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
-       .episode-duration {font-size:12px; color:#808080; margin-top:8px}
-       .ep-download-btn {background:#E50914; color:#fff; padding:8px 16px; border-radius:4px; border:none; cursor:pointer; font-size:13px; font-weight:700; margin-top:8px}
-       .ep-download-btn:hover {background:#f40612}
+::-webkit-scrollbar{
+width:8px;
+}
 
-       .back-btn {position:fixed; top:70px; left:4%; z-index:1001; background:rgba(0,0,0,0.7); border:none; color:#fff; width:40px; height:40px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:20px}
-       .back-btn:hover {background:rgba(0,0,0,0.9)}
+::-webkit-scrollbar-thumb{
+background:#333;
+border-radius:20px;
+}
 
-        @media (max-width:768px) {
-           .shows-grid {grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:10px}
-           .details-title {font-size:2rem}
-           .details-hero {height:60vh}
-           .episode-card {flex-direction:column}
-           .episode-thumb {width:100%; height:180px}
-           .cast-avatar {width:80px; height:80px}
-           .filter-bar {padding:15px 20px}
-           .filter-select, .search-input {font-size:13px; padding:8px 30px 8px 12px}
-           .search-input {width:100%}
-        }
-    </style>
+.header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:70px;
+padding:0 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:linear-gradient(to bottom,rgba(0,0,0,.9),transparent);
+z-index:1000;
+}
+
+.logo{
+font-size:32px;
+font-weight:800;
+color:#ff003c;
+letter-spacing:2px;
+}
+
+.header-icons{
+display:flex;
+gap:16px;
+font-size:22px;
+}
+
+.hero{
+height:100vh;
+position:relative;
+display:flex;
+align-items:flex-end;
+padding:120px 20px 100px;
+}
+
+.hero img{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+top:0;
+left:0;
+}
+
+.overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(to top,#050505 10%,transparent 45%,rgba(0,0,0,.5));
+}
+
+.hero-content{
+position:relative;
+z-index:5;
+max-width:600px;
+}
+
+.hero-title{
+font-size:60px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.hero-meta{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-bottom:15px;
+color:#ccc;
+}
+
+.badge{
+background:#ffd000;
+color:black;
+padding:3px 10px;
+border-radius:20px;
+font-size:13px;
+font-weight:700;
+}
+
+.hero-desc{
+line-height:1.7;
+color:#ddd;
+margin-bottom:25px;
+font-size:15px;
+}
+
+.hero-buttons{
+display:flex;
+gap:15px;
+}
+
+.play-btn,
+.trailer-btn{
+padding:14px 28px;
+border:none;
+border-radius:14px;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+}
+
+.play-btn{
+background:white;
+color:black;
+}
+
+.trailer-btn{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(10px);
+color:white;
+}
+
+.filters{
+padding:25px 15px;
+display:flex;
+gap:15px;
+overflow:auto;
+margin-top:-40px;
+position:relative;
+z-index:10;
+}
+
+.filters button{
+min-width:max-content;
+padding:12px 22px;
+border:none;
+border-radius:15px;
+background:#151515;
+color:white;
+font-weight:600;
+}
+
+.section{
+padding:25px 15px;
+}
+
+.section-title{
+font-size:22px;
+font-weight:700;
+margin-bottom:20px;
+}
+
+.movies-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+gap:18px;
+}
+
+.movie-card{
+background:#101010;
+border-radius:18px;
+overflow:hidden;
+transition:.3s;
+position:relative;
+}
+
+.movie-card:hover{
+transform:translateY(-6px);
+}
+
+.movie-card img{
+width:100%;
+height:230px;
+object-fit:cover;
+}
+
+.movie-info{
+padding:10px;
+}
+
+.movie-title{
+font-size:15px;
+font-weight:600;
+margin-bottom:5px;
+}
+
+.movie-year{
+font-size:13px;
+color:#999;
+}
+
+.tv-badge{
+position:absolute;
+top:10px;
+right:10px;
+background:#7b3cff;
+padding:4px 10px;
+border-radius:20px;
+font-size:12px;
+font-weight:700;
+}
+
+.details-page{
+padding-bottom:80px;
+}
+
+.details-banner{
+height:65vh;
+position:relative;
+}
+
+.details-banner img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.details-content{
+padding:20px;
+margin-top:-80px;
+position:relative;
+z-index:5;
+}
+
+.details-title{
+font-size:42px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.cast-row{
+display:flex;
+gap:16px;
+overflow:auto;
+padding-bottom:10px;
+}
+
+.cast-card{
+min-width:120px;
+text-align:center;
+}
+
+.cast-card img{
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:8px;
+}
+
+.cast-card h4{
+font-size:14px;
+}
+
+.cast-card p{
+font-size:12px;
+color:#aaa;
+}
+
+.episodes{
+margin-top:25px;
+display:flex;
+flex-direction:column;
+gap:18px;
+}
+
+.episode-card{
+display:flex;
+gap:14px;
+background:rgba(255,255,255,.05);
+padding:12px;
+border-radius:18px;
+backdrop-filter:blur(10px);
+}
+
+.episode-card img{
+width:130px;
+height:80px;
+object-fit:cover;
+border-radius:12px;
+}
+
+.episode-info h3{
+font-size:16px;
+margin-bottom:5px;
+}
+
+.episode-info p{
+font-size:13px;
+color:#bbb;
+line-height:1.5;
+}
+
+.download-btn{
+margin-top:10px;
+padding:8px 16px;
+border:none;
+border-radius:10px;
+background:#ff003c;
+color:white;
+font-weight:600;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#0c0c0c;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid #222;
+z-index:1000;
+}
+
+.nav-item{
+text-align:center;
+font-size:12px;
+color:#999;
+}
+
+.nav-item.active{
+color:white;
+}
+
+.search-box{
+padding:20px;
+}
+
+.search-box input{
+width:100%;
+height:55px;
+border:none;
+border-radius:15px;
+padding:0 20px;
+background:#111;
+color:white;
+font-size:15px;
+}
+
+@media(max-width:768px){
+
+.hero-title{
+font-size:42px;
+}
+
+.movies-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.details-title{
+font-size:34px;
+}
+
+}
+
+</style>
 </head>
 <body>
-    <header class="netflix-header">
-        <div class="netflix-logo" onclick="showHome()">CINEMAX</div>
-        <div class="header-icons">
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
-        </div>
-    </header>
 
-    <div class="filter-bar" id="filterBar">
-        <select class="filter-select" id="networkFilter">
-            <option value="Network">Network</option>
-            <option value="Netflix">Netflix</option>
-            <option value="Prime Video">Prime Video</option>
-            <option value="HBO">HBO</option>
-        </select>
-        <select class="filter-select" id="typeFilter">
-            <option value="Type">Type</option>
-            <option value="Series">Series</option>
-            <option value="Movie">Movie</option>
-        </select>
-        <select class="filter-select" id="genreFilter">
-            <option value="All Genres">All Genres</option>
-            <option value="Drama" selected>Drama</option>
-            <option value="Action">Action</option>
-            <option value="Comedy">Comedy</option>
-            <option value="Horror">Horror</option>
-            <option value="Sci-Fi">Sci-Fi</option>
-        </select>
-        <select class="filter-select" id="yearFilter">
-            <option value="All Years">All Years</option>
-            <option value="2026">2026</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-        </select>
-        <select class="filter-select" id="sortFilter">
-            <option value="by Popularity">by Popularity</option>
-            <option value="by Rating">by Rating</option>
-            <option value="by Year">by Year</option>
-        </select>
-        <input type="text" class="search-input" id="usernameFilter" placeholder="Username filter..." />
-    </div>
+<header class="header">
+<div class="logo">CINEMAX</div>
 
-    <div class="main-content" id="homePage">
-        <div class="shows-grid" id="showsGrid"></div>
-    </div>
+<div class="header-icons">
+<span>🔍</span>
+<span>🤍</span>
+<span>⚙️</span>
+</div>
+</header>
 
-    <div class="details-page" id="detailsPage">
-        <button class="back-btn" onclick="showHome()">←</button>
-        <div class="details-hero">
-            <img class="details-hero-img" id="detailsHeroImg" src="">
-            <div class="details-hero-gradient"></div>
-            <div class="details-hero-content">
-                <h1 class="details-title" id="detailsTitle"></h1>
-                <div class="details-meta" id="detailsMeta"></div>
-                <div class="details-buttons">
-                    <button class="btn-primary" onclick="showEpisodes()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                        PLAY
-                    </button>
-                    <button class="btn-secondary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 22v-20l18 10-18 10z"/></svg>
-                        Trailer
-                    </button>
-                </div>
-                <p class="details-desc" id="detailsDesc"></p>
-                <div class="details-info"><strong>WRITTEN BY</strong> <span id="detailsWriter"></span></div>
-                <div class="details-info"><strong>CREATED BY</strong> <span id="detailsCreator"></span></div>
-            </div>
-        </div>
-        <div class="details-section">
-            <h2 class="section-heading">CAST</h2>
-            <div class="cast-scroll" id="castScroll"></div>
-        </div>
-        <div class="details-section">
-            <h2 class="section-heading" id="moreShowsTitle">MORE SHOWS</h2>
-            <div class="related-scroll" id="moreShows"></div>
-        </div>
-        <div class="details-section">
-            <h2 class="section-heading">YOU MAY ALSO LIKE</h2>
-            <div class="related-scroll" id="relatedShows"></div>
-        </div>
-    </div>
+<section class="hero">
 
-    <div class="episodes-page" id="episodesPage">
-        <button class="back-btn" onclick="showDetails()">←</button>
-        <div class="episodes-bg" id="episodesBg"></div>
-        <div class="episodes-content">
-            <div class="episodes-header">
-                <h1 class="episodes-title" id="episodesTitle"></h1>
-                <p class="episodes-subtitle" id="episodesSubtitle"></p>
-                <select class="season-dropdown" id="seasonDropdown" onchange="changeSeason(this.value)"></select>
-            </div>
-            <div class="episodes-list" id="episodesList"></div>
-        </div>
-    </div>
+<img src="https://image.tmdb.org/t/p/original/iQslVnGFJWQzzu6nqY5NtQhJTHO.jpg">
 
-    <script>
-        const allShows = [
-            {id:'wonderfools', title:'The WONDERfools', year:2026, poster:'https://via.placeholder.com/400x600/1E90FF/FFFFFF?text=WONDERFOOLS', genre:'Action, Comedy, Sci-Fi, Drama', network:'Netflix', type:'Series', rating:9.2, username:'kamatj8'},
-            {id:'wednesday', title:'Wednesday', year:2022, poster:'wednesday-s123.jpg', genre:'Mystery, Comedy, Drama', network:'Netflix', type:'Series', rating:8.1, username:'hansaka457'},
-            {id:'strangerthings', title:'Stranger Things', year:2016, poster:'https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg', genre:'Sci-Fi, Horror, Drama', network:'Netflix', type:'Series', rating:8.7, username:'netflix_user'},
-            {id:'from', title:'FROM', year:2022, poster:'from-s222.jpg', genre:'Mystery, Horror, Drama', network:'Prime Video', type:'Series', rating:7.8, username:'prime_user'},
-            {id:'berlin', title:'Berlin', year:2023, poster:'https://via.placeholder.com/400x600/FF6B00/FFFFFF?text=BERLIN', genre:'Crime, Drama', network:'Netflix', type:'Series', rating:7.5, username:'kamatj8'},
-            {id:'lucifer', title:'Lucifer', year:2016, poster:'https://via.placeholder.com/400x600/8B0000/FFFFFF?text=LUCIFER', genre:'Crime, Fantasy, Drama', network:'Netflix', type:'Series', rating:8.1, username:'kamatj8'},
-            {id:'punisher', title:'Marvel\'s The Punisher', year:2017, poster:'https://via.placeholder.com/400x600/000000/FFFFFF?text=PUNISHER', genre:'Action, Crime, Drama', network:'Netflix', type:'Series', rating:8.5, username:'marvel_fan'},
-            {id:'squidgame', title:'Squid Game', year:2021, poster:'https://via.placeholder.com/400x600/FF1493/FFFFFF?text=SQUID+GAME', genre:'Thriller, Drama', network:'Netflix', type:'Series', rating:8.0, username:'kamatj8'},
-            {id:'you', title:'You', year:2018, poster:'https://via.placeholder.com/400x600/FF0000/FFFFFF?text=YOU', genre:'Crime, Drama, Thriller', network:'Netflix', type:'Series', rating:7.7, username:'netflix_user'},
-            {id:'bloodhounds', title:'Bloodhounds', year:2023, poster:'https://via.placeholder.com/400x600/8B0000/FFFFFF?text=BLOODHOUNDS', genre:'Action, Crime, Drama', network:'Netflix', type:'Series', rating:7.8, username:'kamatj8'},
-            {id:'boroughs', title:'The Boroughs', year:2026, poster:'https://via.placeholder.com/400x600/4169E1/FFFFFF?text=BOROUGHS', genre:'Sci-Fi, Drama, Mystery', network:'Netflix', type:'Series', rating:8.3, username:'kamatj8'}
-        ];
+<div class="overlay"></div>
 
-        const showDetails = {
-            wonderfools: {
-                title:'The WONDERfools', year:2026, seasons:1, rating:'TV-14', genres:'Action & Adventure, Comedy, Sci-Fi, Drama', imdb:9.2,
-                desc:'A goofy group of townies stumbles into superpowers and fights rising evil as doomsday panic grows in this wild, turn-of-the-century action comedy.',
-                writer:'Huh Dah-joong', creator:'Kang Eun-kyung, Yoo In-sik, Huh Dah-joong', heroImg:'https://via.placeholder.com/1920x1080/1E90FF/FFFFFF?text=WONDERFOOLS+HERO',
-                cast:[
-                    {name:'Park Eun-bin', character:'Eun Chae-ni', img:'https://image.tmdb.org/t/p/w185/dYh7QhWG7tqJ8F8c1V8s8L8s8L8.jpg'},
-                    {name:'Cha Eun-woo', character:'Lee Un-jeong', img:'https://image.tmdb.org/t/p/w185/bBRq0Kjp8F8c1V8s8L8s8L8s8L8.jpg'},
-                    {name:'Choi Dae-hoon', character:'Son Gyeong-hun', img:'https://image.tmdb.org/t/p/w185/k8yJbY7z7L2H9J5Qj8Z4Jk1vG6f.jpg'},
-                    {name:'Im Su-jeong', character:'Kang Ro-bin', img:'https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg'}
-                ],
-                episodes:{1:[
-                    {num:1, title:'Every Life Comes With a Surprise Twist', desc:'When news of the apocalypse spreads in Haeseong City, a cash-strapped and terminally ill young woman devises a kidnapping plot with two clumsy sidekicks.', duration:'68 min', thumb:'https://via.placeholder.com/320x180/FF6B6B/FFFFFF?text=S1E1', srt:'thewonderfools_1-1_sinhala.srt'},
-                    {num:2, title:'Secrets Are Meant To Be Kept', desc:'Eun Chae-ni and her quirky friends Son Gyeong-hun and Kang Ro-bin are baffled by their sudden abilities. A wary Lee Un-jeong confronts his doubts.', duration:'61 min', thumb:'https://via.placeholder.com/320x180/4ECDC4/FFFFFF?text=S1E2', srt:'thewonderfools_1-2_Sinhala.srt'},
-                    {num:3, title:'Brutes and Bad Luck Do Come in Droves', desc:'The gang witnesses Un-jeong\'s superpower in a crisis. While they\'re thrilled after a daring rescue, Un-jeong senses danger nearby.', duration:'71 min', thumb:'https://via.placeholder.com/320x180/45B7D1/FFFFFF?text=S1E3', srt:'thewonderfools_1-3_Sinhala.srt'},
-                    {num:4, title:'Boon the King Duck vs Wunderkinder', desc:'Dr. Ha Won-do returns after 20 years, chasing secrets of the Child of Eternity. Later, the gang faces an attack — still unsure of their powers.', duration:'60 min', thumb:'https://via.placeholder.com/320x180/F7DC6F/FFFFFF?text=S1E4', srt:'thewonderfools_1-4_Sinhala.srt'},
-                    {num:5, title:'All We Need Is You', desc:'Un-jeong leads a bootcamp for the gang to tap into their abilities. Chae-ni confronts her grandma about the superpower\'s secret.', duration:'72 min', thumb:'https://via.placeholder.com/320x180/BB8FCE/FFFFFF?text=S1E5', srt:'thewonderfools_1-5_Sinhala.srt'},
-                    {num:6, title:'All Roads Lead to Chae-ni', desc:'Chae-ni wakes up to danger — but finds a surprise lifeline in her pocket. Un-jeong plans with Gyeong-hun and Ro-bin to rescue Chae-ni.', duration:'77 min', thumb:'https://via.placeholder.com/320x180/85C1E2/FFFFFF?text=S1E6', srt:'thewonderfools_1-6_Sinhala.srt'},
-                    {num:7, title:'Episode 7', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/85C1E2/FFFFFF?text=S1E7', srt:'thewonderfools_1-7_Sinhala.srt'},
-                    {num:8, title:'Episode 8', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/85C1E2/FFFFFF?text=S1E8', srt:'thewonderfools_1-8_Sinhala.srt'}
-                ]}
-            },
-                        wednesday: {
-                title:'Wednesday', year:2022, seasons:2, rating:'TV-14', genres:'Mystery, Comedy, Supernatural, Drama', imdb:8.1,
-                desc:'Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends and foes at Nevermore Academy.',
-                writer:'Alfred Gough, Miles Millar', creator:'Alfred Gough, Miles Millar', heroImg:'wednesday-s123.jpg',
-                cast:[
-                    {name:'Jenna Ortega', character:'Wednesday Addams', img:'https://image.tmdb.org/t/p/w185/q1NRzyZQlYdblkQKE0dT8wH5xL3.jpg'},
-                    {name:'Emma Myers', character:'Enid Sinclair', img:'https://image.tmdb.org/t/p/w185/bIKxc9jOLG6xQqVpXV8r8h2L5Rz.jpg'},
-                    {name:'Hunter Doohan', character:'Tyler Galpin', img:'https://image.tmdb.org/t/p/w185/4KzK2y7x1kL9J8v6R3z2X8N7qF1a.jpg'},
-                    {name:'Joy Sunday', character:'Bianca Barclay', img:'https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg'},
-                    {name:'Catherine Zeta-Jones', character:'Morticia Addams', img:'https://image.tmdb.org/t/p/w185/c5hJ5X3Z9kL9J8v6R3z2X8N7qF1a.jpg'},
-                    {name:'Luis Guzmán', character:'Gomez Addams', img:'https://image.tmdb.org/t/p/w185/p3L5n2R8k7J6h4M9x1W8v2K4N6s.jpg'}
-                ],
-                episodes:{
-                    1:[
-                        {num:1, title:'Wednesday\'s Child Is Full of Woe', desc:'Wednesday Addams begins her new life at Nevermore Academy.', duration:'51m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E1', srt:'data/wednesday_1-1_sinhala.srt'},
-                        {num:2, title:'Woe Is the Loneliest Number', desc:'Wednesday tries to master her psychic ability.', duration:'47m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E2', srt:'data/wednesday_1-2_sinhala.srt'},
-                        {num:3, title:'Friend or Woe', desc:'Wednesday makes a new friend.', duration:'46m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E3', srt:'data/wednesday_1-3_sinhala.srt'},
-                        {num:4, title:'Woe What a Night', desc:'The Rave\'N dance.', duration:'47m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E4', srt:'data/wednesday_1-4_sinhala.srt'},
-                        {num:5, title:'You Reap What You Woe', desc:'Family secrets revealed.', duration:'49m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E5', srt:'data/wednesday_1-5_sinhala.srt'},
-                        {num:6, title:'Quid Pro Woe', desc:'Wednesday gets closer to the truth.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E6', srt:'data/wednesday_1-6_sinhala.srt'},
-                        {num:7, title:'If You Don\'t Woe Me By Now', desc:'The monster\'s identity revealed.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E7', srt:'data/wednesday_1-7_sinhala.srt'},
-                        {num:8, title:'A Murder of Woes', desc:'Season finale.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S1E8', srt:'data/wednesday_1-8_sinhala.srt'}
-                    ],
-                    2:[
-                        {num:1, title:'Here We Woe Again', desc:'Wednesday returns to Nevermore.', duration:'54m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E1', srt:'data/wednesday_2-1_sinhala.srt'},
-                        {num:2, title:'If These Woes Could Talk', desc:'New mysteries emerge.', duration:'52m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E2', srt:'data/wednesday_2-2_sinhala.srt'},
-                        {num:3, title:'Call It Woe', desc:'Wednesday investigates.', duration:'48m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E3', srt:'data/wednesday_2-3_sinhala.srt'},
-                        {num:4, title:'Woe Me Once', desc:'Twists and turns.', duration:'51m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E4', srt:'data/wednesday_2-4_sinhala.srt'},
-                        {num:5, title:'You Woe Me', desc:'Secrets unfold.', duration:'50m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E5', srt:'data/wednesday_2-5_sinhala.srt'},
-                        {num:6, title:'Woe Is Me', desc:'Danger approaches.', duration:'53m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E6', srt:'data/wednesday_2-6_sinhala.srt'},
-                        {num:7, title:'Woe-ga What a Night', desc:'Another dance.', duration:'49m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E7', srt:'data/wednesday_2-7_sinhala.srt'},
-                        {num:8, title:'A Woe New World', desc:'Season 2 finale.', duration:'55m', thumb:'https://via.placeholder.com/320x180/000000/FFFFFF?text=S2E8', srt:'data/wednesday_2-8_sinhala.srt'}
-                    ]
-                }
-             }                          
-              from: {
-                title:'FROM', year:2022, seasons:4, rating:'TV-MA', genres:'Mystery, Horror, Sci-Fi, Drama', imdb:7.8,
-                desc:'Unravel the mystery of a city in middle U.S.A. that imprisons everyone who enters. As the residents struggle to maintain a sense of normalcy and seek a way out, they must also survive the threats of the surrounding forest.',
-                writer:'John Griffin', creator:'John Griffin', heroImg:'from-s222.jpg',
-                cast:[
-                    {name:'Harold Perrineau', character:'Boyd Stevens', img:'https://image.tmdb.org/t/p/w185/4avO6V7sQJZ8yL5iVEpU2oQ2K1d.jpg'},
-                    {name:'Catalina Sandino Moreno', character:'Tabitha Matthews', img:'https://image.tmdb.org/t/p/w185/k8yJbY7z7L2H9J5Qj8Z4Jk1vG6f.jpg'},
-                    {name:'Eion Bailey', character:'Jim Matthews', img:'https://image.tmdb.org/t/p/w185/zvNv8tYjv8wH5Q6j9Y5K8j6N3L0.jpg'},
-                    {name:'Hannah Cheramy', character:'Julie Matthews', img:'https://image.tmdb.org/t/p/w185/qE4GgQ7v4H9L5Xz8V1J9v3K7N2p.jpg'},
-                    {name:'Simon Webster', character:'Ethan Matthews', img:'https://image.tmdb.org/t/p/w185/7mN8h3Y5J4kL9v6R3z2X8N7qF1a.jpg'},
-                    {name:'Ricky He', character:'Kenny Liu', img:'https://image.tmdb.org/t/p/w185/p3L5n2R8k7J6h4M9x1W8v2K4N6s.jpg'}
-                ],
-                episodes:{
-                    1:[
-                        {num:1, title:'Long Day\'s Journey Into Night', desc:'The Matthews family arrives in town.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E1', srt:'data/From_1-4_Sinhala.srt'},
-                        {num:2, title:'The Way Things Are Now', desc:'Boyd tries to keep order.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E2', srt:'data/from_1-2_sinhala.srt'},
-                        {num:3, title:'Choosing Day', desc:'The townspeople make decisions.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E3', srt:'data/from_1-3_sinhala.srt'},
-                        {num:4, title:'A Rock and a Farway', desc:'Secrets in the forest.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E4', srt:'data/from_1-4_Sinhala.srt'},
-                        {num:5, title:'Silhouettes', desc:'Night creatures attack.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E5', srt:'data/from_1-5_sinhala.srt'},
-                        {num:6, title:'Book 74', desc:'Jim finds clues.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E6', srt:'data/from_1-6_sinhala.srt'},
-                        {num:7, title:'All Good Things...', desc:'Hope and despair.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E7', srt:'data/from_1-7_sinhala.srt'},
-                        {num:8, title:'Broken Windows, Open Doors', desc:'Escape attempts.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E8', srt:'data/from_1-8_sinhala.srt'},
-                        {num:9, title:'Into The Woods', desc:'Into the unknown.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E9', srt:'data/from_1-9_sinhala.srt'},
-                        {num:10, title:'Oh, the Places We\'ll Go', desc:'Season 1 finale.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S1E10', srt:'data/from_1-10_sinhala.srt'}
-                    ],
-                    2:[
-                        {num:1, title:'Strangers in a Strange Land', desc:'New arrivals.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E1', srt:'data/from_2-1_sinhala.srt'},
-                        {num:2, title:'The Kindness of Strangers', desc:'Alliances form.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E2', srt:'data/from_2-2_sinhala.srt'},
-                        {num:3, title:'Tether', desc:'Connections revealed.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E3', srt:'data/from_2-3_sinhala.srt'},
-                        {num:4, title:'This Way, Gone', desc:'Someone disappears.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E4', srt:'data/from_2-4_sinhala.srt'},
-                        {num:5, title:'Lullaby', desc:'Dreams and nightmares.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E5', srt:'data/from_2-5_sinhala.srt'},
-                        {num:6, title:'Pas de Deux', desc:'Dance of death.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E6', srt:'data/from_2-6_sinhala.srt'},
-                        {num:7, title:'Belly of the Beast', desc:'Into danger.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E7', srt:'data/from_2-7_sinhala.srt'},
-                        {num:8, title:'Forest for the Trees', desc:'Lost in the woods.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E8', srt:'data/from_2-8_sinhala.srt'},
-                        {num:9, title:'Ball of Magic Fire', desc:'Fire and fury.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E9', srt:'data/from_2-9_sinhala.srt'},
-                        {num:10, title:'Once Upon a Time...', desc:'Season 2 finale.', duration:'60m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S2E10', srt:'data/from_2-10_sinhala.srt'}
-                    ],
-                    3:[
-                        {num:1, title:'Shatter', desc:'Everything breaks.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E1', srt:'data/from_3-1_sinhala.srt'},
-                        {num:2, title:'When We Go', desc:'Goodbyes.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E2', srt:'data/from_3-2_sinhala.srt'},
-                        {num:3, title:'Mouse Trap', desc:'Trapped.', duration:'55m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E3', srt:'data/from_3-3_sinhala.srt'},
-                        {num:4, title:'There and Back Again', desc:'A journey.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E4', srt:'data/from_3-4_sinhala.srt'},
-                        {num:5, title:'The Light of Day', desc:'Hope emerges.', duration:'54m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E5', srt:'data/from_3-5_sinhala.srt'},
-                        {num:6, title:'Scar Tissue', desc:'Old wounds.', duration:'56m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E6', srt:'data/from_3-6_sinhala.srt'},
-                        {num:7, title:'These Fragile Lives', desc:'Life is fragile.', duration:'57m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E7', srt:'data/from_3-7_sinhala.srt'},
-                        {num:8, title:'Thresholds', desc:'Crossing lines.', duration:'59m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E8', srt:'data/from_3-8_sinhala.srt'},
-                        {num:9, title:'Revelations: Chapter One', desc:'Truth revealed.', duration:'58m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E9', srt:'data/from_3-9_sinhala.srt'},
-                        {num:10, title:'Revelations: Chapter Two', desc:'Season 3 finale.', duration:'60m', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S3E10', srt:'data/from_3-10_sinhala.srt'}
-                    ],
-                    4:[
-                        {num:1, title:'Episode 1', desc:'Season 4 begins.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E1', srt:'data/from_4-1_sinhala-1.srt'},
-                        {num:2, title:'Episode 2', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E2', srt:'data/from_4-2_sinhala-1.srt'},
-                        {num:3, title:'Episode 3', desc:'Coming soon.', duration:'TBA', thumb:'https://via.placeholder.com/320x180/228B22/FFFFFF?text=S4E3', srt:'data/from_4-3_sinhala.srt'}
-                    ]
-                }
-            }
-        };
+<div class="hero-content">
 
-        let currentShowId = null;
-        let currentSeasonNum = 1;
+<h1 class="hero-title">The WONDERfools</h1>
 
-        function applyFilters() {
-            const network = document.getElementById('networkFilter').value;
-            const type = document.getElementById('typeFilter').value;
-            const genre = document.getElementById('genreFilter').value;
-            const year = document.getElementById('yearFilter').value;
-            const sort = document.getElementById('sortFilter').value;
-            const username = document.getElementById('usernameFilter').value.toLowerCase().trim();
+<div class="hero-meta">
+<span class="badge">IMDb 9.2</span>
+<span>2026</span>
+<span>1 Season</span>
+<span>Action</span>
+</div>
 
-            let filtered = [...allShows];
+<p class="hero-desc">
+A goofy group of townies stumbles into superpowers and fights rising evil as doomsday panic grows in this wild action comedy.
+</p>
 
-            if(network!== 'Network') {
-                filtered = filtered.filter(show => show.network === network);
-            }
-            if(type!== 'Type') {
-                filtered = filtered.filter(show => show.type === type);
-            }
-            if(genre!== 'All Genres') {
-                filtered = filtered.filter(show => show.genre.includes(genre));
-            }
-            if(year!== 'All Years') {
-                filtered = filtered.filter(show => show.year == year);
-            }
-            if(username!== '') {
-                filtered = filtered.filter(show => show.username && show.username.toLowerCase().includes(username));
-            }
+<div class="hero-buttons">
+<button class="play-btn">▶ PLAY</button>
+<button class="trailer-btn">🎬 Trailer</button>
+</div>
 
-            if(sort === 'by Popularity' || sort === 'by Rating') {
-                filtered.sort((a,b) => b.rating - a.rating);
-            } else if(sort === 'by Year') {
-                filtered.sort((a,b) => b.year - a.year);
-            }
+</div>
+</section>
 
-            renderGrid(filtered);
-        }
+<div class="filters">
+<button>Netflix</button>
+<button>Series</button>
+<button>All Genres</button>
+<button>All Years</button>
+<button>Popularity</button>
+</div>
 
-        function renderGrid(shows = null) {
-            if(shows === null) {
-                shows = allShows.filter(show => show.genre.includes('Drama'));
-            }
-            const grid = document.getElementById('showsGrid');
-            grid.innerHTML = '';
-            
-            if(shows.length === 0) {
-                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#808080; padding:40px">No shows found for these filters</p>';
-                return;
-            }
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search movies or series...">
+</div>
 
-            shows.forEach(show => {
-                const card = document.createElement('div');
-                card.className = 'show-card';
-                card.onclick = () => showDetailsPage(show.id);
-                card.innerHTML = `
-                    <div style="position:relative">
-                        <img src="${show.poster}" alt="${show.title}" class="show-poster" onerror="this.src='https://via.placeholder.com/400x600/1a1a1a/666?text=No+Image'">
-                        <span class="tv-badge">TV</span>
-                        ${show.username? `<span class="username-badge">@${show.username}</span>` : ''}
-                    </div>
-                    <div class="show-title">${show.title}</div>
-                    <div class="show-year">${show.year}</div>
-                `;
-                grid.appendChild(card);
-            });
-        }
+<section class="section">
 
-        function showHome() {
-            document.getElementById('homePage').style.display = 'block';
-            document.getElementById('filterBar').style.display = 'flex';
-            document.getElementById('detailsPage').classList.remove('active');
-            document.getElementById('episodesPage').classList.remove('active');
-            window.scrollTo(0,0);
-        }
+<h2 class="section-title">Trending Now</h2>
 
-        function showDetailsPage(showId) {
-            currentShowId = showId;
-            const data = showDetails[showId] || allShows.find(s=>s.id===showId);
-            if(!data) return;
-            
-            document.getElementById('homePage').style.display = 'none';
-            document.getElementById('filterBar').style.display = 'none';
-            document.getElementById('episodesPage').classList.remove('active');
-            document.getElementById('detailsPage').classList.add('active');
-            
-            document.getElementById('detailsHeroImg').src = data.heroImg || data.poster;
-            document.getElementById('detailsTitle').textContent = data.title;
-            document.getElementById('detailsMeta').innerHTML = `
-                <span class="meta-badge">${data.rating || 'TV-MA'}</span>
-                <span>${data.year}</span>
-                <span>${data.seasons || 1} season${data.seasons>1?'s':''}</span>
-                <span>${data.genres}</span>
-                <span class="imdb-badge">IMDb ${data.imdb || '8.0'}</span>
-            `;
-            document.getElementById('detailsDesc').textContent = data.desc || 'No description available.';
-            document.getElementById('detailsWriter').textContent = data.writer || 'TBA';
-            document.getElementById('detailsCreator').textContent = data.creator || 'TBA';
-            
-            const castScroll = document.getElementById('castScroll');
-            castScroll.innerHTML = '';
-            if(data.cast) {
-                data.cast.forEach(actor => {
-                    castScroll.innerHTML += `
-                        <div class="cast-member">
-                            <img src="${actor.img}" class="cast-avatar" onerror="this.src='https://via.placeholder.com/200x200/333/999?text=?'">
-                            <div class="cast-name">${actor.name}</div>
-                            <div class="cast-character">${actor.character}</div>
-                        </div>
-                    `;
-                });
-            }
-            
-            document.getElementById('moreShowsTitle').textContent = `MORE SHOWS WITH ${data.cast?data.cast[0].name.toUpperCase():'ACTOR'}`;
-            renderRelated('moreShows', allShows.slice(0,6));
-            renderRelated('relatedShows', allShows.slice(6,12));
-            window.scrollTo(0,0);
-        }
+<div class="movies-grid" id="moviesGrid">
 
-        function renderRelated(containerId, shows) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            shows.forEach(show => {
-                container.innerHTML += `
-                    <div class="related-card" onclick="showDetailsPage('${show.id}')">
-                        <img src="${show.poster}" class="related-poster" onerror="this.src='https://via.placeholder.com/400x600/1a1a1a/666?text=?'">
-                        <div class="related-title">${show.title}</div>
-                        <div class="related-year">${show.year}</div>
-                    </div>
-                `;
-            });
-        }
+<div class="movie-card">
+<div class="tv-badge">tv</div>
+<img src="https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg">
+<div class="movie-info">
+<div class="movie-title">Stranger Things</div>
+<div class="movie-year">2016</div>
+</div>
+</div>
 
-        function showDetails() {
-            document.getElementById('episodesPage').classList.remove('active');
-            document.getElementById('detailsPage').classList.add('active');
-            window.scrollTo(0,0);
-        }
+<div class="movie-card">
+<div class="tv-badge">tv</div>
+<img src="https://image.tmdb.org/t/p/w500/9yxep7oJdkj3Pla9TD9gKflRApY.jpg">
+<div class="movie-info">
+<div class="movie-title">Wednesday</div>
+<div class="movie-year">2022</div>
+</div>
+</div>
 
-        function showEpisodes() {
-            const data = showDetails[currentShowId];
-            if(!data ||!data.episodes) return;
-            
-            document.getElementById('detailsPage').classList.remove('active');
-            document.getElementById('episodesPage').classList.add('active');
-            
-            document.getElementById('episodesBg').style.backgroundImage = `url('${data.heroImg || data.poster}')`;
-            document.getElementById('episodesTitle').textContent = data.title;
-            document.getElementById('episodesSubtitle').textContent = `${data.year} • ${data.seasons} Seasons`;
-            
-            const seasonDropdown = document.getElementById('seasonDropdown');
-            seasonDropdown.innerHTML = '';
-            Object.keys(data.episodes).forEach(s => {
-                seasonDropdown.innerHTML += `<option value="${s}">Season ${s}</option>`;
-            });
-            
-            currentSeasonNum = 1;
-            renderEpisodes();
-            window.scrollTo(0,0);
-        }
+<div class="movie-card">
+<div class="tv-badge">tv</div>
+<img src="https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg">
+<div class="movie-info">
+<div class="movie-title">Squid Game</div>
+<div class="movie-year">2021</div>
+</div>
+</div>
 
-        function changeSeason(season) {
-            currentSeasonNum = season;
-            renderEpisodes();
-        }
+<div class="movie-card">
+<div class="tv-badge">tv</div>
+<img src="https://image.tmdb.org/t/p/w500/foGkPxpw9h8zln81j63mix5B7m8.jpg">
+<div class="movie-info">
+<div class="movie-title">Lucifer</div>
+<div class="movie-year">2016</div>
+</div>
+</div>
 
-        function renderEpisodes() {
-            const data = showDetails[currentShowId];
-            const episodes = data.episodes[currentSeasonNum];
-            const list = document.getElementById('episodesList');
-            list.innerHTML = '';
-            episodes.forEach(ep => {
-                list.innerHTML += `
-                    <div class="episode-card">
-                        <div style="position:relative">
-                            <img src="${ep.thumb}" class="episode-thumb" onerror="this.src='https://via.placeholder.com/320x180/1a1a1a/666?text=Episode'">
-                            <span class="episode-num">S${currentSeasonNum}E${ep.num}</span>
-                        </div>
-                        <div class="episode-info">
-                            <div class="episode-name">${ep.title}</div>
-                            <div class="episode-desc">${ep.desc}</div>
-                            <div class="episode-duration">(${ep.duration})</div>
-                            <button class="ep-download-btn" onclick="downloadSRT('${ep.srt}')">⬇️ Download SRT</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+<div class="movie-card">
+<div class="tv-badge">tv</div>
+<img src="https://image.tmdb.org/t/p/w500/qJxzjUjCpTPvDHldNnlbRC4OqEh.jpg">
+<div class="movie-info">
+<div class="movie-title">YOU</div>
+<div class="movie-year">2018</div>
+</div>
+</div>
 
-        function downloadSRT(srtFile) {
-            if(!srtFile) {
-                alert('Subtitle not available yet!');
-                return;
-            }
-            const link = document.createElement('a');
-            link.href = srtFile;
-            link.download = srtFile.split('/').pop();
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+<div class="movie-card">
+<div class="tv-badge">tv</div>
+<img src="https://image.tmdb.org/t/p/w500/7MwsMYT36JxhP05Vj8Pl8l6m0vP.jpg">
+<div class="movie-info">
+<div class="movie-title">Weak Hero</div>
+<div class="movie-year">2022</div>
+</div>
+</div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('networkFilter').addEventListener('change', applyFilters);
-            document.getElementById('typeFilter').addEventListener('change', applyFilters);
-            document.getElementById('genreFilter').addEventListener('change', applyFilters);
-            document.getElementById('yearFilter').addEventListener('change', applyFilters);
-            document.getElementById('sortFilter').addEventListener('change', applyFilters);
-            document.getElementById('usernameFilter').addEventListener('input', applyFilters);
-            applyFilters();
-        });
-    </script>
+</div>
+</section>
+
+<section class="section details-page">
+
+<div class="details-banner">
+<img src="https://image.tmdb.org/t/p/original/iQslVnGFJWQzzu6nqY5NtQhJTHO.jpg">
+</div>
+
+<div class="details-content">
+
+<h1 class="details-title">The WONDERfools</h1>
+
+<div class="hero-meta">
+<span>TV-14</span>
+<span>2026</span>
+<span>1 Season</span>
+<span>Comedy</span>
+</div>
+
+<p class="hero-desc">
+When news of the apocalypse spreads in Haeseong City, a cash-strapped terminally ill young woman devises a kidnapping plot with two clumsy sidekicks.
+</p>
+
+<div class="hero-buttons">
+<button class="play-btn">▶ PLAY</button>
+<button class="trailer-btn">🎬 Trailer</button>
+</div>
+
+<br><br>
+
+<h2 class="section-title">Main Cast</h2>
+
+<div class="cast-row">
+
+<div class="cast-card">
+<img src="https://image.tmdb.org/t/p/w185/xFW5vh4YbM2P8C0z0qvX5pY4i7Y.jpg">
+<h4>Park Eun-bin</h4>
+<p>Eun Chae-ni</p>
+</div>
+
+<div class="cast-card">
+<img src="https://image.tmdb.org/t/p/w185/zJx1nQjM8zXk2q8N8P8R7m4M2d.jpg">
+<h4>Cha Eun-woo</h4>
+<p>Lee Un-jeong</p>
+</div>
+
+<div class="cast-card">
+<img src="https://image.tmdb.org/t/p/w185/2lQzNn7j2g6W0kM8Q8P7L5q5m7.jpg">
+<h4>Choi Dae-hoon</h4>
+<p>Son Gyeong-hun</p>
+</div>
+
+</div>
+
+<h2 class="section-title">Episodes</h2>
+
+<div class="episodes">
+
+<div class="episode-card">
+<img src="https://image.tmdb.org/t/p/w500/iQslVnGFJWQzzu6nqY5NtQhJTHO.jpg">
+<div class="episode-info">
+<h3>S1:E1 Every Life Comes With a Surprise Twist</h3>
+<p>When news of the apocalypse spreads in Haeseong City, a cash-strapped terminally ill young woman devises a kidnapping plot.</p>
+<button class="download-btn">⬇ Subtitle</button>
+</div>
+</div>
+
+<div class="episode-card">
+<img src="https://image.tmdb.org/t/p/w500/iQslVnGFJWQzzu6nqY5NtQhJTHO.jpg">
+<div class="episode-info">
+<h3>S1:E2 Secrets Are Meant To Be Kept</h3>
+<p>Eun Chae-ni and her quirky friends are baffled by their sudden abilities.</p>
+<button class="download-btn">⬇ Subtitle</button>
+</div>
+</div>
+
+<div class="episode-card">
+<img src="https://image.tmdb.org/t/p/w500/iQslVnGFJWQzzu6nqY5NtQhJTHO.jpg">
+<div class="episode-info">
+<h3>S1:E3 Brutes and Bad Luck Do Come in Droves</h3>
+<p>The gang witnesses Un-jeong's superpower in a crisis.</p>
+<button class="download-btn">⬇ Subtitle</button>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<nav class="bottom-nav">
+<div class="nav-item active">
+<div>🏠</div>
+<p>Home</p>
+</div>
+
+<div class="nav-item">
+<div>🔥</div>
+<p>Trending</p>
+</div>
+
+<div class="nav-item">
+<div>📺</div>
+<p>Series</p>
+</div>
+
+<div class="nav-item">
+<div>❤️</div>
+<p>Favorites</p>
+</div>
+
+<div class="nav-item">
+<div>👤</div>
+<p>Profile</p>
+</div>
+</nav>
+
+<script>
+
+const searchInput = document.getElementById('searchInput');
+const cards = document.querySelectorAll('.movie-card');
+
+searchInput.addEventListener('keyup',()=>{
+
+let value = searchInput.value.toLowerCase();
+
+cards.forEach(card=>{
+
+let title = card.querySelector('.movie-title').innerText.toLowerCase();
+
+if(title.includes(value)){
+card.style.display='block';
+}else{
+card.style.display='none';
+}
+
+})
+
+})
+
+</script>
+
 </body>
 </html>
