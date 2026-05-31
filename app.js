@@ -34,11 +34,10 @@ const seriesData = {
         seasons: "2 Seasons",
         rating: "IMDb 8.1",
         writer: "Alfred Gough",
-        creator: "Miles Millar"
+        creator: "Miles Millar",
 
         cast: [
             {
-
                 name: "jenna ortega",
                 photo: "assets/cast/jenna.jpg"
             },
