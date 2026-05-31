@@ -1,15 +1,30 @@
 const seriesData = {
 
     strangerthings: {
-        title: "Stranger Things",
-        banner: "https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
-        description: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
-        year: "2016",
-        seasons: "5 Seasons",
-        rating: "IMDb 8.6",
-        writer: "Matt Duffer",
-        creator: "Ross Duffer, Matt Duffer"
-    },
+    title: "Stranger Things",
+    banner: "https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
+    description: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments.",
+    year: "2016",
+    seasons: "5 Seasons",
+    rating: "IMDb 8.6",
+    writer: "Matt Duffer",
+    creator: "Ross Duffer, Matt Duffer",
+
+    cast: [
+        {
+            name: "Millie Bobby Brown",
+            photo: "assets/cast/millie.jpg"
+        },
+        {
+            name: "Finn Wolfhard",
+            photo: "assets/cast/finn.jpg"
+        },
+        {
+            name: "David Harbour",
+            photo: "assets/cast/david.jpg"
+        }
+    ]
+},
 
     wednesday: {
         title: "Wednesday",
@@ -20,6 +35,27 @@ const seriesData = {
         rating: "IMDb 8.1",
         writer: "Alfred Gough",
         creator: "Miles Millar"
+
+        cast: [
+            {
+
+                name: "jenna ortega",
+                photo: "assets/cast/jenna.jpg"
+            },
+            {
+                name: "Fred Armisen",
+                photo: "assets/cast/fred.jpg"
+            },
+            {
+                name: "Emma Myers",
+                photo: "assets/cast/emma.jpg"
+            },
+            {
+                name: "Hunter Doohan",
+                photo:"assets/cast/hunter.jpg"
+            }
+
+        ]
     },
 
     from: {
