@@ -52,9 +52,9 @@ const seriesData = {
             {
                 name: "Hunter Doohan",
                 photo:"assets/cast/hunter.jpg"
-            }
-        ]
-   },
+           }
+      ]
+ },
 
     from: {
         title: "FROM",
