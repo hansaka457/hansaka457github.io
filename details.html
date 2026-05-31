@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Series Details</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Roboto,sans-serif;
+}
+
+body{
+background:#090909;
+color:white;
+}
+
+.hero{
+position:relative;
+height:450px;
+overflow:hidden;
+}
+
+.hero img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(.55);
+}
+
+.overlay{
+position:absolute;
+left:0;
+bottom:0;
+width:100%;
+padding:20px;
+background:linear-gradient(transparent,#090909);
+}
+
+.title{
+font-size:42px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.meta{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+font-size:14px;
+color:#ddd;
+margin-bottom:20px;
+}
+
+.badge{
+background:#2196f3;
+padding:3px 8px;
+border-radius:20px;
+font-size:12px;
+}
+
+.btns{
+display:flex;
+gap:12px;
+margin-top:20px;
+}
+
+.btn{
+padding:14px 25px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.play{
+background:white;
+color:black;
+}
+
+.trailer{
+background:#2b2b2b;
+color:white;
+}
+
+.content{
+padding:20px;
+}
+
+.description{
+line-height:1.7;
+color:#ddd;
+margin-bottom:25px;
+}
+
+.info-row{
+margin-bottom:12px;
+}
+
+.info-title{
+font-weight:bold;
+color:#fff;
+}
+
+.cast-title{
+font-size:20px;
+font-weight:bold;
+margin:25px 0 15px;
+}
+
+.cast-list{
+display:flex;
+overflow-x:auto;
+gap:15px;
+padding-bottom:10px;
+}
+
+.cast-card{
+min-width:110px;
+text-align:center;
+}
+
+.cast-card img{
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.cast-name{
+margin-top:8px;
+font-size:13px;
+}
+
+.related-title{
+font-size:20px;
+font-weight:bold;
+margin:30px 0 15px;
+}
+
+.related-grid{
+display:flex;
+overflow-x:auto;
+gap:12px;
+}
+
+.related-card{
+min-width:140px;
+}
+
+.related-card img{
+width:100%;
+height:200px;
+object-fit:cover;
+border-radius:12px;
+}
+
+.related-card p{
+margin-top:5px;
+font-size:13px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+
+<img id="banner"
+src="https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg">
+
+<div class="overlay">
+
+<h1 class="title" id="title">
+Stranger Things
+</h1>
+
+<div class="meta">
+<span class="badge">TV-14</span>
+<span>2016</span>
+<span>5 Seasons</span>
+<span>IMDb 8.6</span>
+</div>
+
+<div class="btns">
+
+<button class="btn play">
+▶ Continue
+</button>
+
+<button class="btn trailer">
+🎬 Trailer
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="content">
+
+<p class="description" id="description">
+
+When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.
+
+</p>
+
+<div class="info-row">
+<span class="info-title">Written By:</span>
+Matt Duffer
+</div>
+
+<div class="info-row">
+<span class="info-title">Created By:</span>
+Ross Duffer, Matt Duffer
+</div>
+
+<h2 class="cast-title">CAST</h2>
+
+<div class="cast-list">
+
+<div class="cast-card">
+<img src="https://image.tmdb.org/t/p/w185/wmDFPjn3tADwPXsHm1Sj5lQGv6P.jpg">
+<div class="cast-name">Winona Ryder</div>
+</div>
+
+<div class="cast-card">
+<img src="https://image.tmdb.org/t/p/w185/chPekukMF5SNnW6b22NbYPqAStr.jpg">
+<div class="cast-name">David Harbour</div>
+</div>
+
+<div class="cast-card">
+<img src="https://image.tmdb.org/t/p/w185/xYT8uuY5ujw8j7x4lXJYhL0hA6D.jpg">
+<div class="cast-name">Millie Bobby Brown</div>
+</div>
+
+<div class="cast-card">
+<img src="https://image.tmdb.org/t/p/w185/t3bSQP9N6f4Yt0L5q2sS8Maqk7w.jpg">
+<div class="cast-name">Finn Wolfhard</div>
+</div>
+
+</div>
+
+<h2 class="related-title">
+MORE LIKE THIS
+</h2>
+
+<div class="related-grid">
+
+<div class="related-card">
+<img src="wednesday-s123.jpg">
+<p>Wednesday</p>
+</div>
+
+<div class="related-card">
+<img src="from-s222.jpg">
+<p>FROM</p>
+</div>
+
+<div class="related-card">
+<img src="https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg">
+<p>Squid Game</p>
+</div>
+
+<div class="related-card">
+<img src="https://image.tmdb.org/t/p/w500/ekZobS8isE6mA53RAiGDG93hBxL.jpg">
+<p>Lucifer</p>
+</div>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
