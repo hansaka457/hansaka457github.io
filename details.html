@@ -222,29 +222,33 @@ Ross Duffer, Matt Duffer
 
 <h2 class="cast-title">CAST</h2>
 
-<div class="cast-list">
+<div class="cast-list" id="cast-container"></div>
+  
+.cast-list{
+display:flex;
+overflow-x:auto;
+gap:15px;
+padding-bottom:10px;
+}
 
-<div class="cast-card">
-<img src="https://image.tmdb.org/t/p/w185/wmDFPjn3tADwPXsHm1Sj5lQGv6P.jpg">
-<div class="cast-name">Winona Ryder</div>
-</div>
+  
+.cast-card{
+min-width:110px;
+text-align:center;
+}
 
-<div class="cast-card">
-<img src="https://image.tmdb.org/t/p/w185/chPekukMF5SNnW6b22NbYPqAStr.jpg">
-<div class="cast-name">David Harbour</div>
-</div>
+.cast-card img{
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #333;
+}
 
-<div class="cast-card">
-<img src="https://image.tmdb.org/t/p/w185/xYT8uuY5ujw8j7x4lXJYhL0hA6D.jpg">
-<div class="cast-name">Millie Bobby Brown</div>
-</div>
-
-<div class="cast-card">
-<img src="https://image.tmdb.org/t/p/w185/t3bSQP9N6f4Yt0L5q2sS8Maqk7w.jpg">
-<div class="cast-name">Finn Wolfhard</div>
-</div>
-
-</div>
+.cast-name{
+margin-top:8px;
+font-size:13px;
+} 
 
 <h2 class="related-title">
 MORE LIKE THIS
