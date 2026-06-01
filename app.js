@@ -1,30 +1,19 @@
 const seriesData = {
-
     strangerthings: {
-    title: "Stranger Things",
-    banner: "https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
-    description: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments.",
-    year: "2016",
-    seasons: "5 Seasons",
-    rating: "IMDb 8.6",
-    writer: "Matt Duffer",
-    creator: "Ross Duffer, Matt Duffer",
-
-    cast: [
-        {
-            name: "Millie Bobby Brown",
-            photo: "assets/cast/millie.jpg"
-        },
-        {
-            name: "Finn Wolfhard",
-            photo: "assets/cast/finn.jpg"
-        },
-        {
-            name: "David Harbour",
-            photo: "assets/cast/david.jpg"
-        }
-    ]
-},
+        title: "Stranger Things",
+        banner: "https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
+        description: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments.",
+        year: "2016",
+        seasons: "5 Seasons",
+        rating: "IMDb 8.6",
+        writer: "Matt Duffer",
+        creator: "Ross Duffer, Matt Duffer",
+        cast: [
+            { name: "Millie Bobby Brown", photo: "assets/cast/millie.jpg" },
+            { name: "Finn Wolfhard", photo: "assets/cast/finn.jpg" },
+            { name: "David Harbour", photo: "assets/cast/david.jpg" }
+        ]
+    },
 
     wednesday: {
         title: "Wednesday",
@@ -35,26 +24,13 @@ const seriesData = {
         rating: "IMDb 8.1",
         writer: "Alfred Gough",
         creator: "Miles Millar",
-
         cast: [
-            {
-                name: "jenna ortega",
-                photo: "assets/cast/jenna.jpg"
-            },
-            {
-                name: "Fred Armisen",
-                photo: "assets/cast/fred.jpg"
-            },
-            {
-                name: "Emma Myers",
-                photo: "assets/cast/emma.jpg"
-            },
-            {
-                name: "Hunter Doohan",
-                photo:"assets/cast/hunter.jpg"
-           }
-      ]
- },
+            { name: "Jenna Ortega", photo: "assets/cast/jenna.jpg" },
+            { name: "Emma Myers", photo: "assets/cast/emma.jpg" },
+            { name: "Hunter Doohan", photo: "assets/cast/hunter.jpg" },
+            { name: "Fred Armisen", photo: "assets/cast/fred.jpg" }
+        ]
+    },
 
     from: {
         title: "FROM",
@@ -64,7 +40,12 @@ const seriesData = {
         seasons: "4 Seasons",
         rating: "IMDb 7.8",
         writer: "John Griffin",
-        creator: "John Griffin"
+        creator: "John Griffin",
+        cast: [
+            { name: "Harold Perrineau", photo: "assets/cast/harold.jpg" },
+            { name: "Catalina Sandino", photo: "assets/cast/catalina.jpg" },
+            { name: "Eion Bailey", photo: "assets/cast/eion.jpg" }
+        ]
     },
 
     squidgame: {
@@ -75,7 +56,12 @@ const seriesData = {
         seasons: "2 Seasons",
         rating: "IMDb 8.0",
         writer: "Hwang Dong-hyuk",
-        creator: "Hwang Dong-hyuk"
+        creator: "Hwang Dong-hyuk",
+        cast: [
+            { name: "Lee Jung-jae", photo: "assets/cast/leejungjae.jpg" },
+            { name: "Park Hae-soo", photo: "assets/cast/parkhaesoo.jpg" },
+            { name: "Wi Ha-joon", photo: "assets/cast/wihajoon.jpg" }
+        ]
     },
 
     lucifer: {
@@ -86,7 +72,12 @@ const seriesData = {
         seasons: "6 Seasons",
         rating: "IMDb 8.0",
         writer: "Tom Kapinos",
-        creator: "Tom Kapinos"
+        creator: "Tom Kapinos",
+        cast: [
+            { name: "Tom Ellis", photo: "assets/cast/tomellis.jpg" },
+            { name: "Lauren German", photo: "assets/cast/lauren.jpg" },
+            { name: "Kevin Alejandro", photo: "assets/cast/kevin.jpg" }
+        ]
     },
 
     weakhero: {
@@ -97,13 +88,16 @@ const seriesData = {
         seasons: "2 Seasons",
         rating: "IMDb 8.5",
         writer: "Seo Pae-seu",
-        creator: "Han Jun-hee"
+        creator: "Han Jun-hee",
+        cast: [
+            { name: "Park Ji-hoon", photo: "assets/cast/parkjihoon.jpg" },
+            { name: "Choi Hyun-wook", photo: "assets/cast/choi.jpg" },
+            { name: "Hong Kyung", photo: "assets/cast/hong.jpg" }
+        ]
     }
-
 };
 
 const params = new URLSearchParams(window.location.search);
-
 const id = params.get("id");
 
 if (id && seriesData[id]) {
@@ -111,11 +105,8 @@ if (id && seriesData[id]) {
     const show = seriesData[id];
 
     document.getElementById("title").textContent = show.title;
-
     document.getElementById("banner").src = show.banner;
-
-    document.getElementById("description").textContent =
-        show.description;
+    document.getElementById("description").textContent = show.description;
 
     document.querySelector(".meta").innerHTML = `
         <span class="badge">TV-14</span>
@@ -130,16 +121,26 @@ if (id && seriesData[id]) {
     document.querySelectorAll(".info-row")[1].innerHTML =
         `<span class="info-title">Created By:</span> ${show.creator}`;
 
+    const castContainer = document.getElementById("cast-container");
+
+    if (castContainer && show.cast) {
+        castContainer.innerHTML = "";
+
+        show.cast.forEach(actor => {
+            castContainer.innerHTML += `
+                <div class="cast-card">
+                    <img src="${actor.photo}" alt="${actor.name}">
+                    <h4>${actor.name}</h4>
+                </div>
+            `;
+        });
+    }
 }
 
 document.querySelector(".play")?.addEventListener("click", () => {
-
     alert("Continue Watching");
-
 });
 
 document.querySelector(".trailer")?.addEventListener("click", () => {
-
     alert("Trailer Button");
-
 });
