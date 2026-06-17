@@ -1,642 +1,556 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FIFA World Cup 2026 – Live Scores</title>
-<style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CINEMAX English 🔥 – Sinhala Subtitles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
-    --card: #1a2236;
-    --border: #2a3a5c;
-    --gold: #f59e0b;
-    --green: #10b981;
-    --red: #ef4444;
-    --blue: #3b82f6;
-    --text: #f1f5f9;
-    --muted: #94a3b8;
-    --accent: #1d4ed8;
-  }
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #13131a;
+      --card:      #1c1c28;
+      --border:    #2a2a3a;
+      --accent:    #e50914;
+      --accent2:   #f5a623;
+      --text:      #e8e8f0;
+      --muted:     #7a7a99;
+      --radius:    10px;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    min-height: 100vh;
-  }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-  header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
-    border-bottom: 2px solid var(--gold);
-    padding: 16px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+      backdrop-filter: blur(4px);
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+    .logo span { color: var(--text); }
+    nav a.back-link {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    nav a.back-link:hover { color: var(--text); border-color: var(--accent); }
 
- .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+    /* ── HERO SECTION ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      min-height: 500px;
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .hero-video.active { opacity: 1; }
 
- .logo-icon {
-    width: 42px;
-    height: 42px;
-    background: var(--gold);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-  }
+    /* fallback gradient when video not loaded */
+    .hero-fallback {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1a0a1a 0%, #0a0a2e 50%, #1a0505 100%);
+    }
 
- .logo-text h1 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1;
-  }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.85) 0%,
+        rgba(0,0,0,0.4) 50%,
+        rgba(0,0,0,0.1) 100%
+      ),
+      linear-gradient(to top, rgba(10,10,15,1) 0%, transparent 40%);
+    }
 
- .logo-text span {
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      height: 100%;
+      padding: 0 40px 80px;
+      max-width: 580px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      margin-bottom: 14px;
+      width: fit-content;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      transition: opacity 0.5s;
+    }
+    .hero-desc {
+      font-size: 0.9rem;
+      color: rgba(232,232,240,0.75);
+      line-height: 1.6;
+      margin-bottom: 28px;
+      max-width: 440px;
+      transition: opacity 0.5s;
+    }
+    .hero-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      width: fit-content;
+      transition: background 0.2s, transform 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+    .hero-btn:hover { background: #c0070f; transform: translateY(-1px); }
 
- .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+    /* Series dots */
+    .hero-dots {
+      position: absolute; bottom: 32px; right: 40px; z-index: 3;
+      display: flex; gap: 8px;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
 
- .live-badge {
-    background: var(--red);
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    animation: pulse 2s infinite;
-  }
+    /* ── SUBTITLES SECTION ── */
+    .section {
+      padding: 60px 28px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 36px;
+    }
+    .section-header h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.9rem;
+      letter-spacing: 2px;
+    }
+    .section-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+    }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-  }
+    /* Series Tabs */
+    .series-tabs {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 9px 20px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .tab-btn:hover { border-color: var(--accent); color: var(--text); }
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .tab-btn .dot-ind {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: currentColor; opacity: 0.6;
+    }
 
- .refresh-btn {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s;
-  }
+    /* Season Toggle */
+    .season-bar {
+      display: flex; gap: 8px; margin-bottom: 24px;
+    }
+    .season-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .season-btn.active {
+      background: rgba(229,9,20,0.15);
+      border-color: var(--accent);
+      color: var(--text);
+    }
 
- .refresh-btn:hover { background: #2563eb; }
- .refresh-btn:disabled { background: #334155; cursor: not-allowed; }
+    /* Episode Grid */
+    .ep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 14px;
+    }
+    .ep-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.22s;
+      position: relative;
+      overflow: hidden;
+    }
+    .ep-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.2s;
+    }
+    .ep-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .ep-card:hover::before { transform: scaleY(1); }
+    .ep-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      color: var(--accent);
+      min-width: 44px;
+      line-height: 1;
+    }
+    .ep-info { flex: 1; min-width: 0; }
+    .ep-label {
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ep-sub {
+      font-size: 0.7rem; color: var(--muted);
+      margin-top: 2px;
+    }
+    .dl-icon {
+      font-size: 1.1rem; opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .ep-card:hover .dl-icon { opacity: 1; }
 
- .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px 16px;
-  }
+    /* Panels */
+    .series-panel { display: none; }
+    .series-panel.active { display: block; }
 
- .section-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+    /* ── INFO STRIP ── */
+    .info-strip {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 22px 28px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .info-strip strong { color: var(--text); }
 
- .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
- .matches-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-
- .match-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    transition: border-color 0.2s;
-    cursor: default;
-  }
-
- .match-card:hover { border-color: #4a6a9c; }
-
- .match-card.live {
-    border-color: var(--red);
-    box-shadow: 0 0 0 1px rgba(239,68,68,0.2);
-  }
-
- .match-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-
- .group-label {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
- .match-status {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
-  }
-
- .status-live { background: rgba(239,68,68,0.15); color: var(--red); }
- .status-ft { background: rgba(148,163,184,0.15); color: var(--muted); }
- .status-upcoming { background: rgba(59,130,246,0.15); color: #60a5fa; }
-
- .match-teams {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    justify-content: space-between;
-  }
-
- .team {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    min-width: 80px;
-    flex: 1;
-  }
-
- .team-left { align-items: flex-start; }
- .team-right { align-items: flex-end; }
-
- .team-flag {
-    width: 40px;
-    height: 28px;
-    object-fit: cover;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-  }
-
- .team-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    text-align: center;
-  }
-
- .team-left.team-name { text-align: left; }
- .team-right.team-name { text-align: right; }
-
- .score-block {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-    padding: 0 16px;
-  }
-
- .score {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--text);
-    min-width: 28px;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-  }
-
- .score-sep {
-    font-size: 24px;
-    color: var(--muted);
-    font-weight: 300;
-  }
-
- .match-time {
-    font-size: 13px;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 8px;
-  }
-
- .skeleton {
-    background: linear-gradient(90deg, var(--card) 25%, var(--border) 50%, var(--card) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 8px;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
- .skeleton-card {
-    height: 110px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-  }
-
- .error-box {
-    background: rgba(239,68,68,0.1);
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    color: #fca5a5;
-  }
-
- .error-box p { margin-bottom: 12px; font-size: 14px; }
-
- .last-updated {
-    text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 20px;
-    padding-bottom: 30px;
-  }
-
- .tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
- .tab {
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 7px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-  }
-
- .tab.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-  }
-
- .standing-header {
-    display: grid;
-    grid-template-columns: 32px 1fr 36px 36px 36px 36px 48px;
-    gap: 4px;
-    padding: 6px 12px;
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
- .standing-row {
-    display: grid;
-    grid-template-columns: 32px 1fr 36px 36px 36px 36px 48px;
-    gap: 4px;
-    padding: 10px 12px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 6px;
-    font-size: 13px;
-    align-items: center;
-  }
-
- .standing-pos {
-    font-weight: 700;
-    color: var(--muted);
-    text-align: center;
-  }
-
- .standing-team {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-  }
-
- .standing-flag { width: 24px; height: 16px; object-fit: cover; border-radius: 2px; }
-
- .cell-center { text-align: center; color: var(--muted); }
-
- .pts-cell {
-    text-align: center;
-    font-weight: 800;
-    color: var(--gold);
-    font-size: 14px;
-  }
-
- .standing-row { position: relative; padding-left: 16px; }
-
-  footer-info {
-    display: block;
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 32px;
-    padding-bottom: 40px;
-    opacity: 0.7;
-  }
-</style>
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .hero-content { padding: 0 20px 70px; }
+      .hero-dots { right: 20px; }
+      .section { padding: 40px 16px 60px; }
+      .ep-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-icon">⚽</div>
-    <div class="logo-text">
-      <h1>FIFA World Cup 2026</h1>
-      <span>Live Scores</span>
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">CINE<span>MAX</span> 🔥</a>
+  <a href="index.html" class="back-link">← ගෙදර</a>
+</nav>
+
+<!-- HERO BANNER - Fan Edit Videos -->
+<section class="hero">
+  <div class="hero-fallback"></div>
+
+  <video class="hero-video active" id="vid0"
+    src="wednesday-edit.mp4"
+    muted autoplay playsinline loop preload="auto">
+  </video>
+  <video class="hero-video" id="vid1"
+    src="thewonderfools_sinhala.mp4"
+    muted playsinline loop preload="auto">
+  </video>
+  <video class="hero-video" id="vid2"
+    src="from-edit.mp4"
+    muted playsinline loop preload="auto">
+  </video>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <span class="hero-badge">Sinhala Subtitles</span>
+    <h1 class="hero-title" id="hero-title">Wednesday</h1>
+    <p class="hero-desc" id="hero-desc">
+      Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමඟ සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.
+    </p>
+    <button class="hero-btn" id="hero-jump-btn" onclick="jumpToSeries(0)">
+      ⬇ Subtitles බා ගන්න
+    </button>
+  </div>
+
+  <div class="hero-dots">
+    <div class="dot active" onclick="switchHero(0)"></div>
+    <div class="dot" onclick="switchHero(1)"></div>
+    <div class="dot" onclick="switchHero(2)"></div>
+  </div>
+</section>
+
+<!-- SUBTITLES SECTION -->
+<main class="section">
+  <div class="section-header">
+    <h2>සිංහල උපසිරසි</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- Series Tabs -->
+  <div class="series-tabs">
+    <button class="tab-btn active" onclick="showSeries('wednesday', this)">
+      <span class="dot-ind"></span> Wednesday
+    </button>
+    <button class="tab-btn" onclick="showSeries('wonderfools', this)">
+      <span class="dot-ind"></span> The Wonderfools
+    </button>
+    <button class="tab-btn" onclick="showSeries('from', this)">
+      <span class="dot-ind"></span> From
+    </button>
+  </div>
+
+  <!-- ── WEDNESDAY ── -->
+  <div class="series-panel active" id="panel-wednesday">
+    <div class="season-bar" id="wed-seasons">
+      <button class="season-btn active" onclick="showSeason('wed', 1, this)">Season 1</button>
+      <button class="season-btn" onclick="showSeason('wed', 2, this)">Season 2</button>
+    </div>
+
+    <div class="ep-grid" id="wed-s1">
+      <!-- Season 1: Ep 1-8 -->
+    </div>
+    <div class="ep-grid" id="wed-s2" style="display:none;">
+      <!-- Season 2: Ep 1-8 -->
     </div>
   </div>
-  <div class="header-right">
-    <div class="live-badge">● LIVE</div>
-    <button class="refresh-btn" id="refreshBtn" onclick="loadScores()">↻ Refresh</button>
-  </div>
-</header>
 
-<div class="container">
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('live', this)">🔴 Live & Recent</button>
-    <button class="tab" onclick="switchTab('upcoming', this)">📅 Upcoming</button>
-    <button class="tab" onclick="switchTab('standings', this)">🏆 Standings</button>
-  </div>
-
-  <div id="liveTab">
-    <div class="section-title">Live & Recent Matches</div>
-    <div class="matches-grid" id="matchesContainer">
-      <div class="skeleton-card skeleton"></div>
-      <div class="skeleton-card skeleton"></div>
-      <div class="skeleton-card skeleton"></div>
+  <!-- ── THE WONDERFOOLS ── -->
+  <div class="series-panel" id="panel-wonderfools">
+    <div class="ep-grid" id="wonderfools-eps">
+      <!-- Ep 1-8 -->
     </div>
   </div>
 
-  <div id="upcomingTab" style="display:none">
-    <div class="section-title">Upcoming Matches</div>
-    <div class="matches-grid" id="upcomingContainer">
-      <div class="skeleton-card skeleton"></div>
-      <div class="skeleton-card skeleton"></div>
+  <!-- ── FROM ── -->
+  <div class="series-panel" id="panel-from">
+    <div class="season-bar" id="from-seasons">
+      <button class="season-btn active" onclick="showSeason('from', 1, this)">Season 1</button>
+      <button class="season-btn" onclick="showSeason('from', 2, this)">Season 2</button>
+      <button class="season-btn" onclick="showSeason('from', 3, this)">Season 3</button>
+      <button class="season-btn" onclick="showSeason('from', 4, this)">Season 4</button>
     </div>
+    <div class="ep-grid" id="from-s1"></div>
+    <div class="ep-grid" id="from-s2" style="display:none;"></div>
+    <div class="ep-grid" id="from-s3" style="display:none;"></div>
+    <div class="ep-grid" id="from-s4" style="display:none;"></div>
   </div>
+</main>
 
-  <div id="standingsTab" style="display:none">
-    <div class="section-title">Group Standings</div>
-    <div id="standingsContainer">
-      <div class="skeleton-card skeleton"></div>
-      <div class="skeleton-card skeleton"></div>
-    </div>
-  </div>
-
-  <div class="last-updated" id="lastUpdated">Fetching live data...</div>
+<div class="info-strip">
+  සියළු උපසිරසි <strong>සිංහල භාෂාවෙන්</strong> — <strong>CINEMAX</strong> විසින් ❤️
 </div>
 
-<footer-info id="footerInfo">Powered by Sportmonks API</footer-info>
-
 <script>
-const TOKEN = '4BPxrJPJPNRTg1WHgmtiQvwrqqVoaALGbYbNJt6DbxLgutyvhTxilFcqeShC';
-const WC_ID = 732; // FIFA World Cup 2026
-const BASE_URL = 'https://api.sportmonks.com/v3/football';
-let currentTab = 'live';
-
-function switchTab(tab, btn) {
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('liveTab').style.display = tab === 'live'? 'block' : 'none';
-  document.getElementById('upcomingTab').style.display = tab === 'upcoming'? 'block' : 'none';
-  document.getElementById('standingsTab').style.display = tab === 'standings'? 'block' : 'none';
-  loadScores();
-}
-
-async function fetchAPI(endpoint) {
-  const url = `${BASE_URL}${endpoint}${endpoint.includes('?')? '&' : '?'}api_token=${TOKEN}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('API request failed');
-  return res.json();
-}
-
-async function loadScores() {
-  const btn = document.getElementById('refreshBtn');
-  btn.disabled = true;
-  btn.textContent = '⟳ Loading...';
-
-  try {
-    if (currentTab === 'live') {
-      const liveData = await fetchAPI(`/livescores/inplay?include=participants;scores;league;round&leagues=${WC_ID}`);
-      const fixturesData = await fetchAPI(`/fixtures/between/2026-06-01/2026-07-20?include=participants;scores;league;round&leagues=${WC_ID}&filters=fixtureStates:5`);
-      renderMatches([...liveData.data,...fixturesData.data.slice(0, 10)]);
-    } 
-    else if (currentTab === 'upcoming') {
-      const data = await fetchAPI(`/fixtures/between/2026-06-01/2026-07-20?include=participants;league;round&leagues=${WC_ID}&filters=fixtureStates:1`);
-      renderUpcoming(data.data);
+  // ─────────────────────────────────────────
+  // HERO VIDEO SWITCHER
+  // ─────────────────────────────────────────
+  const heroData = [
+    {
+      vid: 'vid0',
+      title: 'Wednesday',
+      desc: 'Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමඟ සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.',
+      series: 0
+    },
+    {
+      vid: 'vid1',
+      title: 'The Wonderfools',
+      desc: 'ශ්‍රී ලංකාවේ ප්‍රසිද්ධ The Wonderfools ශ්‍රේණිය. සිංහල උපසිරසි සමඟ සියළු කොටස් ලබා ගන්න.',
+      series: 1
+    },
+    {
+      vid: 'vid2',
+      title: 'From',
+      desc: 'රහස්‍යමය නගරයක් තුළ සිරවූ පිරිසක්. Season 1-4 සිංහල උපසිරසි සමඟ.',
+      series: 2
     }
-    else if (currentTab === 'standings') {
-      const data = await fetchAPI(`/standings/seasons/23717?include=participant;details`); // 23717 = WC 2026 season
-      renderStandings(data.data);
-    }
+  ];
 
-    const now = new Date();
-    document.getElementById('lastUpdated').textContent =
-      `Last updated: ${now.toLocaleTimeString()} — Sportmonks API`;
+  let currentHero = 0;
+  let heroInterval;
 
-  } catch (err) {
-    console.error(err);
-    document.getElementById('matchesContainer').innerHTML = `
-      <div class="error-box">
-        <p>⚠️ Could not load data. Check API token or try again.</p>
-        <button class="refresh-btn" onclick="loadScores()">Try Again</button>
-      </div>`;
-    document.getElementById('lastUpdated').textContent = 'Failed to load data.';
+  function switchHero(idx) {
+    const prev = heroData[currentHero];
+    const next = heroData[idx];
+
+    document.getElementById(prev.vid).classList.remove('active');
+    document.getElementById(next.vid).classList.add('active');
+
+    // If vid not playing, play it
+    const vidEl = document.getElementById(next.vid);
+    if (vidEl.paused) vidEl.play().catch(() => {});
+
+    document.getElementById('hero-title').textContent = next.title;
+    document.getElementById('hero-desc').textContent = next.desc;
+    document.getElementById('hero-jump-btn').onclick = () => jumpToSeries(next.series);
+
+    document.querySelectorAll('.hero-dots .dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+
+    currentHero = idx;
   }
 
-  btn.disabled = false;
-  btn.textContent = '↻ Refresh';
-}
-
-function getParticipant(match, location) {
-  return match.participants.find(p => p.meta.location === location);
-}
-
-function getScore(match, participantId) {
-  const score = match.scores?.find(s => s.participant_id === participantId && s.description === 'CURRENT');
-  return score?.score?.goals?? 0;
-}
-
-function getStatus(match) {
-  if (match.state_id === 2 || match.state_id === 3) return { class: 'status-live', text: `🔴 ${match.minute || 'LIVE'}` };
-  if (match.state_id === 5) return { class: 'status-ft', text: 'FT' };
-  return { class: 'status-upcoming', text: 'SCHEDULED' };
-}
-
-function renderMatches(matches) {
-  const container = document.getElementById('matchesContainer');
-  
-  if (!matches.length) {
-    container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:30px">No matches found. Tournament not started yet.</div>';
-    return;
+  function jumpToSeries(idx) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const seriesNames = ['wednesday', 'wonderfools', 'from'];
+    showSeries(seriesNames[idx], tabs[idx]);
+    document.querySelector('.section').scrollIntoView({ behavior: 'smooth' });
   }
 
-  container.innerHTML = matches.map(m => {
-    const home = getParticipant(m, 'home');
-    const away = getParticipant(m, 'away');
-    const homeScore = getScore(m, home.id);
-    const awayScore = getScore(m, away.id);
-    const status = getStatus(m);
-    const isLive = status.class === 'status-live';
-    
-    return `
-    <div class="match-card ${isLive? 'live' : ''}">
-      <div class="match-meta">
-        <span class="group-label">${m.round?.name || m.league?.name || 'World Cup'}</span>
-        <span class="match-status ${status.class}">${status.text}</span>
-      </div>
-      <div class="match-teams">
-        <div class="team team-left">
-          <img class="team-flag" src="${home.image_path}" alt="${home.name}">
-          <div class="team-name">${home.name}</div>
-        </div>
-        <div class="score-block">
-          <div class="score">${homeScore}</div>
-          <div class="score-sep">:</div>
-          <div class="score">${awayScore}</div>
-        </div>
-        <div class="team team-right">
-          <img class="team-flag" src="${away.image_path}" alt="${away.name}">
-          <div class="team-name">${away.name}</div>
-        </div>
-      </div>
-      ${!isLive? `<div class="match-time">${new Date(m.starting_at).toLocaleDateString('en-GB', {day:'2-digit', month:'short'})}</div>` : ''}
-    </div>`;
-  }).join('');
-}
-
-function renderUpcoming(matches) {
-  const container = document.getElementById('upcomingContainer');
-  
-  if (!matches.length) {
-    container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:30px">No upcoming matches found.</div>';
-    return;
+  function startHeroAutoplay() {
+    heroInterval = setInterval(() => {
+      switchHero((currentHero + 1) % 3);
+    }, 7000);
   }
 
-  container.innerHTML = matches.slice(0, 15).map(m => {
-    const home = getParticipant(m, 'home');
-    const away = getParticipant(m, 'away');
-    const date = new Date(m.starting_at);
-    
-    return `
-    <div class="match-card">
-      <div class="match-meta">
-        <span class="group-label">${m.round?.name || 'World Cup'}</span>
-        <span class="match-status status-upcoming">📅 ${date.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})}</span>
-      </div>
-      <div class="match-teams">
-        <div class="team team-left">
-          <img class="team-flag" src="${home.image_path}" alt="${home.name}">
-          <div class="team-name">${home.name}</div>
-        </div>
-        <div class="score-block" style="flex-direction:column;gap:2px">
-          <div style="font-size:13px;color:#94a3b8;font-weight:700">VS</div>
-          <div style="font-size:11px;color:#60a5fa">${date.toLocaleDateString('en-GB', {day:'2-digit', month:'short'})}</div>
-        </div>
-        <div class="team team-right">
-          <img class="team-flag" src="${away.image_path}" alt="${away.name}">
-          <div class="team-name">${away.name}</div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderStandings(standings) {
-  const container = document.getElementById('standingsContainer');
-  
-  if (!standings.length) {
-    container.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:30px">Standings not available yet.</div>';
-    return;
-  }
-
-  // Group by stage
-  const groups = {};
-  standings.forEach(s => {
-    const groupName = s.group_name || 'Group';
-    if (!groups[groupName]) groups[groupName] = [];
-    groups[groupName].push(s);
+  document.querySelectorAll('.dot').forEach(d => {
+    d.addEventListener('click', () => {
+      clearInterval(heroInterval);
+      startHeroAutoplay();
+    });
   });
 
-  container.innerHTML = Object.entries(groups).map(([groupName, teams]) => `
-    <div style="margin-bottom:24px">
-      <div class="section-title">${groupName}</div>
-      <div class="standing-header">
-        <span style="text-align:center">#</span>
-        <span>Team</span>
-        <span style="text-align:center">P</span>
-        <span style="text-align:center">W</span>
-        <span style="text-align:center">D</span>
-        <span style="text-align:center">L</span>
-        <span style="text-align:center">Pts</span>
-      </div>
-      ${teams.sort((a,b) => b.points - a.points).map((t, i) => {
-        const details = {};
-        t.details?.forEach(d => { details[d.type_id] = d.value; });
-        return `
-        <div class="standing-row" style="border-left: 3px solid ${i < 2? '#10b981' : 'transparent'}">
-          <div class="standing-pos">${t.position}</div>
-          <div class="standing-team">
-            <img class="standing-flag" src="${t.participant.image_path}" alt="${t.participant.name}">
-            <span>${t.participant.name}</span>
-          </div>
-          <div class="cell-center">${details[118] || 0}</div>
-          <div class="cell-center">${details[119] || 0}</div>
-          <div class="cell-center">${details[120] || 0}</div>
-          <div class="cell-center">${details[121] || 0}</div>
-          <div class="pts-cell">${t.points}</div>
-        </div>`;
-      }).join('')}
-    </div>
-  `).join('');
-}
+  startHeroAutoplay();
 
-loadScores();
-setInterval(() => { if (currentTab === 'live') loadScores(); }, 120000); // 2min refresh
+  // Mute-safe play
+  document.getElementById('vid0').play().catch(() => {});
+
+  // ─────────────────────────────────────────
+  // SERIES PANEL SWITCHER
+  // ─────────────────────────────────────────
+  function showSeries(name, btn) {
+    document.querySelectorAll('.series-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ─────────────────────────────────────────
+  // SEASON SWITCHER
+  // ─────────────────────────────────────────
+  function showSeason(prefix, num, btn) {
+    const panel = document.getElementById('panel-' + (prefix === 'wed' ? 'wednesday' : 'from'));
+    panel.querySelectorAll('.ep-grid').forEach(g => g.style.display = 'none');
+    document.getElementById(prefix + '-s' + num).style.display = 'grid';
+    panel.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // ─────────────────────────────────────────
+  // BUILD EPISODE CARDS
+  // ─────────────────────────────────────────
+  const BASE = 'https://raw.githubusercontent.com/hansaka457/hansaka457github.io/main/data/';
+
+  function epCard(filename, label, episodeNum) {
+    const url = BASE + filename;
+    return `
+      <a class="ep-card" href="${url}" download="${filename}">
+        <div class="ep-num">${String(episodeNum).padStart(2,'0')}</div>
+        <div class="ep-info">
+          <div class="ep-label">${label}</div>
+          <div class="ep-sub">SRT · සිංහල</div>
+        </div>
+        <div class="dl-icon">⬇</div>
+      </a>`;
+  }
+
+  // ── WEDNESDAY S1 (ep 1-8) ──
+  const wedS1 = document.getElementById('wed-s1');
+  for (let i = 1; i <= 8; i++) {
+    wedS1.innerHTML += epCard(`wednesday_1-${i}_sinhala.srt`, `Episode ${i}`, i);
+  }
+
+  // ── WEDNESDAY S2 (ep 1-8) ──
+  const wedS2 = document.getElementById('wed-s2');
+  for (let i = 1; i <= 8; i++) {
+    wedS2.innerHTML += epCard(`wednesday_2-${i}_sinhala.srt`, `Episode ${i}`, i);
+  }
+
+  // ── THE WONDERFOOLS (ep 1-8) ──
+  const wfEps = document.getElementById('wonderfools-eps');
+  for (let i = 1; i <= 8; i++) {
+    wfEps.innerHTML += epCard(`thewonderfools_1-${i}_sinhala.srt`, `Episode ${i}`, i);
+  }
+
+  // ── FROM seasons ──
+  // S1: ep 1-1 to 1-10 (from screenshots: from_1-1 to from_1-10 + from_1-5 etc)
+  const fromCounts = { 1: 10, 2: 10, 3: 9, 4: 3 };
+
+  for (const [s, count] of Object.entries(fromCounts)) {
+    const grid = document.getElementById('from-s' + s);
+    for (let i = 1; i <= count; i++) {
+      // from uses format: from_S-E_sinhala.srt
+      const fn = s == 4 && i <= 3
+        ? (i <= 2 ? `from_4-${i}_sinhala-1.srt` : `from_4-3_sinhala.srt`)
+        : `from_${s}-${i}_sinhala.srt`;
+      grid.innerHTML += epCard(fn, `Episode ${i}`, i);
+    }
+  }
 </script>
-
 </body>
 </html>
