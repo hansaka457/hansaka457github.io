@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CINEMAX 🔥 – Sinhala Subtitles Stream</title>
+  <title>CINEMAX 🔥 – Sinhala Subtitles Stream (Viki)</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -287,7 +287,7 @@
 <nav>
   <a href="#" class="logo" onclick="window.location.reload()">CINE<span>MAX</span> 🔥</a>
   <div class="search-container">
-    <input type="text" id="search-input" placeholder="චිත්‍රපට හෝ සීරීස් සොයන්න..." onkeypress="if(event.key === 'Enter') searchMedia()">
+    <input type="text" id="search-input" placeholder="Viki චිත්‍රපට හෝ සීරීස් සොයන්න..." onkeypress="if(event.key === 'Enter') searchMedia()">
     <button onclick="searchMedia()">Search</button>
   </div>
 </nav>
@@ -295,10 +295,10 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-badge">Live API Updated</span>
+    <span class="hero-badge">Viki Live API Updated</span>
     <h1 class="hero-title">Sinhala Subtitles</h1>
     <p class="hero-desc">
-      ඔබට අවශ්‍ය ඕනෑම චිත්‍රපටයක් හෝ ටීවී කතාමාලාවක් ඉහත Search බීරුවෙන් සොයාගෙන සිංහල උපසිරසි සමඟ සෘජුවම බාගත කරගන්න.
+      Viki පද්ධතිය හරහා ඔබට අවශ්‍ය ඕනෑම චිත්‍රපටයක් හෝ ටීවී කතාමාලාවක් ඉහත Search බීරුවෙන් සොයාගෙන සිංහල උපසිරසි සමඟ සෘජුවම බාගත කරගන්න.
     </p>
   </div>
 </section>
@@ -330,17 +330,17 @@
 </section>
 
 <div class="info-strip">
-  සියලුම දත්ත සහ උපසිරසි සපයනු ලබන්නේ Live API පද්ධතිය මඟිනි — <strong>CINEMAX</strong>
+  සියලුම දත්ත සහ උපසිරසි සපයනු ලබන්නේ Viki Live API පද්ධතිය මඟිනි — <strong>CINEMAX</strong>
 </div>
 
 <script>
-  const API_SEARCH = "https://api-dark-shan-yt.koyeb.app/movie/cinesubz-search?q=";
-  const API_INFO_MOVIE = "https://api-dark-shan-yt.koyeb.app/movie/cinesubz-info?url=";
-  const API_INFO_TV = "https://api-dark-shan-yt.koyeb.app/tv/cinesubz-info?url=";
-  const API_DOWNLOAD = "https://api-dark-shan-yt.koyeb.app/movie/cinesubz-download?url=";
+  // නව Viki API Endpoints එකතු කරන ලදි
+  const API_SEARCH = "https://api-dark-shan-yt.koyeb.app/movie/viki-search?q=";
+  const API_INFO = "https://api-dark-shan-yt.koyeb.app/movie/viki-info?url=";
+  const API_DOWNLOAD = "https://api-dark-shan-yt.koyeb.app/movie/viki-download?url=";
 
   window.onload = () => {
-    fetchMovies("2026"); // Default සර්ච් එක
+    fetchMovies("love"); // Default සර්ච් එකක් ලෙස මුලින්ම පෙන්වීමට
   };
 
   // 1. සෙවුම් ශ්‍රිතය (Search Function)
@@ -352,7 +352,7 @@
     fetchMovies(query);
   }
 
-  // 2. Movies/TV සීරීස් ගෙන්වීම
+  // 2. Viki Movies/TV සීරීස් ගෙන්වීම
   async function fetchMovies(query) {
     const grid = document.getElementById('main-grid');
     grid.innerHTML = `<div class="loading-text">සොයමින් පවතී, කරුණාකර රැඳී සිටින්න...</div>`;
@@ -374,17 +374,17 @@
         const title = item.title || item.name;
         const img = item.image || item.thumbnail || "https://via.placeholder.com/200x300?text=No+Poster";
         const link = item.link || item.url;
-        const type = item.type || (link.includes('/tv/') ? 'TV' : 'Movie');
+        const type = item.type || "Movie";
 
         const card = document.createElement('div');
         card.className = 'movie-card';
-        card.onclick = () => loadDetails(link, type, title, img);
+        card.onclick = () => loadDetails(link, title, img);
         
         card.innerHTML = `
           <img class="movie-poster" src="${img}" alt="${title}">
           <div class="movie-info">
             <div class="movie-name">${title}</div>
-            <div class="movie-meta">${type.toUpperCase()} • Sinhala Sub</div>
+            <div class="movie-meta">${type.toUpperCase()} • Viki Sinhala Sub</div>
           </div>
         `;
         grid.appendChild(card);
@@ -396,8 +396,8 @@
     }
   }
 
-  // 3. විස්තර සහ බාගත කිරීම් ලින්ක්ස් ලබාගැනීම
-  async function loadDetails(url, type, fallbackTitle, fallbackImg) {
+  // 3. Viki විස්තර සහ බාගත කිරීම් ලින්ක්ස් ලබාගැනීම
+  async function loadDetails(url, fallbackTitle, fallbackImg) {
     const panel = document.getElementById('details-panel');
     const linksGrid = document.getElementById('links-grid');
     
@@ -409,11 +409,9 @@
     document.getElementById('det-plot').textContent = "බාගත කිරීම් සහ විස්තර පූරණය වෙමින් පවතී...";
     linksGrid.innerHTML = `<div class="loading-text" style="font-size:0.9rem; padding:10px;">ලින්ක්ස් සකසමින් පවතී...</div>`;
 
-    const targetApi = (type.toLowerCase() === 'tv' || type.toLowerCase() === 'episode') ? API_INFO_TV : API_INFO_MOVIE;
-
     try {
-      // පළමුව විස්තර (Info) ලබාගැනීම
-      const infoResponse = await fetch(`${targetApi}${encodeURIComponent(url)}`);
+      // Viki Info API එකෙන් විස්තර ලබාගැනීම
+      const infoResponse = await fetch(`${API_INFO}${encodeURIComponent(url)}`);
       const infoData = await infoResponse.json();
       const details = infoData.result ? infoData.result : infoData;
 
@@ -423,14 +421,14 @@
       }
       document.getElementById('det-plot').textContent = details.description || details.plot || "විස්තරයක් ඇතුළත් කර නොමැත.";
 
-      linksGrid.innerHTML = ""; // ලින්ක්ස් Grid එක හිස් කිරීම
+      linksGrid.innerHTML = "";
 
-      // අලුතින් එක් කළ Download API එක හරහා සෘජු ලින්ක්ස් ලබාගැනීම
+      // Viki Download API එකෙන් Links ලබාගැනීම
       const dlResponse = await fetch(`${API_DOWNLOAD}${encodeURIComponent(url)}`);
       const dlData = await dlResponse.json();
       const downloadData = dlData.result ? dlData.result : dlData;
 
-      // ලින්ක්ස් පෙන්වීම (Download Links හෝ Episodes තිබේ නම්)
+      // ලින්ක්ස් පෙන්වීම
       if (downloadData && downloadData.length > 0) {
         downloadData.forEach(linkObj => {
           linksGrid.innerHTML += `
@@ -441,21 +439,10 @@
           `;
         });
       } else if (details.downloadLinks && details.downloadLinks.length > 0) {
-        // Info API එකේ තිබුනොත් ඒවා පෙන්වීම (Fallback)
         details.downloadLinks.forEach(linkObj => {
           linksGrid.innerHTML += `
             <a href="${linkObj.link || linkObj.url}" class="dl-btn" target="_blank">
               <span>${linkObj.quality || linkObj.title || 'Download Link'}</span>
-              <span>⬇</span>
-            </a>
-          `;
-        });
-      } else if (details.episodes && details.episodes.length > 0) {
-        // TV Series වල Episodes පෙන්වීම
-        details.episodes.forEach(ep => {
-          linksGrid.innerHTML += `
-            <a href="${ep.link || ep.url}" class="dl-btn" target="_blank">
-              <span>${ep.title || 'Episode'}</span>
               <span>⬇</span>
             </a>
           `;
