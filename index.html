@@ -1,1 +1,350 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CINEMAX 🔥 – Sinhala Subtitles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --card: #1c1c28;
+      --border: #2a2a3a;
+      --accent: #e50914;
+      --accent2: #f5a623;
+      --text: #e8e8f0;
+      --muted: #7a7a99;
+      --radius: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+      backdrop-filter: blur(4px);
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+    .logo span { color: var(--text); }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 70svh;
+      min-height: 500px;
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .hero-video.active { opacity: 1; }
+    .hero-fallback {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1a0a1a 0%, #0a0a2e 50%, #1a0505 100%);
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%),
+      linear-gradient(to top, rgba(10,10,15,1) 0%, transparent 40%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      height: 100%;
+      padding: 0 40px 80px;
+      max-width: 580px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      margin-bottom: 14px;
+      width: fit-content;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .hero-desc {
+      font-size: 0.9rem;
+      color: rgba(232,232,240,0.75);
+      line-height: 1.6;
+      margin-bottom: 28px;
+      max-width: 440px;
+    }
+    .hero-dots {
+      position: absolute; bottom: 32px; right: 40px; z-index: 3;
+      display: flex; gap: 8px;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+
+    /* ── SERIES GRID SECTION ── */
+    .section {
+      padding: 60px 28px 80px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 36px;
+    }
+    .section-header h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.9rem;
+      letter-spacing: 2px;
+    }
+    .section-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+    }
+
+    /* Series Photo Grid */
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .series-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s;
+      position: relative;
+      cursor: pointer;
+    }
+    .series-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(229,9,20,0.2);
+    }
+    .series-poster {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      display: block;
+      background: var(--surface);
+    }
+    .series-info {
+      padding: 16px 18px;
+    }
+    .series-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .series-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .series-badge {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: rgba(229,9,20,0.9);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ── INFO STRIP ── */
+    .info-strip {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 22px 28px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .info-strip strong { color: var(--text); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .hero-content { padding: 0 20px 70px; }
+      .hero-dots { right: 20px; }
+      .section { padding: 40px 16px 60px; }
+      .series-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">CINE<span>MAX</span> 🔥</a>
+</nav>
+
+<!-- HERO BANNER -->
+<section class="hero">
+  <div class="hero-fallback"></div>
+  <video class="hero-video active" id="vid0" src="wednesday-edit.mp4" muted autoplay playsinline loop preload="auto"></video>
+  <video class="hero-video" id="vid1" src="thewonderfools_sinhala.mp4" muted playsinline loop preload="auto"></video>
+  <video class="hero-video" id="vid2" src="from-edit.mp4" muted playsinline loop preload="auto"></video>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <span class="hero-badge">Sinhala Subtitles</span>
+    <h1 class="hero-title" id="hero-title">Wednesday</h1>
+    <p class="hero-desc" id="hero-desc">
+      Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.
+    </p>
+  </div>
+
+  <div class="hero-dots">
+    <div class="dot active" onclick="switchHero(0)"></div>
+    <div class="dot" onclick="switchHero(1)"></div>
+    <div class="dot" onclick="switchHero(2)"></div>
+  </div>
+</section>
+
+<!-- SERIES PHOTO GRID -->
+<main class="section">
+  <div class="section-header">
+    <h2>Series එකතු</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="series-grid">
+    <!-- Wednesday -->
+    <a class="series-card" href="series.html?s=wednesday">
+      <span class="series-badge">2 Seasons</span>
+      <img class="series-poster" src="https://i.imgur.com/8QZ0Z0x.jpg" alt="Wednesday Poster" />
+      <div class="series-info">
+        <div class="series-name">Wednesday</div>
+        <div class="series-meta">16 Episodes · Horror · Mystery</div>
+      </div>
+    </a>
+
+    <!-- The Wonderfools -->
+    <a class="series-card" href="series.html?s=wonderfools">
+      <span class="series-badge">1 Season</span>
+      <img class="series-poster" src="https://i.imgur.com/placeholder1.jpg" alt="The Wonderfools Poster" />
+      <div class="series-info">
+        <div class="series-name">The Wonderfools</div>
+        <div class="series-meta">8 Episodes · Comedy</div>
+      </div>
+    </a>
+
+    <!-- From -->
+    <a class="series-card" href="series.html?s=from">
+      <span class="series-badge">4 Seasons</span>
+      <img class="series-poster" src="https://i.imgur.com/placeholder2.jpg" alt="From Poster" />
+      <div class="series-info">
+        <div class="series-name">From</div>
+        <div class="series-meta">32 Episodes · Horror · Sci-Fi</div>
+      </div>
+    </a>
+  </div>
+</main>
+
+<div class="info-strip">
+  සියලු උපසිරසි <strong>සිංහල භාෂාවෙන්</strong> — <strong>CINEMAX</strong> විසින් ❤
+  
+  </div>
+
+<script>
+  const heroData = [
+    {
+      vid: 'vid0',
+      title: 'Wednesday',
+      desc: 'Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.'
+    },
+    {
+      vid: 'vid1',
+      title: 'The Wonderfools',
+      desc: 'ශ්‍රී ලංකාවේ ප්‍රසිද්ධ The Wonderfools සීරීස් එක. සිංහල උපසිරසි සමග සියලු කොටස් ලබා ගන්න.'
+    },
+    {
+      vid: 'vid2',
+      title: 'From',
+      desc: 'රහස්‍යමය නගරයක තුල සිරවූ පිරිසක්. Season 1-4 සිංහල උපසිරසි සමග.'
+    }
+  ];
+
+  let currentHero = 0;
+  let heroInterval;
+
+  function switchHero(idx) {
+    const prev = heroData[currentHero];
+    const next = heroData[idx];
+
+    document.getElementById(prev.vid? 'vid' + currentHero : 'vid0').classList.remove('active');
+    document.getElementById('vid' + idx).classList.add('active');
+
+    const vidEl = document.getElementById('vid' + idx);
+    if (vidEl.paused) vidEl.play().catch(() => {});
+
+    document.getElementById('hero-title').textContent = next.title;
+    document.getElementById('hero-desc').textContent = next.desc;
+
+    document.querySelectorAll('.hero-dots.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+
+    currentHero = idx;
+  }
+
+  function startHeroAutoplay() {
+    heroInterval = setInterval(() => {
+      switchHero((currentHero + 1) % 3);
+    }, 7000);
+  }
+
+  document.querySelectorAll('.dot').forEach(d => {
+    d.addEventListener('click', () => {
+      clearInterval(heroInterval);
+      startHeroAutoplay();
+    });
+  });
+
+  startHeroAutoplay();
+  document.getElementById('vid0').play().catch(() => {});
+</script>
+</body>
+</html>
+  
