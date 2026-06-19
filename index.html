@@ -7,19 +7,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg: #0a0a0f;
       --surface: #13131a;
       --card: #1c1c28;
       --border: #2a2a3a;
       --accent: #e50914;
-      --accent2: #f5a623;
       --text: #e8e8f0;
       --muted: #7a7a99;
       --radius: 10px;
     }
-
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
@@ -137,7 +134,6 @@
       background: linear-gradient(to right, var(--border), transparent);
     }
 
-    /* Series Photo Grid */
     .series-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -154,11 +150,12 @@
       position: relative;
       cursor: pointer;
     }
-    .series-card:hover {
+    .series-card:hover, .series-card.active {
       transform: translateY(-6px);
       border-color: var(--accent);
       box-shadow: 0 10px 30px rgba(229,9,20,0.2);
     }
+    .series-card.active { border-color: var(--accent); border-width: 2px; }
     .series-poster {
       width: 100%;
       aspect-ratio: 2/3;
@@ -191,7 +188,118 @@
       backdrop-filter: blur(4px);
     }
 
-    /* ── INFO STRIP ── */
+    /* ── SUBTITLE SECTION ── */
+    .subtitle-section {
+      display: none;
+      padding: 40px 28px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      animation: fadeIn 0.4s ease;
+    }
+    .subtitle-section.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .trailer-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 40px;
+      border: 1px solid var(--border);
+    }
+    .trailer-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .series-header { margin-bottom: 30px; }
+    .series-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    .series-desc {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .season-bar {
+      display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .season-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .season-btn.active {
+      background: rgba(229,9,20,0.15);
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .ep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 14px;
+    }
+    .ep-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.22s;
+      position: relative;
+      overflow: hidden;
+    }
+    .ep-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.2s;
+    }
+    .ep-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .ep-card:hover::before { transform: scaleY(1); }
+    .ep-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      color: var(--accent);
+      min-width: 44px;
+      line-height: 1;
+    }
+    .ep-info { flex: 1; min-width: 0; }
+    .ep-label {
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ep-sub {
+      font-size: 0.7rem; color: var(--muted);
+      margin-top: 2px;
+    }
+    .dl-icon {
+      font-size: 1.1rem; opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .ep-card:hover .dl-icon { opacity: 1; }
+
     .info-strip {
       background: var(--surface);
       border-top: 1px solid var(--border);
@@ -199,26 +307,26 @@
       text-align: center;
       font-size: 0.78rem;
       color: var(--muted);
+      margin-top: 60px;
     }
     .info-strip strong { color: var(--text); }
 
-    /* ── MOBILE ── */
     @media (max-width: 600px) {
       .hero-content { padding: 0 20px 70px; }
       .hero-dots { right: 20px; }
-      .section { padding: 40px 16px 60px; }
+      .section, .subtitle-section { padding: 40px 16px 60px; }
       .series-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .series-title { font-size: 2.2rem; }
+      .ep-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <a href="index.html" class="logo">CINE<span>MAX</span> 🔥</a>
+  <a href="#" class="logo" onclick="scrollToTop()">CINE<span>MAX</span> 🔥</a>
 </nav>
 
-<!-- HERO BANNER -->
 <section class="hero">
   <div class="hero-fallback"></div>
   <video class="hero-video active" id="vid0" src="wednesday-edit.mp4" muted autoplay playsinline loop preload="auto"></video>
@@ -242,7 +350,6 @@
   </div>
 </section>
 
-<!-- SERIES PHOTO GRID -->
 <main class="section">
   <div class="section-header">
     <h2>Series එකතු</h2>
@@ -250,82 +357,101 @@
   </div>
 
   <div class="series-grid">
-    <!-- Wednesday -->
-    <a class="series-card" href="series.html?s=wednesday">
+    <div class="series-card" data-series="wednesday" onclick="loadSeries('wednesday', this)">
       <span class="series-badge">2 Seasons</span>
       <img class="series-poster" src="https://i.imgur.com/8QZ0Z0x.jpg" alt="Wednesday Poster" />
       <div class="series-info">
         <div class="series-name">Wednesday</div>
         <div class="series-meta">16 Episodes · Horror · Mystery</div>
       </div>
-    </a>
+    </div>
 
-    <!-- The Wonderfools -->
-    <a class="series-card" href="series.html?s=wonderfools">
+    <div class="series-card" data-series="wonderfools" onclick="loadSeries('wonderfools', this)">
       <span class="series-badge">1 Season</span>
       <img class="series-poster" src="https://i.imgur.com/placeholder1.jpg" alt="The Wonderfools Poster" />
       <div class="series-info">
         <div class="series-name">The Wonderfools</div>
         <div class="series-meta">8 Episodes · Comedy</div>
       </div>
-    </a>
+    </div>
 
-    <!-- From -->
-    <a class="series-card" href="series.html?s=from">
+    <div class="series-card" data-series="from" onclick="loadSeries('from', this)">
       <span class="series-badge">4 Seasons</span>
       <img class="series-poster" src="https://i.imgur.com/placeholder2.jpg" alt="From Poster" />
       <div class="series-info">
         <div class="series-name">From</div>
         <div class="series-meta">32 Episodes · Horror · Sci-Fi</div>
       </div>
-    </a>
+    </div>
   </div>
 </main>
 
-<div class="info-strip">
-  සියලු උපසිරසි <strong>සිංහල භාෂාවෙන්</strong> — <strong>CINEMAX</strong> විසින් ❤
-  
+<section class="subtitle-section" id="subtitle-section">
+  <div class="trailer-wrap">
+    <video id="trailer" controls autoplay muted playsinline></video>
   </div>
 
+  <div class="series-header">
+    <h1 class="series-title" id="s-title">Loading...</h1>
+    <p class="series-desc" id="s-desc"></p>
+  </div>
+
+  <div class="season-bar" id="season-bar"></div>
+  <div class="ep-grid" id="ep-grid"></div>
+</section>
+
+<div class="info-strip">
+  සියලු උපසිරසි <strong>සිංහල භාෂාවෙන්</strong> — <strong>CINEMAX</strong> විසින් ❤
+</div>
+
 <script>
-  const heroData = [
-    {
-      vid: 'vid0',
+  const BASE = 'https://raw.githubusercontent.com/hansaka457/hansaka457github.io/main/data/';
+
+  const SERIES_DATA = {
+    wednesday: {
       title: 'Wednesday',
-      desc: 'Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.'
+      desc: 'Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2.',
+      trailer: 'wednesday-edit.mp4',
+      seasons: { 1: 8, 2: 8 },
+      prefix: 'wednesday'
     },
-    {
-      vid: 'vid1',
+    wonderfools: {
       title: 'The Wonderfools',
-      desc: 'ශ්‍රී ලංකාවේ ප්‍රසිද්ධ The Wonderfools සීරීස් එක. සිංහල උපසිරසි සමග සියලු කොටස් ලබා ගන්න.'
+      desc: 'ශ්‍රී ලංකාවේ ප්‍රසිද්ධ The Wonderfools සීරීස් එක. සිංහල උපසිරසි සමග.',
+      trailer: 'thewonderfools_sinhala.mp4',
+      seasons: { 1: 8 },
+      prefix: 'thewonderfools'
     },
-    {
-      vid: 'vid2',
+    from: {
       title: 'From',
-      desc: 'රහස්‍යමය නගරයක තුල සිරවූ පිරිසක්. Season 1-4 සිංහල උපසිරසි සමග.'
+      desc: 'රහස්‍යමය නගරයක තුල සිරවූ පිරිසක්. Season 1-4 සිංහල උපසිරසි සමග.',
+      trailer: 'from-edit.mp4',
+      seasons: { 1: 10, 2: 10, 3: 9, 4: 3 },
+      prefix: 'from'
     }
+  };
+
+  const heroData = [
+    { vid: 'vid0', title: 'Wednesday', desc: 'Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.' },
+    { vid: 'vid1', title: 'The Wonderfools', desc: 'ශ්‍රී ලංකාවේ ප්‍රසිද්ධ The Wonderfools සීරීස් එක. සිංහල උපසිරසි සමග.' },
+    { vid: 'vid2', title: 'From', desc: 'රහස්‍යමය නගරයක තුල සිරවූ පිරිසක්. Season 1-4 සිංහල උපසිරසි සමග.' }
   ];
 
   let currentHero = 0;
   let heroInterval;
 
   function switchHero(idx) {
-    const prev = heroData[currentHero];
-    const next = heroData[idx];
-
-    document.getElementById(prev.vid? 'vid' + currentHero : 'vid0').classList.remove('active');
+    document.getElementById('vid' + currentHero).classList.remove('active');
     document.getElementById('vid' + idx).classList.add('active');
-
     const vidEl = document.getElementById('vid' + idx);
     if (vidEl.paused) vidEl.play().catch(() => {});
-
-    document.getElementById('hero-title').textContent = next.title;
-    document.getElementById('hero-desc').textContent = next.desc;
-
-    document.querySelectorAll('.hero-dots.dot').forEach((d, i) => {
+    document.getElementById('hero-title').textContent = heroData[idx].title;
+    document.getElementById('hero-desc').textContent = heroData[idx].desc;
+    
+    // නිවැරදි කරන ලදි: .dot පමණක් භාවිතා කර ලකුණු active කිරීම
+    document.querySelectorAll('.dot').forEach((d, i) => {
       d.classList.toggle('active', i === idx);
     });
-
     currentHero = idx;
   }
 
@@ -344,7 +470,73 @@
 
   startHeroAutoplay();
   document.getElementById('vid0').play().catch(() => {});
+
+  function loadSeries(seriesKey, cardEl) {
+    const series = SERIES_DATA[seriesKey];
+    if (!series) return;
+
+    document.querySelectorAll('.series-card').forEach(c => c.classList.remove('active'));
+    cardEl.classList.add('active');
+
+    const subSection = document.getElementById('subtitle-section');
+    subSection.classList.add('active');
+
+    setTimeout(() => {
+      subSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+
+    document.getElementById('trailer').src = series.trailer;
+    document.getElementById('s-title').textContent = series.title;
+    document.getElementById('s-desc').textContent = series.desc;
+
+    const seasonBar = document.getElementById('season-bar');
+    seasonBar.innerHTML = '';
+
+    Object.keys(series.seasons).forEach((season, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'season-btn' + (idx === 0 ? ' active' : '');
+      btn.textContent = 'Season ' + season;
+      btn.onclick = () => showSeason(seriesKey, season, btn);
+      seasonBar.appendChild(btn);
+    });
+
+    showSeason(seriesKey, Object.keys(series.seasons)[0], seasonBar.querySelector('.season-btn'));
+  }
+
+  function showSeason(seriesKey, seasonNum, btn) {
+    const series = SERIES_DATA[seriesKey];
+    document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const epGrid = document.getElementById('ep-grid');
+    epGrid.innerHTML = '';
+    const epCount = series.seasons[seasonNum];
+
+    for (let i = 1; i <= epCount; i++) {
+      let filename = `${series.prefix}_${seasonNum}-${i}_sinhala.srt`;
+
+      if (seriesKey === 'from' && seasonNum == 4 && i <= 2) {
+        filename = `from_4-${i}_sinhala-1.srt`;
+      } else if (seriesKey === 'from' && seasonNum == 4 && i == 3) {
+        filename = `from_4-3_sinhala.srt`;
+      }
+
+      const url = BASE + filename;
+      epGrid.innerHTML += `
+        <a class="ep-card" href="${url}" download="${filename}">
+          <div class="ep-num">${String(i).padStart(2,'0')}</div>
+          <div class="ep-info">
+            <div class="ep-label">Episode ${i}</div>
+            <div class="ep-sub">SRT · සිංහල</div>
+          </div>
+          <div class="dl-icon">⬇</div>
+        </a>`;
+    }
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 </script>
 </body>
 </html>
-  
