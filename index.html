@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CINEMAX 🔥 – Sinhala Subtitles</title>
+  <title>CINEMAX 🔥 – Sinhala Subtitles Stream</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,98 +31,99 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 14px 28px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
-      backdrop-filter: blur(4px);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+      backdrop-filter: blur(8px);
     }
     .logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: var(--accent);
       letter-spacing: 3px;
       text-decoration: none;
     }
     .logo span { color: var(--text); }
 
+    .search-container {
+      display: flex;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .search-container input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      outline: none;
+      font-size: 0.9rem;
+      width: 200px;
+    }
+    .search-container button {
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
     /* ── HERO SECTION ── */
     .hero {
       position: relative;
       width: 100%;
-      height: 70svh;
-      min-height: 500px;
-      overflow: hidden;
-    }
-    .hero-video {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-    }
-    .hero-video.active { opacity: 1; }
-    .hero-fallback {
-      position: absolute; inset: 0;
+      height: 55svh;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
       background: linear-gradient(135deg, #1a0a1a 0%, #0a0a2e 50%, #1a0505 100%);
     }
     .hero-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%),
-      linear-gradient(to top, rgba(10,10,15,1) 0%, transparent 40%);
+                  linear-gradient(to top, rgba(10,10,15,1) 0%, transparent 60%);
     }
     .hero-content {
       position: relative; z-index: 2;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      height: 100%;
-      padding: 0 40px 80px;
-      max-width: 580px;
+      padding: 0 40px;
+      max-width: 650px;
     }
     .hero-badge {
       display: inline-block;
       background: var(--accent);
       color: #fff;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       padding: 4px 10px;
       border-radius: 3px;
       margin-bottom: 14px;
-      width: fit-content;
     }
     .hero-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
       line-height: 1;
       letter-spacing: 2px;
       margin-bottom: 12px;
     }
     .hero-desc {
-      font-size: 0.9rem;
-      color: rgba(232,232,240,0.75);
+      font-size: 0.95rem;
+      color: rgba(232,232,240,0.8);
       line-height: 1.6;
-      margin-bottom: 28px;
-      max-width: 440px;
     }
-    .hero-dots {
-      position: absolute; bottom: 32px; right: 40px; z-index: 3;
-      display: flex; gap: 8px;
-    }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
 
-    /* ── SERIES GRID SECTION ── */
+    /* ── MAIN SECTION ── */
     .section {
-      padding: 60px 28px 80px;
+      padding: 40px 28px 60px;
       max-width: 1300px;
       margin: 0 auto;
     }
     .section-header {
       display: flex; align-items: center; gap: 14px;
-      margin-bottom: 36px;
+      margin-bottom: 30px;
     }
     .section-header h2 {
       font-family: 'Bebas Neue', sans-serif;
@@ -134,171 +135,128 @@
       background: linear-gradient(to right, var(--border), transparent);
     }
 
-    .series-grid {
+    .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 24px;
     }
-    .series-card {
+    .movie-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      text-decoration: none;
       color: var(--text);
-      transition: all 0.3s;
-      position: relative;
+      text-decoration: none;
+      transition: all 0.3s ease;
       cursor: pointer;
+      position: relative;
     }
-    .series-card:hover, .series-card.active {
-      transform: translateY(-6px);
+    .movie-card:hover {
+      transform: translateY(-5px);
       border-color: var(--accent);
-      box-shadow: 0 10px 30px rgba(229,9,20,0.2);
+      box-shadow: 0 10px 25px rgba(229,9,20,0.25);
     }
-    .series-card.active { border-color: var(--accent); border-width: 2px; }
-    .series-poster {
+    .movie-poster {
       width: 100%;
       aspect-ratio: 2/3;
       object-fit: cover;
-      display: block;
       background: var(--surface);
     }
-    .series-info {
-      padding: 16px 18px;
+    .movie-info {
+      padding: 12px;
     }
-    .series-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: 1px;
+    .movie-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       margin-bottom: 4px;
     }
-    .series-meta {
+    .movie-meta {
       font-size: 0.75rem;
       color: var(--muted);
     }
-    .series-badge {
-      position: absolute;
-      top: 12px; right: 12px;
-      background: rgba(229,9,20,0.9);
-      color: #fff;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 4px;
-      backdrop-filter: blur(4px);
-    }
 
-    /* ── SUBTITLE SECTION ── */
-    .subtitle-section {
+    /* ── DETAILS / DOWNLOAD SECTION ── */
+    .details-section {
       display: none;
-      padding: 40px 28px 80px;
+      padding: 40px 28px;
       max-width: 1200px;
       margin: 0 auto;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-top: 20px;
       animation: fadeIn 0.4s ease;
     }
-    .subtitle-section.active { display: block; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .trailer-wrap {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #000;
-      border-radius: var(--radius);
-      overflow: hidden;
+    .details-section.active { display: block; }
+    
+    .details-header {
+      display: flex;
+      gap: 30px;
       margin-bottom: 40px;
+    }
+    .details-poster {
+      width: 220px;
+      border-radius: var(--radius);
       border: 1px solid var(--border);
     }
-    .trailer-wrap video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .series-header { margin-bottom: 30px; }
-    .series-title {
+    .details-body { flex: 1; }
+    .details-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 3rem;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
+      font-size: 2.8rem;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
     }
-    .series-desc {
+    .details-plot {
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       line-height: 1.6;
+      margin-bottom: 20px;
     }
 
-    .season-bar {
-      display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+    /* ── LINKS GRID ── */
+    .download-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--accent);
+      letter-spacing: 1px;
     }
-    .season-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 8px 18px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .season-btn.active {
-      background: rgba(229,9,20,0.15);
-      border-color: var(--accent);
-      color: var(--text);
-    }
-
-    .ep-grid {
+    .links-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 14px;
     }
-    .ep-card {
+    .dl-btn {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      display: flex; align-items: center; gap: 14px;
+      border-radius: 6px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text);
       text-decoration: none;
-      color: var(--text);
-      transition: all 0.22s;
-      position: relative;
-      overflow: hidden;
+      font-size: 0.85rem;
+      transition: all 0.2s;
     }
-    .ep-card::before {
-      content: '';
-      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-      background: var(--accent);
-      transform: scaleY(0);
-      transform-origin: bottom;
-      transition: transform 0.2s;
+    .dl-btn:hover {
+      border-color: var(--accent);
+      background: rgba(229,9,20,0.05);
     }
-    .ep-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .ep-card:hover::before { transform: scaleY(1); }
-    .ep-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.7rem;
-      color: var(--accent);
-      min-width: 44px;
-      line-height: 1;
+    .dl-btn span {
+      font-weight: 600;
     }
-    .ep-info { flex: 1; min-width: 0; }
-    .ep-label {
-      font-size: 0.78rem; font-weight: 600;
-      color: var(--text);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+
+    .loading-text {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px;
+      font-size: 1.1rem;
+      grid-column: 1 / -1;
     }
-    .ep-sub {
-      font-size: 0.7rem; color: var(--muted);
-      margin-top: 2px;
-    }
-    .dl-icon {
-      font-size: 1.1rem; opacity: 0.5;
-      transition: opacity 0.2s;
-    }
-    .ep-card:hover .dl-icon { opacity: 1; }
 
     .info-strip {
       background: var(--surface);
@@ -311,231 +269,211 @@
     }
     .info-strip strong { color: var(--text); }
 
-    @media (max-width: 600px) {
-      .hero-content { padding: 0 20px 70px; }
-      .hero-dots { right: 20px; }
-      .section, .subtitle-section { padding: 40px 16px 60px; }
-      .series-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-      .series-title { font-size: 2.2rem; }
-      .ep-grid { grid-template-columns: 1fr 1fr; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px; flex-direction: column; gap: 10px; }
+      .hero { height: auto; padding: 120px 20px 40px; }
+      .details-header { flex-direction: column; align-items: center; text-align: center; }
+      .results-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="logo" onclick="scrollToTop()">CINE<span>MAX</span> 🔥</a>
+  <a href="#" class="logo" onclick="window.location.reload()">CINE<span>MAX</span> 🔥</a>
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="චිත්‍රපට හෝ සීරීස් සොයන්න..." onkeypress="if(event.key === 'Enter') searchMedia()">
+    <button onclick="searchMedia()">Search</button>
+  </div>
 </nav>
 
 <section class="hero">
-  <div class="hero-fallback"></div>
-  <video class="hero-video active" id="vid0" src="wednesday-edit.mp4" muted autoplay playsinline loop preload="auto"></video>
-  <video class="hero-video" id="vid1" src="thewonderfools_sinhala.mp4" muted playsinline loop preload="auto"></video>
-  <video class="hero-video" id="vid2" src="from-edit.mp4" muted playsinline loop preload="auto"></video>
-
   <div class="hero-overlay"></div>
-
   <div class="hero-content">
-    <span class="hero-badge">Sinhala Subtitles</span>
-    <h1 class="hero-title" id="hero-title">Wednesday</h1>
-    <p class="hero-desc" id="hero-desc">
-      Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.
+    <span class="hero-badge">Live API Updated</span>
+    <h1 class="hero-title">Sinhala Subtitles</h1>
+    <p class="hero-desc">
+      ඔබට අවශ්‍ය ඕනෑම චිත්‍රපටයක් හෝ ටීවී කතාමාලාවක් ඉහත Search බීරුවෙන් සොයාගෙන සිංහල උපසිරසි සමඟ සෘජුවම බාගත කරගන්න.
     </p>
-  </div>
-
-  <div class="hero-dots">
-    <div class="dot active" onclick="switchHero(0)"></div>
-    <div class="dot" onclick="switchHero(1)"></div>
-    <div class="dot" onclick="switchHero(2)"></div>
   </div>
 </section>
 
 <main class="section">
   <div class="section-header">
-    <h2>Series එකතු</h2>
+    <h2 id="grid-title">ප්‍රවණතා (Trending / Latest)</h2>
     <div class="section-line"></div>
   </div>
 
-  <div class="series-grid">
-    <div class="series-card" data-series="wednesday" onclick="loadSeries('wednesday', this)">
-      <span class="series-badge">2 Seasons</span>
-      <img class="series-poster" src="https://i.imgur.com/8QZ0Z0x.jpg" alt="Wednesday Poster" />
-      <div class="series-info">
-        <div class="series-name">Wednesday</div>
-        <div class="series-meta">16 Episodes · Horror · Mystery</div>
-      </div>
+  <div class="results-grid" id="main-grid">
     </div>
-
-    <div class="series-card" data-series="wonderfools" onclick="loadSeries('wonderfools', this)">
-      <span class="series-badge">1 Season</span>
-      <img class="series-poster" src="https://i.imgur.com/placeholder1.jpg" alt="The Wonderfools Poster" />
-      <div class="series-info">
-        <div class="series-name">The Wonderfools</div>
-        <div class="series-meta">8 Episodes · Comedy</div>
-      </div>
-    </div>
-
-    <div class="series-card" data-series="from" onclick="loadSeries('from', this)">
-      <span class="series-badge">4 Seasons</span>
-      <img class="series-poster" src="https://i.imgur.com/placeholder2.jpg" alt="From Poster" />
-      <div class="series-info">
-        <div class="series-name">From</div>
-        <div class="series-meta">32 Episodes · Horror · Sci-Fi</div>
-      </div>
-    </div>
-  </div>
 </main>
 
-<section class="subtitle-section" id="subtitle-section">
-  <div class="trailer-wrap">
-    <video id="trailer" controls autoplay muted playsinline></video>
+<section class="details-section" id="details-panel">
+  <div class="details-header">
+    <img id="det-poster" class="details-poster" src="" alt="Poster">
+    <div class="details-body">
+      <h1 class="details-title" id="det-title">Loading Title...</h1>
+      <p class="details-plot" id="det-plot">විස්තර පූරණය වෙමින් පවතී...</p>
+      
+      <div class="download-container">
+        <h3 class="download-title" id="dl-section-title">බාගත කිරීම් (Downloads / Links)</h3>
+        <div class="links-grid" id="links-grid">
+          </div>
+      </div>
+    </div>
   </div>
-
-  <div class="series-header">
-    <h1 class="series-title" id="s-title">Loading...</h1>
-    <p class="series-desc" id="s-desc"></p>
-  </div>
-
-  <div class="season-bar" id="season-bar"></div>
-  <div class="ep-grid" id="ep-grid"></div>
 </section>
 
 <div class="info-strip">
-  සියලු උපසිරසි <strong>සිංහල භාෂාවෙන්</strong> — <strong>CINEMAX</strong> විසින් ❤
+  සියලුම දත්ත සහ උපසිරසි සපයනු ලබන්නේ Live API පද්ධතිය මඟිනි — <strong>CINEMAX</strong>
 </div>
 
 <script>
-  const BASE = 'https://raw.githubusercontent.com/hansaka457/hansaka457github.io/main/data/';
+  const API_SEARCH = "https://api-dark-shan-yt.koyeb.app/movie/cinesubz-search?q=";
+  const API_INFO_MOVIE = "https://api-dark-shan-yt.koyeb.app/movie/cinesubz-info?url=";
+  const API_INFO_TV = "https://api-dark-shan-yt.koyeb.app/tv/cinesubz-info?url=";
+  const API_DOWNLOAD = "https://api-dark-shan-yt.koyeb.app/movie/cinesubz-download?url=";
 
-  const SERIES_DATA = {
-    wednesday: {
-      title: 'Wednesday',
-      desc: 'Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2.',
-      trailer: 'wednesday-edit.mp4',
-      seasons: { 1: 8, 2: 8 },
-      prefix: 'wednesday'
-    },
-    wonderfools: {
-      title: 'The Wonderfools',
-      desc: 'ශ්‍රී ලංකාවේ ප්‍රසිද්ධ The Wonderfools සීරීස් එක. සිංහල උපසිරසි සමග.',
-      trailer: 'thewonderfools_sinhala.mp4',
-      seasons: { 1: 8 },
-      prefix: 'thewonderfools'
-    },
-    from: {
-      title: 'From',
-      desc: 'රහස්‍යමය නගරයක තුල සිරවූ පිරිසක්. Season 1-4 සිංහල උපසිරසි සමග.',
-      trailer: 'from-edit.mp4',
-      seasons: { 1: 10, 2: 10, 3: 9, 4: 3 },
-      prefix: 'from'
-    }
+  window.onload = () => {
+    fetchMovies("2026"); // Default සර්ච් එක
   };
 
-  const heroData = [
-    { vid: 'vid0', title: 'Wednesday', desc: 'Wednesday Addams ගේ Nevermore Academy ජීවිතය. සිංහල උපසිරසි සමග සම්පූර්ණ Season 1 සහ 2 දැන් බා ගන්න.' },
-    { vid: 'vid1', title: 'The Wonderfools', desc: 'ශ්‍රී ලංකාවේ ප්‍රසිද්ධ The Wonderfools සීරීස් එක. සිංහල උපසිරසි සමග.' },
-    { vid: 'vid2', title: 'From', desc: 'රහස්‍යමය නගරයක තුල සිරවූ පිරිසක්. Season 1-4 සිංහල උපසිරසි සමග.' }
-  ];
-
-  let currentHero = 0;
-  let heroInterval;
-
-  function switchHero(idx) {
-    document.getElementById('vid' + currentHero).classList.remove('active');
-    document.getElementById('vid' + idx).classList.add('active');
-    const vidEl = document.getElementById('vid' + idx);
-    if (vidEl.paused) vidEl.play().catch(() => {});
-    document.getElementById('hero-title').textContent = heroData[idx].title;
-    document.getElementById('hero-desc').textContent = heroData[idx].desc;
+  // 1. සෙවුම් ශ්‍රිතය (Search Function)
+  async function searchMedia() {
+    const query = document.getElementById('search-input').value.trim();
+    if (!query) return alert("කරුණාකර නමක් ඇතුළත් කරන්න!");
     
-    // නිවැරදි කරන ලදි: .dot පමණක් භාවිතා කර ලකුණු active කිරීම
-    document.querySelectorAll('.dot').forEach((d, i) => {
-      d.classList.toggle('active', i === idx);
-    });
-    currentHero = idx;
+    document.getElementById('grid-title').textContent = `Search Results for: "${query}"`;
+    fetchMovies(query);
   }
 
-  function startHeroAutoplay() {
-    heroInterval = setInterval(() => {
-      switchHero((currentHero + 1) % 3);
-    }, 7000);
-  }
-
-  document.querySelectorAll('.dot').forEach(d => {
-    d.addEventListener('click', () => {
-      clearInterval(heroInterval);
-      startHeroAutoplay();
-    });
-  });
-
-  startHeroAutoplay();
-  document.getElementById('vid0').play().catch(() => {});
-
-  function loadSeries(seriesKey, cardEl) {
-    const series = SERIES_DATA[seriesKey];
-    if (!series) return;
-
-    document.querySelectorAll('.series-card').forEach(c => c.classList.remove('active'));
-    cardEl.classList.add('active');
-
-    const subSection = document.getElementById('subtitle-section');
-    subSection.classList.add('active');
-
-    setTimeout(() => {
-      subSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-
-    document.getElementById('trailer').src = series.trailer;
-    document.getElementById('s-title').textContent = series.title;
-    document.getElementById('s-desc').textContent = series.desc;
-
-    const seasonBar = document.getElementById('season-bar');
-    seasonBar.innerHTML = '';
-
-    Object.keys(series.seasons).forEach((season, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'season-btn' + (idx === 0 ? ' active' : '');
-      btn.textContent = 'Season ' + season;
-      btn.onclick = () => showSeason(seriesKey, season, btn);
-      seasonBar.appendChild(btn);
-    });
-
-    showSeason(seriesKey, Object.keys(series.seasons)[0], seasonBar.querySelector('.season-btn'));
-  }
-
-  function showSeason(seriesKey, seasonNum, btn) {
-    const series = SERIES_DATA[seriesKey];
-    document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    const epGrid = document.getElementById('ep-grid');
-    epGrid.innerHTML = '';
-    const epCount = series.seasons[seasonNum];
-
-    for (let i = 1; i <= epCount; i++) {
-      let filename = `${series.prefix}_${seasonNum}-${i}_sinhala.srt`;
-
-      if (seriesKey === 'from' && seasonNum == 4 && i <= 2) {
-        filename = `from_4-${i}_sinhala-1.srt`;
-      } else if (seriesKey === 'from' && seasonNum == 4 && i == 3) {
-        filename = `from_4-3_sinhala.srt`;
+  // 2. Movies/TV සීරීස් ගෙන්වීම
+  async function fetchMovies(query) {
+    const grid = document.getElementById('main-grid');
+    grid.innerHTML = `<div class="loading-text">සොයමින් පවතී, කරුණාකර රැඳී සිටින්න...</div>`;
+    
+    try {
+      const response = await fetch(`${API_SEARCH}${encodeURIComponent(query)}`);
+      const data = await response.json();
+      
+      grid.innerHTML = "";
+      
+      if (!data || data.length === 0 || (data.result && data.result.length === 0)) {
+        grid.innerHTML = `<div class="loading-text">කිසිවක් හමු නොවීය! වෙනත් නමකින් උත්සාහ කරන්න.</div>`;
+        return;
       }
 
-      const url = BASE + filename;
-      epGrid.innerHTML += `
-        <a class="ep-card" href="${url}" download="${filename}">
-          <div class="ep-num">${String(i).padStart(2,'0')}</div>
-          <div class="ep-info">
-            <div class="ep-label">Episode ${i}</div>
-            <div class="ep-sub">SRT · සිංහල</div>
+      const items = data.result ? data.result : data;
+
+      items.forEach(item => {
+        const title = item.title || item.name;
+        const img = item.image || item.thumbnail || "https://via.placeholder.com/200x300?text=No+Poster";
+        const link = item.link || item.url;
+        const type = item.type || (link.includes('/tv/') ? 'TV' : 'Movie');
+
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+        card.onclick = () => loadDetails(link, type, title, img);
+        
+        card.innerHTML = `
+          <img class="movie-poster" src="${img}" alt="${title}">
+          <div class="movie-info">
+            <div class="movie-name">${title}</div>
+            <div class="movie-meta">${type.toUpperCase()} • Sinhala Sub</div>
           </div>
-          <div class="dl-icon">⬇</div>
-        </a>`;
+        `;
+        grid.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error(error);
+      grid.innerHTML = `<div class="loading-text" style="color: var(--accent);">API දෝෂයකි! පසුව උත්සාහ කරන්න.</div>`;
     }
   }
 
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // 3. විස්තර සහ බාගත කිරීම් ලින්ක්ස් ලබාගැනීම
+  async function loadDetails(url, type, fallbackTitle, fallbackImg) {
+    const panel = document.getElementById('details-panel');
+    const linksGrid = document.getElementById('links-grid');
+    
+    panel.classList.add('active');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    document.getElementById('det-title').textContent = fallbackTitle;
+    document.getElementById('det-poster').src = fallbackImg;
+    document.getElementById('det-plot').textContent = "බාගත කිරීම් සහ විස්තර පූරණය වෙමින් පවතී...";
+    linksGrid.innerHTML = `<div class="loading-text" style="font-size:0.9rem; padding:10px;">ලින්ක්ස් සකසමින් පවතී...</div>`;
+
+    const targetApi = (type.toLowerCase() === 'tv' || type.toLowerCase() === 'episode') ? API_INFO_TV : API_INFO_MOVIE;
+
+    try {
+      // පළමුව විස්තර (Info) ලබාගැනීම
+      const infoResponse = await fetch(`${targetApi}${encodeURIComponent(url)}`);
+      const infoData = await infoResponse.json();
+      const details = infoData.result ? infoData.result : infoData;
+
+      document.getElementById('det-title').textContent = details.title || fallbackTitle;
+      if(details.image || details.thumbnail) {
+        document.getElementById('det-poster').src = details.image || details.thumbnail;
+      }
+      document.getElementById('det-plot').textContent = details.description || details.plot || "විස්තරයක් ඇතුළත් කර නොමැත.";
+
+      linksGrid.innerHTML = ""; // ලින්ක්ස් Grid එක හිස් කිරීම
+
+      // අලුතින් එක් කළ Download API එක හරහා සෘජු ලින්ක්ස් ලබාගැනීම
+      const dlResponse = await fetch(`${API_DOWNLOAD}${encodeURIComponent(url)}`);
+      const dlData = await dlResponse.json();
+      const downloadData = dlData.result ? dlData.result : dlData;
+
+      // ලින්ක්ස් පෙන්වීම (Download Links හෝ Episodes තිබේ නම්)
+      if (downloadData && downloadData.length > 0) {
+        downloadData.forEach(linkObj => {
+          linksGrid.innerHTML += `
+            <a href="${linkObj.link || linkObj.url}" class="dl-btn" target="_blank">
+              <span>${linkObj.title || linkObj.quality || 'Download Link'}</span>
+              <span>⬇</span>
+            </a>
+          `;
+        });
+      } else if (details.downloadLinks && details.downloadLinks.length > 0) {
+        // Info API එකේ තිබුනොත් ඒවා පෙන්වීම (Fallback)
+        details.downloadLinks.forEach(linkObj => {
+          linksGrid.innerHTML += `
+            <a href="${linkObj.link || linkObj.url}" class="dl-btn" target="_blank">
+              <span>${linkObj.quality || linkObj.title || 'Download Link'}</span>
+              <span>⬇</span>
+            </a>
+          `;
+        });
+      } else if (details.episodes && details.episodes.length > 0) {
+        // TV Series වල Episodes පෙන්වීම
+        details.episodes.forEach(ep => {
+          linksGrid.innerHTML += `
+            <a href="${ep.link || ep.url}" class="dl-btn" target="_blank">
+              <span>${ep.title || 'Episode'}</span>
+              <span>⬇</span>
+            </a>
+          `;
+        });
+      } else {
+        linksGrid.innerHTML = `<div class="loading-text" style="font-size:0.85rem;">සෘජු බාගත කිරීම් ලින්ක් හමුනොවීය.</div>`;
+      }
+
+    } catch (error) {
+      console.error(error);
+      document.getElementById('det-plot').textContent = "විස්තර ලබාගැනීමේදී හෝ ලින්ක්ස් සකස් කිරීමේදී දෝෂයක් ඇතිවිය.";
+      linksGrid.innerHTML = `
+        <a href="${url}" class="dl-btn" target="_blank" style="border-color: var(--accent);">
+          <span>මුල් පිටුවට පිවිසෙන්න (Go to Source)</span>
+          <span>🔗</span>
+        </a>
+      `;
+    }
   }
 </script>
 </body>
