@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CINEMAX 🔥 – Sinhala Subtitles Stream (Viki)</title>
+  <title>CINEMAX 🔥 – Viki & YouTube Downloader</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,8 +74,8 @@
     .hero {
       position: relative;
       width: 100%;
-      height: 55svh;
-      min-height: 400px;
+      height: 50svh;
+      min-height: 380px;
       display: flex;
       align-items: center;
       background: linear-gradient(135deg, #1a0a1a 0%, #0a0a2e 50%, #1a0505 100%);
@@ -109,15 +109,68 @@
       letter-spacing: 2px;
       margin-bottom: 12px;
     }
-    .hero-desc {
+
+    /* ── YOUTUBE DOWNLOAD BOX ── */
+    .yt-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      max-width: 800px;
+      margin: -50px auto 40px;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+    .yt-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      color: #ff0000;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .yt-form {
+      display: flex;
+      gap: 10px;
+    }
+    .yt-form input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 6px;
+      color: var(--text);
+      outline: none;
       font-size: 0.95rem;
-      color: rgba(232,232,240,0.8);
-      line-height: 1.6;
+    }
+    .yt-form input:focus {
+      border-color: #ff0000;
+    }
+    .yt-form button {
+      background: #ff0000;
+      color: white;
+      border: none;
+      padding: 0 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .yt-form button:hover {
+      background: #cc0000;
+    }
+    .yt-result-box {
+      margin-top: 20px;
+      display: none;
+      animation: fadeIn 0.3s ease;
     }
 
-    /* ── MAIN SECTION ── */
+    /* ── MAIN GRID SECTION ── */
     .section {
-      padding: 40px 28px 60px;
+      padding: 20px 28px 60px;
       max-width: 1300px;
       margin: 0 auto;
     }
@@ -149,7 +202,6 @@
       text-decoration: none;
       transition: all 0.3s ease;
       cursor: pointer;
-      position: relative;
     }
     .movie-card:hover {
       transform: translateY(-5px);
@@ -162,121 +214,56 @@
       object-fit: cover;
       background: var(--surface);
     }
-    .movie-info {
-      padding: 12px;
-    }
+    .movie-info { padding: 12px; }
     .movie-name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 4px;
+      font-size: 0.95rem; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;
     }
-    .movie-meta {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
+    .movie-meta { font-size: 0.75rem; color: var(--muted); }
 
-    /* ── DETAILS / DOWNLOAD SECTION ── */
+    /* ── DETAILS SECTION ── */
     .details-section {
       display: none;
       padding: 40px 28px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 40px auto 0;
       background: var(--surface);
       border-radius: var(--radius);
       border: 1px solid var(--border);
-      margin-top: 20px;
       animation: fadeIn 0.4s ease;
     }
     .details-section.active { display: block; }
-    
-    .details-header {
-      display: flex;
-      gap: 30px;
-      margin-bottom: 40px;
-    }
-    .details-poster {
-      width: 220px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-    }
+    .details-header { display: flex; gap: 30px; margin-bottom: 40px; }
+    .details-poster { width: 220px; border-radius: var(--radius); border: 1px solid var(--border); }
     .details-body { flex: 1; }
-    .details-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.8rem;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-    .details-plot {
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
+    .details-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 1px; margin-bottom: 10px; }
+    .details-plot { color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
 
-    /* ── LINKS GRID ── */
-    .download-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: var(--accent);
-      letter-spacing: 1px;
-    }
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 14px;
-    }
+    /* ── DOWNLOAD LINKS GRID ── */
+    .download-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; margin-bottom: 15px; color: var(--accent); letter-spacing: 1px; }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
     .dl-btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.85rem;
-      transition: all 0.2s;
+      background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+      padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+      color: var(--text); text-decoration: none; font-size: 0.85rem; transition: all 0.2s;
     }
-    .dl-btn:hover {
-      border-color: var(--accent);
-      background: rgba(229,9,20,0.05);
-    }
-    .dl-btn span {
-      font-weight: 600;
-    }
+    .dl-btn:hover { border-color: var(--accent); background: rgba(229,9,20,0.05); }
+    .dl-btn.yt-dl { border-color: #ff0000; }
+    .dl-btn.yt-dl:hover { background: rgba(255, 0, 0, 0.1); }
+    .dl-btn span { font-weight: 600; }
 
-    .loading-text {
-      text-align: center;
-      color: var(--muted);
-      padding: 40px;
-      font-size: 1.1rem;
-      grid-column: 1 / -1;
-    }
-
-    .info-strip {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 22px 28px;
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 60px;
-    }
+    .loading-text { text-align: center; color: var(--muted); padding: 40px; font-size: 1.1rem; grid-column: 1 / -1; }
+    .info-strip { background: var(--surface); border-top: 1px solid var(--border); padding: 22px 28px; text-align: center; font-size: 0.78rem; color: var(--muted); margin-top: 60px; }
     .info-strip strong { color: var(--text); }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
       nav { padding: 14px; flex-direction: column; gap: 10px; }
-      .hero { height: auto; padding: 120px 20px 40px; }
+      .hero { height: auto; padding: 120px 20px 60px; }
+      .yt-section { margin: 20px; padding: 20px; }
+      .yt-form { flex-direction: column; }
+      .yt-form button { padding: 12px; }
       .details-header { flex-direction: column; align-items: center; text-align: center; }
       .results-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
     }
@@ -287,7 +274,7 @@
 <nav>
   <a href="#" class="logo" onclick="window.location.reload()">CINE<span>MAX</span> 🔥</a>
   <div class="search-container">
-    <input type="text" id="search-input" placeholder="Viki චිත්‍රපට හෝ සීරීස් සොයන්න..." onkeypress="if(event.key === 'Enter') searchMedia()">
+    <input type="text" id="search-input" placeholder="Viki චිත්‍රපට සොයන්න..." onkeypress="if(event.key === 'Enter') searchMedia()">
     <button onclick="searchMedia()">Search</button>
   </div>
 </nav>
@@ -295,17 +282,26 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-badge">Viki Live API Updated</span>
-    <h1 class="hero-title">Sinhala Subtitles</h1>
-    <p class="hero-desc">
-      Viki පද්ධතිය හරහා ඔබට අවශ්‍ය ඕනෑම චිත්‍රපටයක් හෝ ටීවී කතාමාලාවක් ඉහත Search බීරුවෙන් සොයාගෙන සිංහල උපසිරසි සමඟ සෘජුවම බාගත කරගන්න.
-    </p>
+    <span class="hero-badge">Multi API Hub</span>
+    <h1 class="hero-title">Entertainment Portal</h1>
   </div>
+</section>
+
+<section class="yt-section">
+  <div class="yt-title">
+    <span>🔻</span> YouTube Video Downloader (720p HD)
+  </div>
+  <div class="yt-form">
+    <input type="text" id="yt-url" placeholder="මෙතනට YouTube Link එක ඇතුළත් කරන්න (e.g., https://youtube.com/...)">
+    <button onclick="downloadYoutubeVideo()">Get Link</button>
+  </div>
+  <div class="yt-result-box" id="yt-result">
+    </div>
 </section>
 
 <main class="section">
   <div class="section-header">
-    <h2 id="grid-title">ප්‍රවණතා (Trending / Latest)</h2>
+    <h2 id="grid-title">Viki කතාමාලා (Trending)</h2>
     <div class="section-line"></div>
   </div>
 
@@ -317,11 +313,11 @@
   <div class="details-header">
     <img id="det-poster" class="details-poster" src="" alt="Poster">
     <div class="details-body">
-      <h1 class="details-title" id="det-title">Loading Title...</h1>
+      <h1 class="details-title" id="det-title">Loading...</h1>
       <p class="details-plot" id="det-plot">විස්තර පූරණය වෙමින් පවතී...</p>
       
       <div class="download-container">
-        <h3 class="download-title" id="dl-section-title">බාගත කිරීම් (Downloads / Links)</h3>
+        <h3 class="download-title">බාගත කිරීම් (Downloads / Links)</h3>
         <div class="links-grid" id="links-grid">
           </div>
       </div>
@@ -330,20 +326,57 @@
 </section>
 
 <div class="info-strip">
-  සියලුම දත්ත සහ උපසිරසි සපයනු ලබන්නේ Viki Live API පද්ධතිය මඟිනි — <strong>CINEMAX</strong>
+  සියලුම සේවාවන් Live API පද්ධති මඟින් ස්වයංක්‍රීයව ක්‍රියාත්මක වේ — <strong>CINEMAX</strong>
 </div>
 
 <script>
-  // නව Viki API Endpoints එකතු කරන ලදි
+  // API Endpoints
   const API_SEARCH = "https://api-dark-shan-yt.koyeb.app/movie/viki-search?q=";
   const API_INFO = "https://api-dark-shan-yt.koyeb.app/movie/viki-info?url=";
   const API_DOWNLOAD = "https://api-dark-shan-yt.koyeb.app/movie/viki-download?url=";
+  const API_YT_MP4 = "https://api-dark-shan-yt.koyeb.app/download/ytmp4?quality=720&url=";
 
   window.onload = () => {
-    fetchMovies("love"); // Default සර්ච් එකක් ලෙස මුලින්ම පෙන්වීමට
+    fetchMovies("love"); // Default Viki සර්ච් එක
   };
 
-  // 1. සෙවුම් ශ්‍රිතය (Search Function)
+  // 1. YouTube Downloader Function
+  async function downloadYoutubeVideo() {
+    const ytUrl = document.getElementById('yt-url').value.trim();
+    const resultBox = document.getElementById('yt-result');
+    
+    if (!ytUrl) return alert("කරුණාකර නිවැරදි YouTube URL එකක් ඇතුළත් කරන්න!");
+    
+    resultBox.style.display = "block";
+    resultBox.innerHTML = `<div style="color: var(--muted); font-size:0.9rem;">වීඩියෝව සකසමින් පවතී, මොහොතක් රැඳී සිටින්න්න...</div>`;
+    
+    try {
+      const response = await fetch(`${API_YT_MP4}${encodeURIComponent(ytUrl)}`);
+      const data = await response.json();
+      
+      // API එකෙන් ලැබෙන response ව්‍යුහය අනුව නිවැරදි ලින්ක් එක තෝරා ගැනීම
+      const dlLink = data.result?.download?.url || data.result?.url || data.download_url || data.url;
+      const title = data.result?.title || data.title || "YouTube Video (720p)";
+
+      if (dlLink) {
+        resultBox.innerHTML = `
+          <div class="links-grid" style="margin-top:10px;">
+            <a href="${dlLink}" class="dl-btn yt-dl" target="_blank">
+              <span>📥 ${title} බාගත කරගන්න (720p HD)</span>
+              <span>⬇</span>
+            </a>
+          </div>
+        `;
+      } else {
+        resultBox.innerHTML = `<div style="color: var(--accent); font-size:0.9rem;">බාගත කිරීමේ ලින්ක් එක ලබා ගැනීමට නොහැකි විය. පසුව උත්සාහ කරන්න.</div>`;
+      }
+    } catch (error) {
+      console.error(error);
+      resultBox.innerHTML = `<div style="color: var(--accent); font-size:0.9rem;">දෝෂයක් සිදු විය! කරුණාකර ලින්ක් එක පරීක්ෂා කරන්න.</div>`;
+    }
+  }
+
+  // 2. Viki Search Function
   async function searchMedia() {
     const query = document.getElementById('search-input').value.trim();
     if (!query) return alert("කරුණාකර නමක් ඇතුළත් කරන්න!");
@@ -352,7 +385,7 @@
     fetchMovies(query);
   }
 
-  // 2. Viki Movies/TV සීරීස් ගෙන්වීම
+  // 3. Fetch Viki Movies
   async function fetchMovies(query) {
     const grid = document.getElementById('main-grid');
     grid.innerHTML = `<div class="loading-text">සොයමින් පවතී, කරුණාකර රැඳී සිටින්න...</div>`;
@@ -360,7 +393,6 @@
     try {
       const response = await fetch(`${API_SEARCH}${encodeURIComponent(query)}`);
       const data = await response.json();
-      
       grid.innerHTML = "";
       
       if (!data || data.length === 0 || (data.result && data.result.length === 0)) {
@@ -389,14 +421,13 @@
         `;
         grid.appendChild(card);
       });
-
     } catch (error) {
       console.error(error);
       grid.innerHTML = `<div class="loading-text" style="color: var(--accent);">API දෝෂයකි! පසුව උත්සාහ කරන්න.</div>`;
     }
   }
 
-  // 3. Viki විස්තර සහ බාගත කිරීම් ලින්ක්ස් ලබාගැනීම
+  // 4. Viki Details & Downloads Loader
   async function loadDetails(url, fallbackTitle, fallbackImg) {
     const panel = document.getElementById('details-panel');
     const linksGrid = document.getElementById('links-grid');
@@ -410,7 +441,6 @@
     linksGrid.innerHTML = `<div class="loading-text" style="font-size:0.9rem; padding:10px;">ලින්ක්ස් සකසමින් පවතී...</div>`;
 
     try {
-      // Viki Info API එකෙන් විස්තර ලබාගැනීම
       const infoResponse = await fetch(`${API_INFO}${encodeURIComponent(url)}`);
       const infoData = await infoResponse.json();
       const details = infoData.result ? infoData.result : infoData;
@@ -423,12 +453,10 @@
 
       linksGrid.innerHTML = "";
 
-      // Viki Download API එකෙන් Links ලබාගැනීම
       const dlResponse = await fetch(`${API_DOWNLOAD}${encodeURIComponent(url)}`);
       const dlData = await dlResponse.json();
       const downloadData = dlData.result ? dlData.result : dlData;
 
-      // ලින්ක්ස් පෙන්වීම
       if (downloadData && downloadData.length > 0) {
         downloadData.forEach(linkObj => {
           linksGrid.innerHTML += `
@@ -438,28 +466,13 @@
             </a>
           `;
         });
-      } else if (details.downloadLinks && details.downloadLinks.length > 0) {
-        details.downloadLinks.forEach(linkObj => {
-          linksGrid.innerHTML += `
-            <a href="${linkObj.link || linkObj.url}" class="dl-btn" target="_blank">
-              <span>${linkObj.quality || linkObj.title || 'Download Link'}</span>
-              <span>⬇</span>
-            </a>
-          `;
-        });
       } else {
         linksGrid.innerHTML = `<div class="loading-text" style="font-size:0.85rem;">සෘජු බාගත කිරීම් ලින්ක් හමුනොවීය.</div>`;
       }
-
     } catch (error) {
       console.error(error);
-      document.getElementById('det-plot').textContent = "විස්තර ලබාගැනීමේදී හෝ ලින්ක්ස් සකස් කිරීමේදී දෝෂයක් ඇතිවිය.";
-      linksGrid.innerHTML = `
-        <a href="${url}" class="dl-btn" target="_blank" style="border-color: var(--accent);">
-          <span>මුල් පිටුවට පිවිසෙන්න (Go to Source)</span>
-          <span>🔗</span>
-        </a>
-      `;
+      document.getElementById('det-plot').textContent = "විස්තර ලබාගැනීමේදී දෝෂයක් ඇතිවිය.";
+      linksGrid.innerHTML = `<a href="${url}" class="dl-btn" target="_blank" style="border-color: var(--accent);"><span>මුල් පිටුවට පිවිසෙන්න</span><span>🔗</span></a>`;
     }
   }
 </script>
