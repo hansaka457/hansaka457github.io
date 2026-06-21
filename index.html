@@ -1,637 +1,932 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cinemax English</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Cinemax Elite</title>
+<link href="https://fonts.googleapis.com/css2?family=YouTube+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  :root{
-    --red:#e50914;
-    --dark:#141414;
-    --dark2:#1a1a1a;
-    --dark3:#222;
-    --gray:#808080;
-    --light:#e5e5e5;
-    --white:#fff;
-  }
-  body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --red:#FF0000;
+  --bg:#0f0f0f;
+  --bg2:#1a1a1a;
+  --bg3:#272727;
+  --bg4:#3d3d3d;
+  --t1:#ffffff;
+  --t2:#aaaaaa;
+  --t3:#717171;
+  --chip-bg:#272727;
+  --chip-active:#ffffff;
+  --chip-active-text:#0f0f0f;
+}
+html,body{
+  background:var(--bg);
+  color:var(--t1);
+  font-family:'Roboto',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  max-width:480px;
+  margin:0 auto;
+}
 
-  /* NAV */
-  nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:16px 48px;display:flex;align-items:center;gap:32px;background:linear-gradient(to bottom,rgba(0,0,0,0.85) 0%,transparent 100%);}
-  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--red);letter-spacing:2px;text-decoration:none;}
-  .nav-links{display:flex;gap:20px;}
-  .nav-links a{color:var(--light);text-decoration:none;font-size:14px;opacity:.8;transition:opacity .2s;}
-  .nav-links a:hover{opacity:1;}
-  .nav-right{margin-left:auto;display:flex;gap:16px;align-items:center;}
-  .search-box{background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:6px 14px;border-radius:4px;font-size:13px;width:180px;outline:none;}
-  .search-box::placeholder{color:rgba(255,255,255,0.5);}
+/* TOPBAR */
+.topbar{
+  position:sticky;top:0;z-index:99;
+  background:var(--bg);
+  display:flex;align-items:center;
+  padding:0 16px;height:56px;gap:0;
+}
+.tb-logo{display:flex;align-items:center;gap:4px;flex:1}
+.tb-logo svg{width:34px;height:24px}
+.tb-logo-txt{font-size:16px;font-weight:600;letter-spacing:-.2px;color:var(--t1)}
+.tb-logo-txt span{color:var(--red)}
+.tb-icons{display:flex;align-items:center;gap:8px}
+.tb-icon{
+  width:40px;height:40px;display:flex;align-items:center;
+  justify-content:center;border-radius:50%;cursor:pointer;
+  color:var(--t1);transition:background .15s;
+}
+.tb-icon:hover,.tb-icon:active{background:var(--bg3)}
+.tb-icon svg{width:22px;height:22px}
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#4285f4,#34a853);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;cursor:pointer;
+}
 
-  /* HERO */
-  .hero{position:relative;height:100vh;min-height:600px;overflow:hidden;}
-  .hero-bg{position:absolute;inset:0;background:#0a0a0a;}
-  .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.6;}
-  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.85) 40%,transparent 100%),linear-gradient(to top,rgba(20,20,20,1) 0%,transparent 30%);}
-  .hero-content{position:absolute;bottom:25%;left:48px;max-width:480px;}
-  .hero-badge{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 10px;border-radius:2px;margin-bottom:16px;text-transform:uppercase;}
-  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;letter-spacing:2px;margin-bottom:8px;text-shadow:2px 2px 8px rgba(0,0,0,0.8);}
-  .hero-meta{display:flex;gap:12px;align-items:center;margin-bottom:16px;font-size:13px;color:var(--light);}
-  .hero-meta .rating{color:#46d369;font-weight:600;}
-  .hero-desc{font-size:15px;line-height:1.6;color:var(--light);margin-bottom:24px;opacity:.9;}
-  .hero-btns{display:flex;gap:12px;}
-  .btn-play{background:var(--white);color:#000;border:none;padding:12px 28px;border-radius:4px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;}
-  .btn-play:hover{background:#d0d0d0;}
-  .btn-sub{background:rgba(109,109,110,0.7);color:#fff;border:none;padding:12px 24px;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;}
-  .btn-sub:hover{background:rgba(109,109,110,1);}
+/* SEARCH OVERLAY */
+.search-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:var(--bg);
+}
+.search-overlay.open{display:flex;flex-direction:column}
+.search-bar{
+  display:flex;align-items:center;height:56px;padding:0 8px;gap:4px;
+  border-bottom:1px solid var(--bg3);
+}
+.search-back{width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t1);border-radius:50%}
+.search-back:hover{background:var(--bg3)}
+.search-back svg{width:22px;height:22px}
+.search-input-wrap{
+  flex:1;background:var(--bg2);border-radius:24px;
+  display:flex;align-items:center;padding:0 16px;height:40px;gap:10px;
+}
+.search-input-wrap svg{color:var(--t2);flex-shrink:0;width:18px;height:18px}
+.search-input-wrap input{
+  background:none;border:none;outline:none;
+  color:var(--t1);font-size:15px;font-family:'Roboto',sans-serif;
+  flex:1;width:100%;
+}
+.search-input-wrap input::placeholder{color:var(--t3)}
+.search-results{flex:1;overflow-y:auto;padding:8px 0}
+.sr-item{
+  display:flex;align-items:center;gap:16px;
+  padding:10px 16px;cursor:pointer;
+}
+.sr-item:active{background:var(--bg2)}
+.sr-icon{width:44px;height:44px;background:var(--bg3);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.sr-icon img{width:100%;height:100%;object-fit:cover}
+.sr-icon svg{color:var(--t2);width:20px;height:20px}
+.sr-text{flex:1;min-width:0}
+.sr-title{font-size:14px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-sub{font-size:12px;color:var(--t3);margin-top:2px}
+.sr-go{color:var(--t3)}
+.sr-go svg{width:18px;height:18px}
 
-  /* SECTIONS */
-  .section{padding:0 48px 48px;}
-  .section-title{font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:.3px;}
-  .section-title span{color:var(--red);}
+/* MOOD CHIPS */
+.chips-wrap{
+  overflow-x:auto;padding:10px 12px 8px;
+  display:flex;gap:8px;scrollbar-width:none;
+  position:sticky;top:56px;z-index:98;background:var(--bg);
+}
+.chips-wrap::-webkit-scrollbar{display:none}
+.chip{
+  flex-shrink:0;padding:6px 14px;border-radius:8px;
+  background:var(--chip-bg);color:var(--t1);
+  font-size:13px;font-weight:500;cursor:pointer;
+  border:none;white-space:nowrap;transition:all .15s;
+}
+.chip.on{background:var(--chip-active);color:var(--chip-active-text)}
+.chip:active{opacity:.7}
 
-  /* SERIES ROWS */
-  .series-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;}
-  .series-row::-webkit-scrollbar{display:none;}
-  .series-card{flex:0 0 180px;border-radius:6px;overflow:hidden;cursor:pointer;position:relative;transition:transform .25s,box-shadow .25s;}
-  .series-card:hover{transform:scale(1.08);box-shadow:0 8px 32px rgba(0,0,0,0.7);z-index:10;}
-  .card-thumb{width:100%;height:260px;object-fit:cover;background:#222;display:block;}
-  .card-thumb-placeholder{width:100%;height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:36px;color:rgba(255,255,255,0.15);}
-  .card-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,transparent 100%);}
-  .card-name{font-size:13px;font-weight:600;margin-bottom:4px;}
-  .card-seasons{font-size:11px;color:var(--gray);}
-  .card-badge{position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:1px;}
+/* PAGE */
+.page{display:none;animation:fadein .2s}
+.page.active{display:block}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
 
-  /* SERIES DETAIL PANEL */
-  .detail-panel{display:none;background:var(--dark2);border-radius:8px;border:1px solid rgba(255,255,255,0.08);padding:28px;margin-bottom:32px;position:relative;}
-  .detail-panel.open{display:flex;gap:28px;}
-  .detail-close{position:absolute;top:16px;right:20px;background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;line-height:1;}
-  .detail-close:hover{color:#fff;}
-  .detail-poster{width:120px;height:175px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#333;}
-  .detail-poster-placeholder{width:120px;height:175px;border-radius:6px;background:#333;display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;}
-  .detail-info{flex:1;}
-  .detail-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;margin-bottom:6px;}
-  .detail-meta{font-size:12px;color:var(--gray);margin-bottom:12px;display:flex;gap:12px;}
-  .detail-desc{font-size:13px;line-height:1.7;color:var(--light);margin-bottom:16px;opacity:.85;}
-  .season-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-  .season-tab{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:6px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;}
-  .season-tab.active{background:var(--red);border-color:var(--red);}
-  .season-tab:hover:not(.active){background:rgba(255,255,255,0.15);}
-  /* EPISODE CARDS — photo background style */
-  .episode-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
-  .ep-item{
-    position:relative;border-radius:10px;overflow:hidden;
-    min-height:110px;display:flex;flex-direction:column;justify-content:flex-end;
-    cursor:default;transition:transform .2s,box-shadow .2s;
-    border:1px solid rgba(255,255,255,0.08);
-  }
-  .ep-item:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,0.7);}
-  .ep-bg{
-    position:absolute;inset:0;background-size:cover;background-position:center;
-    filter:brightness(0.42) saturate(1.2);transition:filter .3s;z-index:0;
-  }
-  .ep-item:hover .ep-bg{filter:brightness(0.58) saturate(1.4);}
-  .ep-gradient{
-    position:absolute;inset:0;
-    background:linear-gradient(to top,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.4) 55%,transparent 100%);
-    z-index:1;
-  }
-  .ep-content{position:relative;z-index:2;padding:12px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;}
-  .ep-left{flex:1;min-width:0;}
-  .ep-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:rgba(255,255,255,0.15);line-height:1;}
-  .ep-label{font-size:13px;font-weight:700;color:#fff;letter-spacing:.3px;}
-  .ep-sub{font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .btn-dl{
-    background:var(--red);color:#fff;border:none;
-    padding:7px 12px;border-radius:6px;font-size:11px;font-weight:700;
-    cursor:pointer;display:flex;align-items:center;gap:4px;
-    white-space:nowrap;transition:background .15s,transform .1s;
-    text-decoration:none;flex-shrink:0;letter-spacing:.5px;
-  }
-  .btn-dl:hover{background:#c40810;transform:scale(1.06);}
-  .btn-dl svg{width:13px;height:13px;}
+/* HERO SECTION */
+.hero-section{position:relative;overflow:hidden}
+.hero-bg{
+  width:100%;height:220px;object-fit:cover;
+  display:block;filter:brightness(.35);
+}
+.hero-bg-fallback{
+  width:100%;height:220px;
+  background:linear-gradient(135deg,#1a0505 0%,#050510 50%,#050a05 100%);
+}
+.hero-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 40%,var(--bg) 100%);
+}
+.hero-text{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:0 16px 20px;
+}
+.hero-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  color:var(--red);text-transform:uppercase;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.hero-eyebrow::before{content:'';width:16px;height:2px;background:var(--red);display:inline-block}
+.hero-title{font-size:28px;font-weight:700;line-height:1.1;margin-bottom:6px}
+.hero-sub{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:10px}
+.lang-dot{width:5px;height:5px;border-radius:50%;background:var(--t3);display:inline-block}
 
-  /* GENRE TAGS */
-  .tags{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-  .tag{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);padding:4px 12px;border-radius:20px;font-size:12px;}
+/* SECTION */
+.section{padding:0 0 8px;margin-top:8px}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 16px 12px;
+}
+.section-title{font-size:15px;font-weight:700;letter-spacing:-.1px}
+.section-all{font-size:12px;color:var(--t2);font-weight:600;text-decoration:none;cursor:pointer;padding:4px 0}
+.section-all:hover{color:var(--t1)}
 
-  /* FOOTER */
-  footer{background:#0a0a0a;padding:40px 48px;margin-top:32px;border-top:1px solid rgba(255,255,255,0.08);}
-  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--red);letter-spacing:2px;margin-bottom:12px;}
-  .footer-text{font-size:12px;color:var(--gray);line-height:1.8;}
-  .footer-links{display:flex;gap:20px;margin-top:12px;flex-wrap:wrap;}
-  .footer-links a{color:var(--gray);text-decoration:none;font-size:12px;}
-  .footer-links a:hover{color:#fff;}
+/* HORIZONTAL SCROLL CARDS */
+.hscroll{
+  display:flex;gap:10px;padding:0 16px 4px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.hscroll::-webkit-scrollbar{display:none}
 
-  /* VIDEO MODAL */
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;}
-  .modal-overlay.open{display:flex;}
-  .modal-box{background:#1a1a1a;border-radius:8px;overflow:hidden;width:min(90vw,720px);position:relative;}
-  .modal-close{position:absolute;top:12px;right:14px;background:rgba(0,0,0,0.7);border:none;color:#fff;font-size:20px;cursor:pointer;z-index:10;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-  video{width:100%;display:block;max-height:72vh;}
-  video::cue{
-    background:rgba(0,0,0,0.75);
-    color:#ffffff;
-    font-family:'Inter',sans-serif;
-    font-size:1.1em;
-    font-weight:500;
-    line-height:1.5;
-    padding:2px 6px;
-    border-radius:3px;
-  }
-  .modal-title{padding:12px 16px;font-size:14px;font-weight:600;background:#111;}
+/* MIX CARD (series) */
+.mix{flex-shrink:0;width:160px;cursor:pointer}
+.mix:active .mix-art{transform:scale(.97)}
+.mix-art{
+  width:160px;height:160px;border-radius:4px;
+  overflow:hidden;background:var(--bg3);position:relative;
+  transition:transform .15s;
+}
+.mix-art img{width:100%;height:100%;object-fit:cover}
+.mix-art-fallback{
+  width:100%;height:100%;display:flex;align-items:center;
+  justify-content:center;font-size:52px;
+}
+.mix-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.8));
+  padding:24px 10px 10px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mix-badge{
+  font-size:10px;font-weight:700;color:#fff;
+  background:var(--red);padding:2px 7px;border-radius:3px;letter-spacing:.3px;
+}
+.mix-eps{font-size:10px;color:rgba(255,255,255,.7)}
+.mix-name{font-size:13px;font-weight:600;margin-top:8px;line-height:1.3}
+.mix-meta{font-size:11px;color:var(--t3);margin-top:2px}
 
-  /* HERO DOTS */
-  .hero-dots{position:absolute;bottom:12%;left:48px;display:flex;gap:6px;}
-  .hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background .2s;}
-  .hero-dot.active{background:var(--red);}
+/* LANG BADGE MIX */
+.mix-langs{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.lbadge{
+  font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+.lb-si{background:rgba(255,149,0,.18);color:#FFB340}
+.lb-en{background:rgba(66,133,244,.18);color:#7EB8FF}
+.lb-ko{background:rgba(52,211,153,.18);color:#4ADE80}
+
+/* QUICK PICKS ROWS */
+.qp-row{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 16px;cursor:pointer;border-radius:0;
+  transition:background .12s;
+}
+.qp-row:hover,.qp-row:active{background:rgba(255,255,255,.06)}
+.qp-thumb{
+  width:52px;height:52px;border-radius:4px;
+  background:var(--bg3);overflow:hidden;flex-shrink:0;position:relative;
+}
+.qp-thumb img{width:100%;height:100%;object-fit:cover}
+.qp-thumb-icon{
+  width:100%;height:100%;display:flex;align-items:center;
+  justify-content:center;font-size:22px;
+}
+.qp-info{flex:1;min-width:0}
+.qp-title{
+  font-size:14px;font-weight:500;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  margin-bottom:2px;
+}
+.qp-sub{font-size:12px;color:var(--t3)}
+.qp-langs{display:flex;gap:3px;margin-top:4px}
+.qp-dl{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t2);cursor:pointer;flex-shrink:0;
+  transition:all .15s;
+}
+.qp-dl:hover{background:var(--bg3);color:var(--t1)}
+.qp-dl:active{background:var(--bg4)}
+.qp-dl svg{width:20px;height:20px}
+.qp-more{
+  width:32px;height:32px;display:flex;align-items:center;
+  justify-content:center;color:var(--t3);cursor:pointer;
+  border-radius:50%;flex-shrink:0;
+}
+.qp-more:hover{background:var(--bg3)}
+.qp-more svg{width:20px;height:20px}
+
+/* SEASON TABS */
+.stabs{
+  display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+  padding:0 16px;border-bottom:1px solid var(--bg3);
+}
+.stabs::-webkit-scrollbar{display:none}
+.stab{
+  flex-shrink:0;padding:10px 16px;font-size:13px;font-weight:600;
+  color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;
+  margin-bottom:-1px;transition:all .15s;white-space:nowrap;
+}
+.stab.on{color:var(--t1);border-bottom-color:var(--t1)}
+.stab:hover:not(.on){color:var(--t2)}
+
+/* SERIES PAGE HEADER */
+.series-header{
+  display:flex;align-items:flex-end;gap:16px;
+  padding:20px 16px 16px;
+}
+.series-art{
+  width:80px;height:80px;border-radius:6px;
+  background:var(--bg3);overflow:hidden;flex-shrink:0;
+}
+.series-art img{width:100%;height:100%;object-fit:cover}
+.series-art-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px}
+.series-info{}
+.series-name{font-size:20px;font-weight:700;margin-bottom:4px}
+.series-ep-count{font-size:13px;color:var(--t3)}
+.series-play-row{
+  display:flex;align-items:center;gap:10px;padding:0 16px 16px;
+}
+.btn-play{
+  flex:1;height:40px;background:var(--t1);color:#000;
+  border:none;border-radius:24px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+}
+.btn-play:hover{background:#e0e0e0}
+.btn-play svg{width:18px;height:18px}
+.btn-shuffle{
+  height:40px;flex:1;background:var(--bg3);color:var(--t1);
+  border:none;border-radius:24px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+}
+.btn-shuffle:hover{background:var(--bg4)}
+.btn-shuffle svg{width:18px;height:18px}
+
+/* BOTTOM NAV */
+.bnav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:var(--bg2);border-top:1px solid var(--bg3);
+  display:flex;z-index:97;
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+.bn{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:8px 0 10px;cursor:pointer;color:var(--t3);
+  text-decoration:none;transition:color .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.bn.on{color:var(--t1)}
+.bn svg{width:24px;height:24px;margin-bottom:3px}
+.bn span{font-size:10px;font-weight:500}
+
+/* MINI PLAYER */
+.miniplayer{
+  position:fixed;bottom:57px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 8px);max-width:472px;
+  background:var(--bg3);border-radius:10px;
+  padding:10px 12px 10px 10px;
+  display:none;align-items:center;gap:10px;
+  z-index:96;border:1px solid var(--bg4);
+}
+.miniplayer.show{display:flex}
+.mp-art{
+  width:42px;height:42px;border-radius:6px;
+  background:var(--red);flex-shrink:0;overflow:hidden;
+}
+.mp-art img{width:100%;height:100%;object-fit:cover}
+.mp-art-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.mp-info{flex:1;min-width:0}
+.mp-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t1)}
+.mp-sub{font-size:11px;color:var(--t3);margin-top:2px}
+.mp-prog{height:2px;background:var(--bg4);border-radius:1px;margin-top:6px;position:relative}
+.mp-bar{height:2px;background:var(--red);border-radius:1px;width:0%;transition:width .3s}
+.mp-actions{display:flex;align-items:center;gap:0}
+.mp-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--t1);cursor:pointer;border-radius:50%}
+.mp-btn:hover{background:var(--bg4)}
+.mp-btn svg{width:22px;height:22px}
+
+/* DOWNLOAD SHEET */
+.sheet-overlay{
+  display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.75);
+}
+.sheet-overlay.open{display:block}
+.sheet{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:var(--bg2);border-radius:16px 16px 0 0;
+  padding-bottom:env(safe-area-inset-bottom,0);
+  max-height:80vh;overflow-y:auto;
+}
+.sheet-handle{width:36px;height:4px;background:var(--bg4);border-radius:2px;margin:10px auto 0}
+.sheet-header{
+  padding:16px 16px 12px;
+  display:flex;align-items:center;gap:14px;
+  border-bottom:1px solid var(--bg3);
+}
+.sheet-art{
+  width:56px;height:56px;border-radius:6px;
+  background:var(--bg3);overflow:hidden;flex-shrink:0;
+}
+.sheet-art img{width:100%;height:100%;object-fit:cover}
+.sheet-art-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px}
+.sheet-title{font-size:15px;font-weight:700;margin-bottom:3px}
+.sheet-ep{font-size:12px;color:var(--t3)}
+.sheet-x{margin-left:auto;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--t3);cursor:pointer;border-radius:50%;flex-shrink:0}
+.sheet-x:hover{background:var(--bg3)}
+.sheet-x svg{width:20px;height:20px}
+.dl-section-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;padding:14px 16px 6px}
+.dl-row{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 16px;cursor:pointer;transition:background .1s;
+}
+.dl-row:hover,.dl-row:active{background:rgba(255,255,255,.05)}
+.dl-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.dl-en-bg{background:rgba(66,133,244,.12)}
+.dl-si-bg{background:rgba(255,149,0,.12)}
+.dl-ko-bg{background:rgba(52,211,153,.12)}
+.dl-info{flex:1;min-width:0}
+.dl-lang{font-size:14px;font-weight:600;margin-bottom:2px}
+.dl-file{font-size:11px;color:var(--t3);font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dl-btn{
+  padding:8px 18px;background:var(--red);color:#fff;
+  border-radius:20px;font-size:12px;font-weight:700;
+  text-decoration:none;flex-shrink:0;display:inline-block;
+  transition:background .15s;
+}
+.dl-btn:hover{background:#cc0000}
+.dl-sep{height:1px;background:var(--bg3);margin:4px 0}
+
+/* CONTENT */
+.pb{height:120px}
+
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">Cinemax English</a>
-  <div class="nav-links">
-    <a href="#" onclick="scrollToSection('home');return false;">Home</a>
-    <a href="#" onclick="scrollToSection('series');return false;">Series</a>
-    <a href="#" onclick="scrollToSection('subtitles');return false;">Subtitles</a>
-    <a href="#">Sinhala</a>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="tb-logo">
+    <svg viewBox="0 0 34 24" fill="none">
+      <rect width="34" height="24" rx="5" fill="#FF0000"/>
+      <path d="M13.5 7.5l8 4.5-8 4.5V7.5z" fill="white"/>
+    </svg>
+    <span class="tb-logo-txt">&nbsp;Cinemax <span>Elite</span></span>
   </div>
-  <div class="nav-right">
-    <input class="search-box" id="searchInput" type="text" placeholder="Search series..." oninput="filterSeries(this.value)"/>
+  <div class="tb-icons">
+    <div class="tb-icon" onclick="openSearch()" title="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+    <div class="tb-icon" title="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <div class="avatar">C</div>
   </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-bar">
+    <div class="search-back" onclick="closeSearch()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    </div>
+    <div class="search-input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search series or episode..." oninput="doSearch(this.value)" autofocus>
+    </div>
+  </div>
+  <div class="search-results" id="searchResults">
+    <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>
+  </div>
+</div>
+
+<!-- MOOD CHIPS -->
+<div class="chips-wrap" id="chipsWrap">
+  <button class="chip on" onclick="showPage('home',this)">Home</button>
+  <button class="chip" onclick="showPage('wednesday',this)">Wednesday</button>
+  <button class="chip" onclick="showPage('from',this)">From</button>
+  <button class="chip" onclick="showPage('wonderfools',this)">The Wonderfools</button>
+  <button class="chip" onclick="filterLang('si',this)">සිංහල</button>
+  <button class="chip" onclick="filterLang('en',this)">English</button>
+  <button class="chip" onclick="filterLang('ko',this)">Korean</button>
+</div>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <img src="background.jpg" class="hero-bg" alt="" onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='block'">
+    <div class="hero-bg-fallback" id="hero-fallback" style="display:none"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-text">
+      <div class="hero-eyebrow">Subtitle Library</div>
+      <div class="hero-title">Download<br>Your Subtitles</div>
+      <div class="hero-sub">
+        <span>සිංහල</span>
+        <span class="lang-dot"></span>
+        <span>English</span>
+        <span class="lang-dot"></span>
+        <span>한국어</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERIES MIXES -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Mixed for you</div>
+      <span class="section-all" onclick="showPage('wednesday',document.querySelector('.chip:nth-child(2)'))">See all ›</span>
+    </div>
+    <div class="hscroll">
+      <div class="mix" onclick="showPage('wednesday',document.querySelectorAll('.chip')[1])">
+        <div class="mix-art">
+          <img src="wednesday-s123.jpg" alt="Wednesday" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="mix-art-fallback" style="display:none;background:linear-gradient(135deg,#0d001a,#1a0033)">🖤</div>
+          <div class="mix-overlay">
+            <span class="mix-badge">S1–S2</span>
+            <span class="mix-eps">16 eps</span>
+          </div>
+        </div>
+        <div class="mix-name">Wednesday</div>
+        <div class="mix-meta">3 languages</div>
+        <div class="mix-langs"><span class="lbadge lb-si">SI</span><span class="lbadge lb-en">EN</span><span class="lbadge lb-ko">KO</span></div>
+      </div>
+      <div class="mix" onclick="showPage('from',document.querySelectorAll('.chip')[2])">
+        <div class="mix-art">
+          <img src="from-s222.jpg" alt="From" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="mix-art-fallback" style="display:none;background:linear-gradient(135deg,#1a0a00,#0a0800)">🌲</div>
+          <div class="mix-overlay">
+            <span class="mix-badge">S1–S4</span>
+            <span class="mix-eps">33 eps</span>
+          </div>
+        </div>
+        <div class="mix-name">From</div>
+        <div class="mix-meta">3 languages</div>
+        <div class="mix-langs"><span class="lbadge lb-si">SI</span><span class="lbadge lb-en">EN</span><span class="lbadge lb-ko">KO</span></div>
+      </div>
+      <div class="mix" onclick="showPage('wonderfools',document.querySelectorAll('.chip')[3])">
+        <div class="mix-art">
+          <img src="thewonderfools.jpg" alt="The Wonderfools" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="mix-art-fallback" style="display:none;background:linear-gradient(135deg,#001a10,#001018)">✨</div>
+          <div class="mix-overlay">
+            <span class="mix-badge">S1</span>
+            <span class="mix-eps">8 eps</span>
+          </div>
+        </div>
+        <div class="mix-name">The Wonderfools</div>
+        <div class="mix-meta">3 languages</div>
+        <div class="mix-langs"><span class="lbadge lb-si">SI</span><span class="lbadge lb-en">EN</span><span class="lbadge lb-ko">KO</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK PICKS -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Quick picks</div>
+      <span class="section-all">Play all</span>
+    </div>
+    <div id="quickPicks"></div>
+  </div>
+
+  <div class="pb"></div>
+</div>
+
+<!-- WEDNESDAY PAGE -->
+<div class="page" id="page-wednesday">
+  <div class="series-header">
+    <div class="series-art">
+      <img src="wednesday-s123.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#0d001a,#1a0033)">🖤</div>
+    </div>
+    <div class="series-info">
+      <div class="series-name">Wednesday</div>
+      <div class="series-ep-count">16 episodes · Seasons 1–2</div>
+      <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+    </div>
+  </div>
+  <div class="series-play-row">
+    <button class="btn-play">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      Download All
+    </button>
+    <button class="btn-shuffle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      Shuffle
+    </button>
+  </div>
+  <div class="stabs" id="wed-tabs">
+    <div class="stab on" onclick="switchSeason('wed',1,this)">Season 1</div>
+    <div class="stab" onclick="switchSeason('wed',2,this)">Season 2</div>
+  </div>
+  <div id="wed-list"></div>
+  <div class="pb"></div>
+</div>
+
+<!-- FROM PAGE -->
+<div class="page" id="page-from">
+  <div class="series-header">
+    <div class="series-art">
+      <img src="from-s222.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#1a0a00,#0a0800)">🌲</div>
+    </div>
+    <div class="series-info">
+      <div class="series-name">From</div>
+      <div class="series-ep-count">33 episodes · Seasons 1–4</div>
+      <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+    </div>
+  </div>
+  <div class="series-play-row">
+    <button class="btn-play">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      Download All
+    </button>
+    <button class="btn-shuffle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      Shuffle
+    </button>
+  </div>
+  <div class="stabs" id="from-tabs">
+    <div class="stab on" onclick="switchSeason('from',1,this)">Season 1</div>
+    <div class="stab" onclick="switchSeason('from',2,this)">Season 2</div>
+    <div class="stab" onclick="switchSeason('from',3,this)">Season 3</div>
+    <div class="stab" onclick="switchSeason('from',4,this)">Season 4</div>
+  </div>
+  <div id="from-list"></div>
+  <div class="pb"></div>
+</div>
+
+<!-- WONDERFOOLS PAGE -->
+<div class="page" id="page-wonderfools">
+  <div class="series-header">
+    <div class="series-art">
+      <img src="thewonderfools.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#001a10,#001018)">✨</div>
+    </div>
+    <div class="series-info">
+      <div class="series-name">The Wonderfools</div>
+      <div class="series-ep-count">8 episodes · Season 1</div>
+      <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+    </div>
+  </div>
+  <div class="series-play-row">
+    <button class="btn-play">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      Download All
+    </button>
+    <button class="btn-shuffle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      Shuffle
+    </button>
+  </div>
+  <div id="wf-list"></div>
+  <div class="pb"></div>
+</div>
+
+<!-- DOWNLOAD SHEET -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet(event)">
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-art" id="sheetArt">
+        <div class="sheet-art-icon" id="sheetArtIcon">🎬</div>
+      </div>
+      <div>
+        <div class="sheet-title" id="sheetTitle"></div>
+        <div class="sheet-ep" id="sheetEp"></div>
+      </div>
+      <div class="sheet-x" onclick="document.getElementById('sheetOverlay').classList.remove('open')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+    </div>
+    <div class="dl-section-title">Choose Language</div>
+    <div id="sheetOptions"></div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- MINI PLAYER -->
+<div class="miniplayer" id="miniplayer">
+  <div class="mp-art" id="mpArt">
+    <div class="mp-art-icon" id="mpArtIcon">🎬</div>
+  </div>
+  <div class="mp-info">
+    <div class="mp-title" id="mpTitle">No subtitle selected</div>
+    <div class="mp-sub" id="mpSub">Tap an episode to download</div>
+    <div class="mp-prog"><div class="mp-bar" id="mpBar"></div></div>
+  </div>
+  <div class="mp-actions">
+    <div class="mp-btn" onclick="document.getElementById('miniplayer').classList.remove('show')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <a class="bn on" onclick="showPage('home',document.querySelector('.chip.on'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </a>
+  <a class="bn" onclick="openSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <span>Search</span>
+  </a>
+  <a class="bn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <span>Library</span>
+  </a>
+  <a class="bn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Profile</span>
+  </a>
 </nav>
 
-<!-- HERO -->
-<div class="hero" id="home">
-  <div class="hero-bg">
-    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
-      <source src="wednesday-edit.mp4" type="video/mp4"/>
-    </video>
-  </div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-badge" id="heroBadge">Featured</div>
-    <div class="hero-title" id="heroTitle">WEDNESDAY</div>
-    <div class="hero-meta">
-      <span class="rating" id="heroRating">★ 8.1</span>
-      <span id="heroYear">2022–2025</span>
-      <span id="heroSeasons">2 Seasons</span>
-      <span style="background:rgba(255,255,255,0.15);padding:2px 7px;border-radius:3px;font-size:11px;">Sinhala Subs</span>
-    </div>
-    <div class="hero-desc" id="heroDesc">Wednesday Addams investigates a murder mystery at Nevermore Academy. A darkly comedic coming-of-age story with supernatural twists. Sinhala subtitles available for all episodes.</div>
-    <div class="hero-btns">
-      <button class="btn-play" id="heroPlayBtn" onclick="openVideo('wednesday-edit.mp4','Wednesday — Trailer','wednesday-edit.vtt')">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><polygon points="3,2 14,8 3,14"/></svg>
-        Play Trailer
-      </button>
-      <button class="btn-sub" id="heroSubBtn" onclick="openDetailPanel('wednesday')">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="12" height="8" rx="1"/><path d="M5 8h6M5 11h4"/></svg>
-        Get Subtitles
-      </button>
-    </div>
-  </div>
-  <div class="hero-dots">
-    <div class="hero-dot active" onclick="switchHero(0)"></div>
-    <div class="hero-dot" onclick="switchHero(1)"></div>
-    <div class="hero-dot" onclick="switchHero(2)"></div>
-  </div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div style="margin-top:-60px;position:relative;z-index:2;" id="series">
-
-<!-- Series Cards -->
-<div class="section" id="subtitles">
-  <div class="section-title">Popular <span>Sinhala Subtitles</span></div>
-  <div class="series-row" id="seriesRow">
-
-    <!-- Wednesday -->
-    <div class="series-card" onclick="openDetailPanel('wednesday')">
-      <img class="card-thumb" src="wednesday.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Wednesday"/>
-      <div class="card-thumb-placeholder" style="display:none;background:linear-gradient(135deg,#1a1a2e,#16213e);">🕷️</div>
-      <div class="card-badge">NEW S2</div>
-      <div class="card-overlay">
-        <div class="card-name">Wednesday</div>
-        <div class="card-seasons">2 Seasons · 16 Episodes</div>
-      </div>
-    </div>
-
-    <!-- FROM -->
-    <div class="series-card" onclick="openDetailPanel('from')">
-      <img class="card-thumb" src="from-222.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="FROM"/>
-      <div class="card-thumb-placeholder" style="display:none;background:linear-gradient(135deg,#1a0a0a,#2d1515);">🌲</div>
-      <div class="card-badge">S4</div>
-      <div class="card-overlay">
-        <div class="card-name">FROM</div>
-        <div class="card-seasons">4 Seasons · 33 Episodes</div>
-      </div>
-    </div>
-
-    <!-- The Wonderful Fools -->
-    <div class="series-card" onclick="openDetailPanel('wonderfools')">
-      <img class="card-thumb" src="thewonderfools.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="The Wonderful Fools"/>
-      <div class="card-thumb-placeholder" style="display:none;background:linear-gradient(135deg,#0a1a0a,#152d15);">⭐</div>
-      <div class="card-badge">S1</div>
-      <div class="card-overlay">
-        <div class="card-name">The Wonderful Fools</div>
-        <div class="card-seasons">1 Season · 8 Episodes</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- WEDNESDAY DETAIL PANEL -->
-<div class="section">
-<div class="detail-panel" id="panel-wednesday">
-  <button class="detail-close" onclick="closePanel('wednesday')">✕</button>
-  <div class="detail-poster-placeholder" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">🕷️</div>
-  <div class="detail-info">
-    <div class="detail-title">Wednesday</div>
-    <div class="detail-meta">
-      <span style="color:#46d369;">★ 8.1</span>
-      <span>2022–2025</span>
-      <span>Netflix</span>
-      <span>Horror · Comedy</span>
-    </div>
-    <div class="tags">
-      <span class="tag">Supernatural</span><span class="tag">Mystery</span><span class="tag">Dark Comedy</span><span class="tag">Teen Drama</span>
-    </div>
-    <div class="detail-desc">Wednesday Addams unravels a monstrous killing spree that terrorizes Nevermore Academy — while mastering her psychic powers and building new friendships.</div>
-    <div class="season-tabs" id="tabs-wednesday">
-      <button class="season-tab active" onclick="switchSeason('wednesday',1,this)">Season 1</button>
-      <button class="season-tab" onclick="switchSeason('wednesday',2,this)">Season 2</button>
-    </div>
-    <div class="episode-list" id="eps-wednesday"></div>
-  </div>
-</div>
-</div>
-
-<!-- FROM DETAIL PANEL -->
-<div class="section">
-<div class="detail-panel" id="panel-from">
-  <button class="detail-close" onclick="closePanel('from')">✕</button>
-  <div class="detail-poster-placeholder" style="background:linear-gradient(135deg,#1a0a0a,#2d1515);">🌲</div>
-  <div class="detail-info">
-    <div class="detail-title">FROM</div>
-    <div class="detail-meta">
-      <span style="color:#46d369;">★ 7.8</span>
-      <span>2022–</span>
-      <span>MGM+</span>
-      <span>Horror · Sci-Fi</span>
-    </div>
-    <div class="tags">
-      <span class="tag">Horror</span><span class="tag">Mystery</span><span class="tag">Survival</span><span class="tag">Supernatural</span>
-    </div>
-    <div class="detail-desc">Trapped in a terrifying town in middle America, residents try to survive while searching for a way out. No one who enters can leave.</div>
-    <div class="season-tabs" id="tabs-from">
-      <button class="season-tab active" onclick="switchSeason('from',1,this)">Season 1</button>
-      <button class="season-tab" onclick="switchSeason('from',2,this)">Season 2</button>
-      <button class="season-tab" onclick="switchSeason('from',3,this)">Season 3</button>
-      <button class="season-tab" onclick="switchSeason('from',4,this)">Season 4</button>
-    </div>
-    <div class="episode-list" id="eps-from"></div>
-  </div>
-</div>
-</div>
-
-<!-- WONDERFUL FOOLS DETAIL PANEL -->
-<div class="section">
-<div class="detail-panel" id="panel-wonderfools">
-  <button class="detail-close" onclick="closePanel('wonderfools')">✕</button>
-  <div class="detail-poster-placeholder" style="background:linear-gradient(135deg,#0a1a0a,#152d15);">⭐</div>
-  <div class="detail-info">
-    <div class="detail-title">The Wonderful Fools</div>
-    <div class="detail-meta">
-      <span style="color:#46d369;">★ 7.5</span>
-      <span>Season 1</span>
-      <span>Drama · Comedy</span>
-    </div>
-    <div class="tags">
-      <span class="tag">Comedy</span><span class="tag">Drama</span><span class="tag">Adventure</span>
-    </div>
-    <div class="detail-desc">A heartwarming and hilarious journey of unlikely friends who stumble into extraordinary adventures together.</div>
-    <div class="season-tabs" id="tabs-wonderfools">
-      <button class="season-tab active" onclick="switchSeason('wonderfools',1,this)">Season 1</button>
-    </div>
-    <div class="episode-list" id="eps-wonderfools"></div>
-  </div>
-</div>
-</div>
-
-<!-- HOW TO USE -->
-<div class="section" style="margin-top:16px;">
-  <div class="section-title">How to Use <span>Subtitles</span></div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
-    <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;">
-      <div style="font-size:28px;margin-bottom:12px;">⬇️</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:8px;">1. Download SRT</div>
-      <div style="font-size:13px;color:var(--gray);line-height:1.6;">Click the download button next to your episode to get the Sinhala subtitle file.</div>
-    </div>
-    <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;">
-      <div style="font-size:28px;margin-bottom:12px;">📁</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:8px;">2. Place in Folder</div>
-      <div style="font-size:13px;color:var(--gray);line-height:1.6;">Put the .srt file in the same folder as your video file with the same name.</div>
-    </div>
-    <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;">
-      <div style="font-size:28px;margin-bottom:12px;">🎬</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:8px;">3. Open in VLC</div>
-      <div style="font-size:13px;color:var(--gray);line-height:1.6;">Open your video in VLC or any player — subtitles load automatically.</div>
-    </div>
-    <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;">
-      <div style="font-size:28px;margin-bottom:12px;">🇱🇰</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:8px;">4. Enjoy in Sinhala</div>
-      <div style="font-size:13px;color:var(--gray);line-height:1.6;">Watch your favorite series with perfect Sinhala subtitles.</div>
-    </div>
-  </div>
-</div>
-
-</div><!-- end main -->
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Cinemax English</div>
-  <div class="footer-text">Sinhala Subtitles for English TV Series · Free Download · Season 1–4 Available</div>
-  <div class="footer-links">
-    <a href="#">Home</a>
-    <a href="#">Series</a>
-    <a href="#">Contact</a>
-    <a href="#">Request Subtitles</a>
-  </div>
-</footer>
-
-<!-- VIDEO MODAL -->
-<div class="modal-overlay" id="videoModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeVideo()">✕</button>
-    <video id="modalVideo" controls crossorigin="anonymous">
-      <source id="modalSrc" src="" type="video/mp4"/>
-      <track id="modalTrack" kind="subtitles" srclang="si" label="සිංහල" default/>
-    </video>
-    <div class="modal-title" id="modalTitle"></div>
-  </div>
-</div>
-
 <script>
-// =============================================
-// CHANGE THIS TO YOUR GITHUB RAW URL
-// Example: https://raw.githubusercontent.com/yourname/yourrepo/main/subtitles/
-// =============================================
-const GITHUB_BASE = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/subtitles/';
-
-// Subtitle file data for all series
-const data = {
-  wednesday: {
-    1: [
-      {ep:1,file:'wednesday_1-1_sinhala.srt'},
-      {ep:2,file:'wednesday_1-2_sinhala.srt'},
-      {ep:3,file:'wednesday_1-3_sinhala.srt'},
-      {ep:4,file:'wednesday_1-4_sinhala.srt'},
-      {ep:5,file:'wednesday_1-5_sinhala.srt'},
-      {ep:6,file:'wednesday_1-6_sinhala.srt'},
-      {ep:7,file:'wednesday_1-7_sinhala.srt'},
-      {ep:8,file:'wednesday_1-8_sinhala.srt'}
-    ],
-    2: [
-      {ep:1,file:'wednesday_2-1_sinhala.srt'},
-      {ep:2,file:'wednesday_2-2_sinhala.srt'},
-      {ep:3,file:'wednesday_2-3_sinhala.srt'},
-      {ep:4,file:'wednesday_2-4_sinhala.srt'},
-      {ep:5,file:'wednesday_2-5_sinhala.srt'},
-      {ep:6,file:'wednesday_2-6_sinhala.srt'},
-      {ep:7,file:'wednesday_2-7_sinhala.srt'},
-      {ep:8,file:'wednesday_2-8_sinhala.srt'}
-    ]
+const D = {
+  wednesday:{
+    name:'Wednesday', poster:'wednesday-s123.jpg', icon:'🖤',
+    seasons:{
+      1: Array.from({length:8},(_,i)=>({
+        ep:`S1E${i+1}`, label:`Episode ${i+1}`,
+        si:`wednesday_1-${i+1}_sinhala.srt`,
+        en:`wednesday_1-${i+1}_english.srt`,
+        ko:`wednesday_1-${i+1}_korean.srt`
+      })),
+      2: Array.from({length:8},(_,i)=>({
+        ep:`S2E${i+1}`, label:`Episode ${i+1}`,
+        si:`wednesday_2-${i+1}_sinhala.srt`,
+        en:`wednesday_2-${i+1}_english.srt`,
+        ko:`wednesday_2-${i+1}_korean.srt`
+      }))
+    }
   },
-  from: {
-    1: [
-      {ep:1,file:'from_1-1_sinhala.srt'},
-      {ep:2,file:'from_1-2_sinhala.srt'},
-      {ep:3,file:'from_1-3_sinhala.srt'},
-      {ep:4,file:'From_1-4_Sinhala.srt'},
-      {ep:5,file:'from_1-5_sinhala.srt'},
-      {ep:6,file:'from_1-6_sinhala.srt'},
-      {ep:7,file:'from_1-7_sinhala.srt'},
-      {ep:8,file:'from_1-8_sinhala.srt'},
-      {ep:9,file:'from_1-9_sinhala.srt'},
-      {ep:10,file:'from_1-10_sinhala.srt'}
-    ],
-    2: [
-      {ep:1,file:'from_2-1_sinhala.srt'},
-      {ep:2,file:'from_2-2_sinhala.srt'},
-      {ep:3,file:'from_2-3_sinhala.srt'},
-      {ep:4,file:'from_2-4_sinhala.srt'},
-      {ep:5,file:'from_2-5_sinhala.srt'},
-      {ep:6,file:'from_2-6_sinhala.srt'},
-      {ep:7,file:'from_2-7_sinhala.srt'},
-      {ep:8,file:'from_2-8_sinhala.srt'},
-      {ep:9,file:'from_2-9_sinhala.srt'},
-      {ep:10,file:'from_2-10_sinhala.srt'}
-    ],
-    3: [
-      {ep:1,file:'from_3-1_sinhala.srt'},
-      {ep:2,file:'from_3-2_sinhala.srt'},
-      {ep:3,file:'from_3-3_sinhala.srt'},
-      {ep:4,file:'from_3-4_sinhala.srt'},
-      {ep:5,file:'from_3-5_sinhala.srt'},
-      {ep:6,file:'from_3-6_sinhala.srt'},
-      {ep:7,file:'from_3-7_sinhala.srt'},
-      {ep:8,file:'from_3-8_sinhala.srt'},
-      {ep:9,file:'from_3-9_sinhala.srt'},
-      {ep:10,file:'from_3-10_sinhala.srt'}
-    ],
-    4: [
-      {ep:1,file:'from_4-1_sinhala-1.srt'},
-      {ep:2,file:'from_4-2_sinhala-1.srt'},
-      {ep:3,file:'from_4-3_sinhala.srt'}
-    ]
+  from:{
+    name:'From', poster:'from-s222.jpg', icon:'🌲',
+    seasons:{
+      1: Array.from({length:10},(_,i)=>({
+        ep:`S1E${i+1}`, label:`Episode ${i+1}`,
+        si:`from_1-${i+1}_sinhala.srt`,
+        en:`from_1-${i+1}_english.srt`,
+        ko:`from_1-${i+1}_korean.srt`
+      })),
+      2: Array.from({length:10},(_,i)=>({
+        ep:`S2E${i+1}`, label:`Episode ${i+1}`,
+        si:`from_2-${i+1}_sinhala.srt`,
+        en:`from_2-${i+1}_english.srt`,
+        ko:`from_2-${i+1}_korean.srt`
+      })),
+      3: Array.from({length:10},(_,i)=>({
+        ep:`S3E${i+1}`, label:`Episode ${i+1}`,
+        si:`from_3-${i+1}_sinhala.srt`,
+        en:`from_3-${i+1}_english.srt`,
+        ko:`from_3-${i+1}_korean.srt`
+      })),
+      4:[
+        {ep:'S4E1',label:'Episode 1',si:'from_4-1_sinhala-1.srt',en:'from_4-1_english.srt',ko:'from_4-1_korean.srt'},
+        {ep:'S4E2',label:'Episode 2',si:'from_4-2_sinhala-1.srt',en:'from_4-2_english.srt',ko:'from_4-2_korean.srt'},
+        {ep:'S4E3',label:'Episode 3',si:'from_4-3_sinhala.srt',en:'from_4-3_english.srt',ko:'from_4-3_korean.srt'}
+      ]
+    }
   },
-  wonderfools: {
-    1: [
-      {ep:1,file:'thewonderfools_1-1_sinhala.srt'},
-      {ep:2,file:'thewonderfools_1-2_sinhala.srt'},
-      {ep:3,file:'thewonderfools_1-3_sinhala.srt'},
-      {ep:4,file:'thewonderfools_1-4_sinhala.srt'},
-      {ep:5,file:'thewonderfools_1-5_sinhala.srt'},
-      {ep:6,file:'thewonderfools_1-6_sinhala.srt'},
-      {ep:7,file:'thewonderfools_1-7_sinhala.srt'},
-      {ep:8,file:'thewonderfools_1-8_sinhala.srt'}
-    ]
+  wonderfools:{
+    name:'The Wonderfools', poster:'thewonderfools.jpg', icon:'✨',
+    seasons:{
+      1: Array.from({length:8},(_,i)=>({
+        ep:`S1E${i+1}`, label:`Episode ${i+1}`,
+        si:`thewonderfools_1-${i+1}_sinhala.srt`,
+        en:`thewonderfools_1-${i+1}_english.srt`,
+        ko:`thewonderfools_1-${i+1}_korean.srt`
+      }))
+    }
   }
 };
 
-// Hero slider data
-// subtitle: VTT file path — browser needs WebVTT (.vtt), SRT files don't work in <track>
-const heroes = [
-  {
-    video:'wednesday-edit.mp4',
-    subtitle:'wednesday-edit.vtt',
-    title:'WEDNESDAY',
-    badge:'Featured',
-    rating:'★ 8.1',
-    year:'2022–2025',
-    seasons:'2 Seasons',
-    desc:'Wednesday Addams investigates a murder mystery at Nevermore Academy. A darkly comedic coming-of-age story. Sinhala subtitles available.',
-    panel:'wednesday'
-  },
-  {
-    video:'from.mp4',
-    subtitle:'from-trailer-sinhala.vtt',
-    title:'FROM',
-    badge:'Fan Favorite',
-    rating:'★ 7.8',
-    year:'2022–',
-    seasons:'4 Seasons',
-    desc:'Trapped in a terrifying town with no escape. Survivors fight against creatures of the night. All 4 seasons with Sinhala subtitles.',
-    panel:'from'
-  },
-  {
-    video:'thewonderfools-sinhala.mp4',
-    subtitle:'thewonderfools-trailer-sinhala.vtt',
-    title:'THE WONDERFUL FOOLS',
-    badge:'New',
-    rating:'★ 7.5',
-    year:'2023',
-    seasons:'1 Season',
-    desc:'A heartwarming comedy-drama about unlikely friendships and extraordinary adventures. Full Sinhala subtitles included.',
-    panel:'wonderfools'
-  }
+const LANGS=[
+  {k:'si',flag:'🇱🇰',label:'සිංහල',cls:'dl-si-bg'},
+  {k:'en',flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',label:'English',cls:'dl-en-bg'},
+  {k:'ko',flag:'🇰🇷',label:'한국어',cls:'dl-ko-bg'}
 ];
 
-let currentHero = 0;
-let heroTimer = null;
-
-// Switch hero section
-function switchHero(i) {
-  currentHero = i;
-  const h = heroes[i];
-  const vid = document.getElementById('heroVideo');
-  vid.innerHTML = `<source src="${h.video}" type="video/mp4"/>`;
-  vid.load();
-  vid.play();
-  document.getElementById('heroBadge').textContent = h.badge;
-  document.getElementById('heroTitle').textContent = h.title;
-  document.getElementById('heroRating').textContent = h.rating;
-  document.getElementById('heroYear').textContent = h.year;
-  document.getElementById('heroSeasons').textContent = h.seasons;
-  document.getElementById('heroDesc').textContent = h.desc;
-  document.querySelectorAll('.hero-dot').forEach((d, j) => d.classList.toggle('active', j === i));
-  document.getElementById('heroPlayBtn').onclick = () => openVideo(h.video, h.title + ' — Trailer', h.subtitle);
-  document.getElementById('heroSubBtn').onclick = () => openDetailPanel(h.panel);
-}
-
-// Auto rotate hero every 8 seconds
-function autoHero() {
-  clearInterval(heroTimer);
-  heroTimer = setInterval(() => { switchHero((currentHero + 1) % heroes.length); }, 8000);
-}
-autoHero();
-
-// Series background images for episode cards
-const seriesBg = {
-  wednesday: 'wednesday.jpg',
-  from: 'from-222.jpg',
-  wonderfools: 'thewonderfools.jpg'
-};
-
-// Render episode list
-function renderEps(series, season) {
-  const eps = data[series][season] || [];
-  const container = document.getElementById('eps-' + series);
-  container.innerHTML = eps.map(e => `
-    <div class="ep-item">
-      <div class="ep-bg" style="background-image:url('${seriesBg[series]}')"></div>
-      <div class="ep-gradient"></div>
-      <div class="ep-watermark">E${String(e.ep).padStart(2,'0')}</div>
-      <div class="ep-content">
-        <div class="ep-left">
-          <div class="ep-num">EPISODE ${e.ep}</div>
-          <div class="ep-label">සිංහල උපසිරැසි</div>
-          <div class="ep-sub">${e.file}</div>
-        </div>
-        <a href="${GITHUB_BASE}${e.file}" download="${e.file}" class="btn-dl">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M8 2v8M5 7l3 3 3-3"/>
-            <line x1="2" y1="14" x2="14" y2="14"/>
-          </svg>
-          SRT
-        </a>
+function epRow(sid, ep, num){
+  const s=D[sid];
+  const n=num||'';
+  return `<div class="qp-row" onclick="openSheet('${sid}','${ep.ep}')">
+    <div class="qp-thumb">
+      <img src="${s.poster}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="qp-thumb-icon" style="display:none">${s.icon}</div>
+    </div>
+    <div class="qp-info">
+      <div class="qp-title">${s.name} · ${ep.label}</div>
+      <div class="qp-sub">${ep.ep}</div>
+      <div class="qp-langs">
+        <span class="lbadge lb-si">SI</span>
+        <span class="lbadge lb-en">EN</span>
+        <span class="lbadge lb-ko">KO</span>
       </div>
     </div>
-  `).join('');
+    <div class="qp-dl" onclick="event.stopPropagation();openSheet('${sid}','${ep.ep}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </div>
+    <div class="qp-more">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+    </div>
+  </div>`;
 }
 
-// Switch season tab
-function switchSeason(series, season, btn) {
-  document.querySelectorAll(`#tabs-${series} .season-tab`).forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderEps(series, season);
+function renderList(containerId, sid, season){
+  const eps=D[sid].seasons[season]||[];
+  document.getElementById(containerId).innerHTML=eps.map((ep,i)=>epRow(sid,ep,i+1)).join('');
 }
 
-// Open detail panel
-function openDetailPanel(id) {
-  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
-  const panel = document.getElementById('panel-' + id);
-  panel.classList.add('open');
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  const firstSeason = Object.keys(data[id])[0];
-  renderEps(id, parseInt(firstSeason));
+function switchSeason(show,num,el){
+  const prefix=show==='wed'?'wed':'from';
+  document.querySelectorAll(`#${prefix}-tabs .stab`).forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  const sid=show==='wed'?'wednesday':'from';
+  const cid=show==='wed'?'wed-list':'from-list';
+  renderList(cid,sid,num);
 }
 
-// Close detail panel
-function closePanel(id) {
-  document.getElementById('panel-' + id).classList.remove('open');
+function buildQuickPicks(){
+  const picks=[
+    {sid:'wednesday',season:2,epIdx:7},
+    {sid:'from',season:4,epIdx:2},
+    {sid:'from',season:4,epIdx:1},
+    {sid:'wonderfools',season:1,epIdx:7},
+    {sid:'wednesday',season:1,epIdx:0},
+    {sid:'from',season:4,epIdx:0}
+  ];
+  document.getElementById('quickPicks').innerHTML=picks.map(p=>{
+    const ep=D[p.sid].seasons[p.season][p.epIdx];
+    return ep?epRow(p.sid,ep):'';
+  }).join('');
 }
 
-// Open video modal with optional subtitle track
-function openVideo(src, title, subtitle) {
-  document.getElementById('modalSrc').src = src;
-  const track = document.getElementById('modalTrack');
-  if (subtitle) {
-    track.src = subtitle;
-    track.mode = 'showing';
-  } else {
-    track.src = '';
-    track.mode = 'disabled';
+let currentSheet={sid:'',ep:null};
+
+function openSheet(sid,epCode){
+  const s=D[sid];
+  let ep=null;
+  Object.values(s.seasons).forEach(season=>season.forEach(e=>{if(e.ep===epCode)ep=e}));
+  if(!ep)return;
+  currentSheet={sid,ep};
+
+  const artEl=document.getElementById('sheetArt');
+  artEl.innerHTML=`<img src="${s.poster}" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';document.getElementById('sheetArtIcon').style.display='flex'">
+  <div class="sheet-art-icon" id="sheetArtIcon" style="display:none">${s.icon}</div>`;
+
+  document.getElementById('sheetTitle').textContent=`${s.name} · ${ep.label}`;
+  document.getElementById('sheetEp').textContent=ep.ep;
+
+  document.getElementById('sheetOptions').innerHTML=LANGS.map((l,i)=>`
+    ${i>0?'<div class="dl-sep"></div>':''}
+    <div class="dl-row" onclick="triggerDownload('${l.k}')">
+      <div class="dl-icon ${l.cls}">${l.flag}</div>
+      <div class="dl-info">
+        <div class="dl-lang">${l.label}</div>
+        <div class="dl-file">${ep[l.k]}</div>
+      </div>
+      <a class="dl-btn" href="${ep[l.k]}" download="${ep[l.k]}" onclick="event.stopPropagation();selectDownload('${sid}','${ep.ep}','${l.k}')">Download</a>
+    </div>`).join('');
+
+  document.getElementById('sheetOverlay').classList.add('open');
+  updateMiniPlayer(sid, ep);
+}
+
+function triggerDownload(langKey){
+  const ep=currentSheet.ep;
+  const a=document.createElement('a');
+  a.href=ep[langKey];a.download=ep[langKey];a.click();
+  selectDownload(currentSheet.sid,ep.ep,langKey);
+}
+
+function selectDownload(sid,epCode,lang){
+  const s=D[sid];
+  let ep=null;
+  Object.values(s.seasons).forEach(season=>season.forEach(e=>{if(e.ep===epCode)ep=e}));
+  if(!ep)return;
+  updateMiniPlayer(sid,ep,lang);
+  document.getElementById('sheetOverlay').classList.remove('open');
+}
+
+function updateMiniPlayer(sid,ep,lang){
+  const s=D[sid];
+  const mp=document.getElementById('miniplayer');
+  mp.classList.add('show');
+  document.getElementById('mpTitle').textContent=`${s.name} — ${ep.label}`;
+  const langLabel=lang?LANGS.find(l=>l.k===lang)?.label:'All languages';
+  document.getElementById('mpSub').textContent=`${ep.ep} · ${langLabel||'Select language'}`;
+  const mpArt=document.getElementById('mpArt');
+  mpArt.innerHTML=`<img src="${s.poster}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"><div class="mp-art-icon" style="display:none">${s.icon}</div>`;
+  const bar=document.getElementById('mpBar');
+  bar.style.width='0%';
+  setTimeout(()=>bar.style.width='100%',50);
+}
+
+function closeSheet(e){
+  if(e.target===document.getElementById('sheetOverlay'))
+    document.getElementById('sheetOverlay').classList.remove('open');
+}
+
+function showPage(id, chipEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  if(chipEl)chipEl.classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='wednesday')renderList('wed-list','wednesday',1);
+  if(id==='from')renderList('from-list','from',1);
+  if(id==='wonderfools')renderList('wf-list','wonderfools',1);
+}
+
+function filterLang(lang,el){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-home').classList.add('active');
+}
+
+function openSearch(){
+  document.getElementById('searchOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('searchInput').focus(),100);
+}
+function closeSearch(){
+  document.getElementById('searchOverlay').classList.remove('open');
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchResults').innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>';
+}
+
+function doSearch(val){
+  const res=document.getElementById('searchResults');
+  if(!val.trim()){
+    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>';
+    return;
   }
-  const vid = document.getElementById('modalVideo');
-  vid.load();
-  // Enable subtitle text track after load
-  vid.addEventListener('loadedmetadata', function onLoad() {
-    if (vid.textTracks[0]) vid.textTracks[0].mode = 'showing';
-    vid.removeEventListener('loadedmetadata', onLoad);
+  const q=val.toLowerCase();
+  const hits=[];
+  Object.entries(D).forEach(([sid,s])=>{
+    if(s.name.toLowerCase().includes(q)){
+      Object.values(s.seasons).forEach(season=>season.forEach(ep=>{
+        if(hits.length<30)hits.push({sid,ep,s});
+      }));
+    } else {
+      Object.values(s.seasons).forEach(season=>season.forEach(ep=>{
+        if((s.name+' '+ep.ep+' '+ep.label).toLowerCase().includes(q)&&hits.length<30)
+          hits.push({sid,ep,s});
+      }));
+    }
   });
-  vid.play();
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('videoModal').classList.add('open');
+  if(!hits.length){
+    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">No results found</div>';
+    return;
+  }
+  res.innerHTML=hits.map(h=>`
+    <div class="sr-item" onclick="closeSearch();openSheet('${h.sid}','${h.ep.ep}')">
+      <div class="sr-icon">
+        <img src="${h.s.poster}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-size:20px">${h.s.icon}</span>
+      </div>
+      <div class="sr-text">
+        <div class="sr-title">${h.s.name} — ${h.ep.label}</div>
+        <div class="sr-sub">${h.ep.ep} · සිංහල · English · 한국어</div>
+      </div>
+      <div class="sr-go">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 17 9.2-9.2M17 17V7H7"/></svg>
+      </div>
+    </div>`).join('');
 }
 
-// Close video modal
-function closeVideo() {
-  document.getElementById('videoModal').classList.remove('open');
-  document.getElementById('modalVideo').pause();
-}
-
-// Scroll to section
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-}
-
-// Search/filter series cards
-function filterSeries(q) {
-  const cards = document.querySelectorAll('.series-card');
-  q = q.toLowerCase();
-  cards.forEach(c => {
-    c.style.opacity = (c.innerText.toLowerCase().includes(q) || !q) ? '1' : '0.2';
-  });
-}
-
-// Close modal when clicking outside
-document.getElementById('videoModal').onclick = function(e) {
-  if (e.target === this) closeVideo();
-};
+buildQuickPicks();
 </script>
 </body>
-  </html>
+   </html>
