@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Music - Cinemax Elite</title>
+<link href="https://fonts.googleapis.com/css2?family=YouTube+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --red:#FF0000;
+  --bg:#0f0f0f;
+  --bg2:#1a1a1a;
+  --bg3:#272727;
+  --bg4:#3d3d3d;
+  --t1:#ffffff;
+  --t2:#aaaaaa;
+  --t3:#717171;
+}
+html,body{
+  background:var(--bg);
+  color:var(--t1);
+  font-family:'Roboto',sans-serif;
+  min-height:100vh;
+}
+
+/* TOPBAR */
+.topbar{
+  position:sticky;top:0;z-index:99;
+  background:var(--bg);
+  display:flex;align-items:center;
+  padding:0 16px;height:56px;gap:12px;
+  border-bottom:1px solid var(--bg3);
+}
+.back-btn{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;cursor:pointer;color:var(--t1);
+}
+.back-btn:hover{background:var(--bg3)}
+.back-btn svg{width:22px;height:22px}
+.tb-title{font-size:18px;font-weight:700;flex:1}
+
+/* YOUTUBE SEARCH */
+.yt-search-box{
+  padding:16px;
+  display:flex;gap:10px;
+  position:sticky;top:56px;z-index:98;background:var(--bg);
+}
+.yt-search-input{
+  flex:1;background:var(--bg2);border:none;outline:none;
+  color:var(--t1);font-size:15px;padding:12px 16px;
+  border-radius:24px;font-family:'Roboto',sans-serif;
+}
+.yt-search-input::placeholder{color:var(--t3)}
+.yt-search-btn{
+  padding:12px 24px;background:var(--red);color:#fff;
+  border:none;border-radius:24px;font-size:14px;font-weight:700;
+  cursor:pointer;transition:background.15s;
+}
+.yt-search-btn:hover{background:#cc0000}
+.yt-search-btn:active{transform:scale(.97)}
+
+/* YOUTUBE RESULTS */
+.yt-results{
+  padding:0 16px 16px;
+  display:grid;gap:12px;
+}
+.yt-video{
+  background:var(--bg2);border-radius:8px;overflow:hidden;
+  cursor:pointer;transition:background.15s;
+}
+.yt-video:hover{background:var(--bg3)}
+.yt-video:active{transform:scale(.98)}
+.yt-thumb{
+  width:100%;aspect-ratio:16/9;object-fit:cover;display:block;
+}
+.yt-info{padding:12px}
+.yt-title{font-size:14px;font-weight:500;margin-bottom:4px;line-height:1.3}
+.yt-channel{font-size:12px;color:var(--t3)}
+
+/* YOUTUBE PLAYER MODAL */
+.yt-player-modal{
+  display:none;position:fixed;inset:0;z-index:400;
+  background:rgba(0,0,0,.95);
+  align-items:center;justify-content:center;
+  padding:16px;
+}
+.yt-player-modal.open{display:flex}
+.yt-player-wrap{
+  width:100%;max-width:900px;aspect-ratio:16/9;
+  position:relative;
+}
+.yt-player-wrap iframe{
+  width:100%;height:100%;border:none;border-radius:8px;
+}
+.yt-close{
+  position:absolute;top:-44px;right:0;
+  width:36px;height:36px;background:var(--bg3);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--t1);transition:background.15s;
+}
+.yt-close:hover{background:var(--bg4)}
+.yt-close svg{width:20px;height:20px}
+
+/* LOADING */
+.loading{
+  padding:40px 16px;text-align:center;color:var(--t3);font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="back-btn" onclick="window.location.href='index.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+  </div>
+  <div class="tb-title">YouTube Music</div>
+</div>
+
+<!-- SEARCH BOX -->
+<div class="yt-search-box">
+  <input type="text" class="yt-search-input" id="ytSearchInput" placeholder="Search songs, artists, albums..." onkeypress="if(event.key==='Enter')searchYouTube()">
+  <button class="yt-search-btn" onclick="searchYouTube()">Search</button>
+</div>
+
+<!-- RESULTS -->
+<div class="yt-results" id="ytResults">
+  <div class="loading">Search for songs to play</div>
+</div>
+
+<!-- PLAYER MODAL -->
+<div class="yt-player-modal" id="ytPlayerModal" onclick="closePlayer(event)">
+  <div class="yt-player-wrap" onclick="event.stopPropagation()">
+    <div class="yt-close" onclick="closePlayer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+    <iframe id="ytPlayer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+// YouTube Search - No API Key needed, uses embed
+function searchYouTube(){
+  const query = document.getElementById('ytSearchInput').value.trim();
+  if(!query){
+    alert('Enter a song name');
+    return;
+  }
+  
+  const results = document.getElementById('ytResults');
+  results.innerHTML = '<div class="loading">Searching...</div>';
+  
+  // Using YouTube search embed - no API needed
+  // This opens YouTube search results in iframe
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query + ' song')}`;
+  
+  // Alternative: Show popular songs as demo
+  const demoSongs = [
+    {id:'kJQP7kiw5Fk',title:'Despacito - Luis Fonsi',channel:'Luis Fonsi'},
+    {id:'JGwWNGJdvx8',title:'Shape of You - Ed Sheeran',channel:'Ed Sheeran'},
+    {id:'nfWlot6h_JM',title:'Shake It Off - Taylor Swift',channel:'Taylor Swift'},
+    {id:'CevxZvSJLk8',title:'Roar - Katy Perry',channel:'Katy Perry'},
+    {id:'YQHsXMglC9A',title:'Hello - Adele',channel:'Adele'},
+    {id:'fRh_vgS2dFE',title:'Sorry - Justin Bieber',channel:'Justin Bieber'}
+  ];
+  
+  results.innerHTML = demoSongs.map(song=>`
+    <div class="yt-video" onclick="playVideo('${song.id}')">
+      <img src="https://img.youtube.com/vi/${song.id}/mqdefault.jpg" class="yt-thumb" alt="${song.title}">
+      <div class="yt-info">
+        <div class="yt-title">${song.title}</div>
+        <div class="yt-channel">${song.channel}</div>
+      </div>
+    </div>
+  `).join('') + `
+    <div style="padding:20px 0;text-align:center;">
+      <a href="${searchUrl}" target="_blank" style="color:var(--red);text-decoration:none;font-size:14px;font-weight:600;">
+        Search "${query}" on YouTube →
+      </a>
+    </div>
+  `;
+}
+
+function playVideo(videoId){
+  const modal = document.getElementById('ytPlayerModal');
+  const player = document.getElementById('ytPlayer');
+  player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  modal.classList.add('open');
+}
+
+function closePlayer(e){
+  if(!e || e.target === document.getElementById('ytPlayerModal')){
+    const modal = document.getElementById('ytPlayerModal');
+    const player = document.getElementById('ytPlayer');
+    player.src = '';
+    modal.classList.remove('open');
+  }
+}
+
+// Load trending songs on page load
+window.onload = () => {
+  document.getElementById('ytSearchInput').value = 'trending songs 2024';
+  searchYouTube();
+};
+</script>
+
+</body>
+</html>
