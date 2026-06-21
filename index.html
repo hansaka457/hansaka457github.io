@@ -143,6 +143,51 @@ html,body{
 .hero-sub{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:10px}
 .lang-dot{width:5px;height:5px;border-radius:50%;background:var(--t3);display:inline-block}
 
+/* SERIES HERO */
+.series-hero{
+  position:relative;height:200px;overflow:hidden;margin-bottom:0;
+}
+.series-hero-bg{
+  width:100%;height:100%;object-fit:cover;
+  filter:blur(20px) brightness(.4);transform:scale(1.1);
+}
+.series-hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 0%,var(--bg) 85%);
+}
+.series-header{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;align-items:flex-end;gap:16px;
+  padding:0 16px 16px;
+}
+.series-art{
+  width:90px;height:90px;border-radius:6px;
+  background:var(--bg3);overflow:hidden;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(0,0,0,.5);
+}
+.series-art img{width:100%;height:100%;object-fit:cover}
+.series-art-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:38px}
+.series-info{flex:1}
+.series-name{font-size:22px;font-weight:700;margin-bottom:4px;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+.series-ep-count{font-size:13px;color:var(--t2);text-shadow:0 1px 4px rgba(0,0,0,.8)}
+.series-play-row{
+  display:flex;align-items:center;gap:10px;padding:16px 16px 16px;
+}
+.btn-play{
+  flex:1;height:40px;background:var(--t1);color:#000;
+  border:none;border-radius:24px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+}
+.btn-play:hover{background:#e0e0e0}
+.btn-play svg{width:18px;height:18px}
+.btn-shuffle{
+  height:40px;flex:1;background:var(--bg3);color:var(--t1);
+  border:none;border-radius:24px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+}
+.btn-shuffle:hover{background:var(--bg4)}
+.btn-shuffle svg{width:18px;height:18px}
+
 /* SECTION */
 .section{padding:0 0 8px;margin-top:8px}
 .section-head{
@@ -251,38 +296,6 @@ html,body{
 }
 .stab.on{color:var(--t1);border-bottom-color:var(--t1)}
 .stab:hover:not(.on){color:var(--t2)}
-
-/* SERIES PAGE HEADER */
-.series-header{
-  display:flex;align-items:flex-end;gap:16px;
-  padding:20px 16px 16px;
-}
-.series-art{
-  width:80px;height:80px;border-radius:6px;
-  background:var(--bg3);overflow:hidden;flex-shrink:0;
-}
-.series-art img{width:100%;height:100%;object-fit:cover}
-.series-art-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px}
-.series-info{}
-.series-name{font-size:20px;font-weight:700;margin-bottom:4px}
-.series-ep-count{font-size:13px;color:var(--t3)}
-.series-play-row{
-  display:flex;align-items:center;gap:10px;padding:0 16px 16px;
-}
-.btn-play{
-  flex:1;height:40px;background:var(--t1);color:#000;
-  border:none;border-radius:24px;font-size:14px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
-}
-.btn-play:hover{background:#e0e0e0}
-.btn-play svg{width:18px;height:18px}
-.btn-shuffle{
-  height:40px;flex:1;background:var(--bg3);color:var(--t1);
-  border:none;border-radius:24px;font-size:14px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
-}
-.btn-shuffle:hover{background:var(--bg4)}
-.btn-shuffle svg{width:18px;height:18px}
 
 /* BOTTOM NAV */
 .bnav{
@@ -427,7 +440,7 @@ html,body{
   </div>
 </div>
 
-<!-- MOOD CHIPS - Languages විතරයි -->
+<!-- MOOD CHIPS -->
 <div class="chips-wrap" id="chipsWrap">
   <button class="chip on" onclick="filterLang('all',this)">All</button>
   <button class="chip" onclick="filterLang('si',this)">සිංහල</button>
@@ -519,15 +532,19 @@ html,body{
 
 <!-- WEDNESDAY PAGE -->
 <div class="page" id="page-wednesday">
-  <div class="series-header">
-    <div class="series-art">
-      <img src="wednesday-s123.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#0d001a,#1a0033)">🖤</div>
-    </div>
-    <div class="series-info">
-      <div class="series-name">Wednesday</div>
-      <div class="series-ep-count">16 episodes · Seasons 1–2</div>
-      <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+  <div class="series-hero">
+    <img src="wednesday-s123.jpg" class="series-hero-bg" alt="" onerror="this.style.display='none'">
+    <div class="series-hero-overlay"></div>
+    <div class="series-header">
+      <div class="series-art">
+        <img src="wednesday-s123.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#0d001a,#1a0033)">🖤</div>
+      </div>
+      <div class="series-info">
+        <div class="series-name">Wednesday</div>
+        <div class="series-ep-count">16 episodes · Seasons 1–2</div>
+        <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+      </div>
     </div>
   </div>
   <div class="series-play-row">
@@ -536,7 +553,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -550,15 +567,19 @@ html,body{
 
 <!-- FROM PAGE -->
 <div class="page" id="page-from">
-  <div class="series-header">
-    <div class="series-art">
-      <img src="from-s222.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#1a0a00,#0a0800)">🌲</div>
-    </div>
-    <div class="series-info">
-      <div class="series-name">From</div>
-      <div class="series-ep-count">33 episodes · Seasons 1–4</div>
-      <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+  <div class="series-hero">
+    <img src="from-s222.jpg" class="series-hero-bg" alt="" onerror="this.style.display='none'">
+    <div class="series-hero-overlay"></div>
+    <div class="series-header">
+      <div class="series-art">
+        <img src="from-s222.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#1a0a00,#0a0800)">🌲</div>
+      </div>
+      <div class="series-info">
+        <div class="series-name">From</div>
+        <div class="series-ep-count">33 episodes · Seasons 1–4</div>
+        <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+      </div>
     </div>
   </div>
   <div class="series-play-row">
@@ -567,7 +588,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -583,16 +604,20 @@ html,body{
 
 <!-- WONDERFOOLS PAGE -->
 <div class="page" id="page-wonderfools">
-  <div class="series-header">
-    <div class="series-art">
-      <img src="thewonderfools.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#001a10,#001018)">✨</div>
-    </div>
-    <div class="series-info">
-      <div class="series-name">The Wonderfools</div>
+  <div class="series-hero">
+    <img src="thewonderfools.jpg" class="series-hero-bg" alt="" onerror="this.style.display='none'">
+    <div class="series-hero-overlay"></div>
+    <div class="series-header">
+      <div class="series-art">
+        <img src="thewonderfools.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#001a10,#001018)">✨</div>
+      </div>
+      <div class="series-info">
+              <div class="series-name">The Wonderfools</div>
       <div class="series-ep-count">8 episodes · Season 1</div>
       <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
     </div>
+  </div>
   </div>
   <div class="series-play-row">
     <button class="btn-play">
@@ -620,7 +645,7 @@ html,body{
         <div class="sheet-title" id="sheetTitle"></div>
         <div class="sheet-ep" id="sheetEp"></div>
       </div>
-            <div class="sheet-x" onclick="document.getElementById('sheetOverlay').classList.remove('open')">
+      <div class="sheet-x" onclick="document.getElementById('sheetOverlay').classList.remove('open')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </div>
     </div>
@@ -658,7 +683,7 @@ html,body{
     <span>Search</span>
   </a>
   <a class="bn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 0 0 1 6.5 2z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     <span>Library</span>
   </a>
   <a class="bn">
@@ -931,4 +956,4 @@ function doSearch(val){
 document.addEventListener('DOMContentLoaded', buildQuickPicks);
 </script>
 </body>
-  </html>
+</html>
