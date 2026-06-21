@@ -59,6 +59,7 @@ html,body{
 }
 .yt-search-btn:hover{background:#cc0000}
 .yt-search-btn:active{transform:scale(.97)}
+.yt-search-btn:disabled{background:var(--bg4);cursor:not-allowed}
 
 /* YOUTUBE RESULTS */
 .yt-results{
@@ -68,15 +69,25 @@ html,body{
 .yt-video{
   background:var(--bg2);border-radius:8px;overflow:hidden;
   cursor:pointer;transition:background.15s;
+  display:flex;gap:12px;
 }
 .yt-video:hover{background:var(--bg3)}
 .yt-video:active{transform:scale(.98)}
-.yt-thumb{
-  width:100%;aspect-ratio:16/9;object-fit:cover;display:block;
+.yt-thumb-wrap{
+  width:160px;height:90px;flex-shrink:0;position:relative;
 }
-.yt-info{padding:12px}
-.yt-title{font-size:14px;font-weight:500;margin-bottom:4px;line-height:1.3}
-.yt-channel{font-size:12px;color:var(--t3)}
+.yt-thumb{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.yt-duration{
+  position:absolute;bottom:4px;right:4px;
+  background:rgba(0,0,0,.8);color:#fff;
+  font-size:11px;font-weight:600;padding:1px 4px;border-radius:2px;
+}
+.yt-info{padding:8px 8px 8px 0;flex:1;min-width:0}
+.yt-title{font-size:14px;font-weight:500;margin-bottom:4px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.yt-channel{font-size:12px;color:var(--t3);margin-bottom:2px}
+.yt-meta{font-size:11px;color:var(--t3)}
 
 /* YOUTUBE PLAYER MODAL */
 .yt-player-modal{
@@ -106,6 +117,33 @@ html,body{
 .loading{
   padding:40px 16px;text-align:center;color:var(--t3);font-size:14px;
 }
+.spinner{
+  width:32px;height:32px;border:3px solid var(--bg3);
+  border-top-color:var(--red);border-radius:50%;
+  animation:spin 1s linear infinite;margin:0 auto 12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ERROR */
+.error{
+  padding:40px 16px;text-align:center;color:var(--t3);font-size:14px;
+}
+.error-title{color:var(--red);font-weight:700;margin-bottom:8px}
+
+/* TRENDING TAGS */
+.trending-tags{
+  padding:0 16px 16px;
+  display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+}
+.trending-tags::-webkit-scrollbar{display:none}
+.trend-chip{
+  flex-shrink:0;padding:8px 16px;border-radius:20px;
+  background:var(--bg2);color:var(--t1);
+  font-size:13px;font-weight:500;cursor:pointer;
+  border:none;white-space:nowrap;transition:all.15s;
+}
+.trend-chip:hover{background:var(--bg3)}
+.trend-chip:active{transform:scale(.95)}
 </style>
 </head>
 <body>
@@ -121,7 +159,17 @@ html,body{
 <!-- SEARCH BOX -->
 <div class="yt-search-box">
   <input type="text" class="yt-search-input" id="ytSearchInput" placeholder="Search songs, artists, albums..." onkeypress="if(event.key==='Enter')searchYouTube()">
-  <button class="yt-search-btn" onclick="searchYouTube()">Search</button>
+  <button class="yt-search-btn" id="searchBtn" onclick="searchYouTube()">Search</button>
+</div>
+
+<!-- TRENDING TAGS -->
+<div class="trending-tags">
+  <button class="trend-chip" onclick="quickSearch('trending songs 2024')">🔥 Trending</button>
+  <button class="trend-chip" onclick="quickSearch('arijit singh')">Arijit Singh</button>
+  <button class="trend-chip" onclick="quickSearch('taylor swift')">Taylor Swift</button>
+  <button class="trend-chip" onclick="quickSearch('sinhala songs')">Sinhala</button>
+  <button class="trend-chip" onclick="quickSearch('kpop')">K-Pop</button>
+  <button class="trend-chip" onclick="quickSearch('bollywood hits')">Bollywood</button>
 </div>
 
 <!-- RESULTS -->
@@ -140,8 +188,11 @@ html,body{
 </div>
 
 <script>
-// YouTube Search - No API Key needed, uses embed
-function searchYouTube(){
+// YouTube API Key
+const YT_API_KEY = 'AIzaSyCdjXsiUaDD8iJ02b5ps2vXuzHGncSaACw';
+const YT_API_URL = 'https://www.googleapis.com/youtube/v3';
+
+async function searchYouTube(){
   const query = document.getElementById('ytSearchInput').value.trim();
   if(!query){
     alert('Enter a song name');
@@ -149,37 +200,68 @@ function searchYouTube(){
   }
   
   const results = document.getElementById('ytResults');
-  results.innerHTML = '<div class="loading">Searching...</div>';
+  const searchBtn = document.getElementById('searchBtn');
+  searchBtn.disabled = true;
+  results.innerHTML = '<div class="loading"><div class="spinner"></div>Searching...</div>';
   
-  // Using YouTube search embed - no API needed
-  // This opens YouTube search results in iframe
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query + ' song')}`;
-  
-  // Alternative: Show popular songs as demo
-  const demoSongs = [
-    {id:'kJQP7kiw5Fk',title:'Despacito - Luis Fonsi',channel:'Luis Fonsi'},
-    {id:'JGwWNGJdvx8',title:'Shape of You - Ed Sheeran',channel:'Ed Sheeran'},
-    {id:'nfWlot6h_JM',title:'Shake It Off - Taylor Swift',channel:'Taylor Swift'},
-    {id:'CevxZvSJLk8',title:'Roar - Katy Perry',channel:'Katy Perry'},
-    {id:'YQHsXMglC9A',title:'Hello - Adele',channel:'Adele'},
-    {id:'fRh_vgS2dFE',title:'Sorry - Justin Bieber',channel:'Justin Bieber'}
-  ];
-  
-  results.innerHTML = demoSongs.map(song=>`
-    <div class="yt-video" onclick="playVideo('${song.id}')">
-      <img src="https://img.youtube.com/vi/${song.id}/mqdefault.jpg" class="yt-thumb" alt="${song.title}">
-      <div class="yt-info">
-        <div class="yt-title">${song.title}</div>
-        <div class="yt-channel">${song.channel}</div>
+  try {
+    const searchRes = await fetch(`${YT_API_URL}/search?part=snippet&q=${encodeURIComponent(query + ' song')}&type=video&videoCategoryId=10&maxResults=20&key=${YT_API_KEY}`);
+    const searchData = await searchRes.json();
+    
+    if(searchData.error){
+      throw new Error(searchData.error.message);
+    }
+    
+    if(!searchData.items || searchData.items.length === 0){
+      results.innerHTML = '<div class="error"><div class="error-title">No Results</div>No songs found for "' + query + '"</div>';
+      searchBtn.disabled = false;
+      return;
+    }
+    
+    const videoIds = searchData.items.map(item => item.id.videoId).join(',');
+    const detailsRes = await fetch(`${YT_API_URL}/videos?part=contentDetails,statistics&id=${videoIds}&key=${YT_API_KEY}`);
+    const detailsData = await detailsRes.json();
+    
+    const videos = searchData.items.map(item => {
+      const details = detailsData.items.find(v => v.id === item.id.videoId);
+      return {
+        id: item.id.videoId,
+        title: item.snippet.title,
+        channel: item.snippet.channelTitle,
+        thumbnail: item.snippet.thumbnails.medium.url,
+        duration: details ? formatDuration(details.contentDetails.duration) : '',
+        views: details ? formatViews(details.statistics.viewCount) : ''
+      };
+    });
+    
+    results.innerHTML = videos.map(video=>`
+      <div class="yt-video" onclick="playVideo('${video.id}')">
+        <div class="yt-thumb-wrap">
+          <img src="${video.thumbnail}" class="yt-thumb" alt="${video.title}">
+          <div class="yt-duration">${video.duration}</div>
+        </div>
+        <div class="yt-info">
+          <div class="yt-title">${video.title}</div>
+          <div class="yt-channel">${video.channel}</div>
+          <div class="yt-meta">${video.views} views</div>
+        </div>
       </div>
-    </div>
-  `).join('') + `
-    <div style="padding:20px 0;text-align:center;">
-      <a href="${searchUrl}" target="_blank" style="color:var(--red);text-decoration:none;font-size:14px;font-weight:600;">
-        Search "${query}" on YouTube →
-      </a>
-    </div>
-  `;
+    `).join('');
+    
+  } catch(err) {
+    console.error(err);
+    results.innerHTML = `<div class="error">
+      <div class="error-title">Error</div>
+      ${err.message || 'Failed to search. Check API key or quota.'}
+    </div>`;
+  }
+  
+  searchBtn.disabled = false;
+}
+
+function quickSearch(query){
+  document.getElementById('ytSearchInput').value = query;
+  searchYouTube();
 }
 
 function playVideo(videoId){
@@ -196,6 +278,22 @@ function closePlayer(e){
     player.src = '';
     modal.classList.remove('open');
   }
+}
+
+function formatDuration(iso){
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  const h = parseInt(match[1]||0);
+  const m = parseInt(match[2]||0);
+  const s = parseInt(match[3]||0);
+  if(h) return `${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function formatViews(count){
+  const n = parseInt(count);
+  if(n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if(n >= 1000) return (n/1000).toFixed(1)+'K';
+  return n.toString();
 }
 
 // Load trending songs on page load
