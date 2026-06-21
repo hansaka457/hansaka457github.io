@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -443,9 +443,10 @@ html,body{
 <!-- MOOD CHIPS -->
 <div class="chips-wrap" id="chipsWrap">
   <button class="chip on" onclick="filterLang('all',this)">All</button>
-  <button class="chip" onclick="filterLang('si',this)">සිංහල</button>
+  <button class="chip" onclick="filterLang('si',this)">Sinhala</button>
   <button class="chip" onclick="filterLang('en',this)">English</button>
-  <button class="chip" onclick="filterLang('ko',this)">한국어</button>
+  <button class="chip" onclick="filterLang('ko',this)">Korean</button>
+  <button class="chip" onclick="window.location.href='music.html'">🎵 Music</button>
 </div>
 
 <!-- HOME PAGE -->
@@ -460,11 +461,11 @@ html,body{
       <div class="hero-eyebrow">Subtitle Library</div>
       <div class="hero-title">Download<br>Your Subtitles</div>
       <div class="hero-sub">
-        <span>සිංහල</span>
+        <span>Sinhala</span>
         <span class="lang-dot"></span>
         <span>English</span>
         <span class="lang-dot"></span>
-        <span>한국어</span>
+        <span>Korean</span>
       </div>
     </div>
   </div>
@@ -543,7 +544,7 @@ html,body{
       <div class="series-info">
         <div class="series-name">Wednesday</div>
         <div class="series-ep-count">16 episodes · Seasons 1–2</div>
-        <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+        <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
       </div>
     </div>
   </div>
@@ -553,7 +554,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -578,7 +579,7 @@ html,body{
       <div class="series-info">
         <div class="series-name">From</div>
         <div class="series-ep-count">33 episodes · Seasons 1–4</div>
-        <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+        <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
       </div>
     </div>
   </div>
@@ -613,11 +614,11 @@ html,body{
         <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#001a10,#001018)">✨</div>
       </div>
       <div class="series-info">
-              <div class="series-name">The Wonderfools</div>
-      <div class="series-ep-count">8 episodes · Season 1</div>
-      <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
+        <div class="series-name">The Wonderfools</div>
+        <div class="series-ep-count">8 episodes · Season 1</div>
+                <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
+      </div>
     </div>
-  </div>
   </div>
   <div class="series-play-row">
     <button class="btn-play">
@@ -625,72 +626,74 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
+  </div>
+  <div class="stabs" id="wf-tabs">
+    <div class="stab on" onclick="switchSeason('wf',1,this)">Season 1</div>
   </div>
   <div id="wf-list"></div>
   <div class="pb"></div>
 </div>
 
-<!-- DOWNLOAD SHEET -->
-<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet(event)">
-  <div class="sheet" id="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-      <div class="sheet-art" id="sheetArt">
-        <div class="sheet-art-icon" id="sheetArtIcon">🎬</div>
-      </div>
-      <div>
-        <div class="sheet-title" id="sheetTitle"></div>
-        <div class="sheet-ep" id="sheetEp"></div>
-      </div>
-      <div class="sheet-x" onclick="document.getElementById('sheetOverlay').classList.remove('open')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </div>
-    </div>
-    <div class="dl-section-title">Choose Language</div>
-    <div id="sheetOptions"></div>
-    <div style="height:20px"></div>
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <div class="bn on" onclick="goHome()">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>Home</span>
+  </div>
+  <div class="bn" onclick="openSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
+    <span>Search</span>
+  </div>
+  <div class="bn" onclick="window.location.href='music.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    <span>Library</span>
+  </div>
+  <div class="bn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Profile</span>
   </div>
 </div>
 
 <!-- MINI PLAYER -->
 <div class="miniplayer" id="miniplayer">
   <div class="mp-art" id="mpArt">
-    <div class="mp-art-icon" id="mpArtIcon">🎬</div>
+    <div class="mp-art-icon">📄</div>
   </div>
   <div class="mp-info">
     <div class="mp-title" id="mpTitle">No subtitle selected</div>
-    <div class="mp-sub" id="mpSub">Tap an episode to download</div>
+    <div class="mp-sub" id="mpSub">Select an episode to download</div>
     <div class="mp-prog"><div class="mp-bar" id="mpBar"></div></div>
   </div>
   <div class="mp-actions">
-    <div class="mp-btn" onclick="document.getElementById('miniplayer').classList.remove('show')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <div class="mp-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
     </div>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<nav class="bnav">
-  <a class="bn on" onclick="goHome()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    <span>Home</span>
-  </a>
-  <a class="bn" onclick="openSearch()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <span>Search</span>
-  </a>
-  <a class="bn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    <span>Library</span>
-  </a>
-  <a class="bn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    <span>Profile</span>
-  </a>
-</nav>
+<!-- DOWNLOAD SHEET -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet(event)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-art" id="sheetArt">
+        <div class="sheet-art-icon">📄</div>
+      </div>
+      <div>
+        <div class="sheet-title" id="sheetTitle">Episode</div>
+        <div class="sheet-ep" id="sheetEp">S1E1</div>
+      </div>
+      <div class="sheet-x" onclick="document.getElementById('sheetOverlay').classList.remove('open')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+    </div>
+    <div class="dl-section-title">Available Subtitles</div>
+    <div id="sheetOptions"></div>
+  </div>
+</div>
 
 <script>
 const D = {
@@ -751,23 +754,11 @@ const D = {
     }
   }
 };
-  wonderfools:{
-    name:'The Wonderfools', poster:'thewonderfools.jpg', icon:'✨',
-    seasons:{
-      1: Array.from({length:8},(_,i)=>({
-        ep:`S1E${i+1}`, label:`Episode ${i+1}`,
-        si:`thewonderfools_1-${i+1}_sinhala.srt`,
-        en:`thewonderfools_1-${i+1}_english.srt`,
-        ko:`thewonderfools_1-${i+1}_korean.srt`
-      }))
-    }
-  }
-};
 
 const LANGS=[
-  {k:'si',flag:'🇱🇰',label:'සිංහල',cls:'dl-si-bg'},
+  {k:'si',flag:'🇱🇰',label:'Sinhala',cls:'dl-si-bg'},
   {k:'en',flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',label:'English',cls:'dl-en-bg'},
-  {k:'ko',flag:'🇰🇷',label:'한국어',cls:'dl-ko-bg'}
+  {k:'ko',flag:'🇰🇷',label:'Korean',cls:'dl-ko-bg'}
 ];
 
 function epRow(sid, ep, num){
@@ -801,11 +792,11 @@ function renderList(containerId, sid, season){
 }
 
 function switchSeason(show,num,el){
-  const prefix=show==='wed'?'wed':'from';
+  const prefix=show==='wed'?'wed':show==='wf'?'wf':'from';
   document.querySelectorAll(`#${prefix}-tabs.stab`).forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
-  const sid=show==='wed'?'wednesday':'from';
-  const cid=show==='wed'?'wed-list':'from-list';
+  const sid=show==='wed'?'wednesday':show==='wf'?'wonderfools':'from';
+  const cid=show==='wed'?'wed-list':show==='wf'?'wf-list':'from-list';
   renderList(cid,sid,num);
 }
 
@@ -957,7 +948,7 @@ function doSearch(val){
       </div>
       <div class="sr-text">
         <div class="sr-title">${h.s.name} — ${h.ep.label}</div>
-        <div class="sr-sub">${h.ep.ep} · සිංහල · English · 한국어</div>
+        <div class="sr-sub">${h.ep.ep} · Sinhala · English · Korean</div>
       </div>
       <div class="sr-go">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 17 9.2-9.2M17 17V7H7"/></svg>
@@ -965,7 +956,9 @@ function doSearch(val){
     </div>`).join('');
 }
 
+// Page load උනාම Quick picks හදනවා
 document.addEventListener('DOMContentLoaded', buildQuickPicks);
 </script>
+
 </body>
-</html>
+  </html>
