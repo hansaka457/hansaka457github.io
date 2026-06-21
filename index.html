@@ -26,7 +26,6 @@ html,body{
   font-family:'Roboto',sans-serif;
   min-height:100vh;
   overflow-x:hidden;
-  /* max-width:480px; margin:0 auto; <-- මේ 2 line එක අයින් කළා */
   width:100%;
 }
 
@@ -163,7 +162,7 @@ html,body{
 
 /* MIX CARD */
 .mix{flex-shrink:0;width:160px;cursor:pointer}
-.mix:active.mix-art{transform:scale(.97)}
+.mix:active .mix-art{transform:scale(.97)}
 .mix-art{
   width:160px;height:160px;border-radius:4px;
   overflow:hidden;background:var(--bg3);position:relative;
@@ -403,7 +402,7 @@ html,body{
   </div>
   <div class="tb-icons">
     <div class="tb-icon" onclick="openSearch()" title="Search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
     </div>
     <div class="tb-icon" title="Notifications">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -461,10 +460,10 @@ html,body{
   <div class="section">
     <div class="section-head">
       <div class="section-title">Mixed for you</div>
-      <span class="section-all" onclick="showPage('wednesday',document.querySelector('.chip:nth-child(2)'))">See all ›</span>
+      <span class="section-all" onclick="showPage('wednesday')">See all ›</span>
     </div>
     <div class="hscroll">
-      <div class="mix" onclick="showPage('wednesday',document.querySelectorAll('.chip')[1])">
+      <div class="mix" onclick="showPage('wednesday')">
         <div class="mix-art">
           <img src="wednesday-s123.jpg" alt="Wednesday" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="mix-art-fallback" style="display:none;background:linear-gradient(135deg,#0d001a,#1a0033)">🖤</div>
@@ -477,7 +476,7 @@ html,body{
         <div class="mix-meta">3 languages</div>
         <div class="mix-langs"><span class="lbadge lb-si">SI</span><span class="lbadge lb-en">EN</span><span class="lbadge lb-ko">KO</span></div>
       </div>
-      <div class="mix" onclick="showPage('from',document.querySelectorAll('.chip')[2])">
+      <div class="mix" onclick="showPage('from')">
         <div class="mix-art">
           <img src="from-s222.jpg" alt="From" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="mix-art-fallback" style="display:none;background:linear-gradient(135deg,#1a0a00,#0a0800)">🌲</div>
@@ -490,7 +489,7 @@ html,body{
         <div class="mix-meta">3 languages</div>
         <div class="mix-langs"><span class="lbadge lb-si">SI</span><span class="lbadge lb-en">EN</span><span class="lbadge lb-ko">KO</span></div>
       </div>
-      <div class="mix" onclick="showPage('wonderfools',document.querySelectorAll('.chip')[3])">
+      <div class="mix" onclick="showPage('wonderfools')">
         <div class="mix-art">
           <img src="thewonderfools.jpg" alt="The Wonderfools" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="mix-art-fallback" style="display:none;background:linear-gradient(135deg,#001a10,#001018)">✨</div>
@@ -537,7 +536,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -568,41 +567,13 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
   <div class="stabs" id="from-tabs">
     <div class="stab on" onclick="switchSeason('from',1,this)">Season 1</div>
     <div class="stab" onclick="switchSeason('from',2,this)">Season 2</div>
-    <div class="stab" onclick="switchSeason('from',3,this)">Season 3</div>
-    <div class="stab" onclick="switchSeason('from',4,this)">Season 4</div>
-  </div>
-  <div id="from-list"></div>
-  <div class="pb"></div>
-</div>
-
-<!-- WONDERFOOLS PAGE -->
-<div class="page" id="page-wonderfools">
-  <div class="series-header">
-    <div class="series-art">
-      <img src="thewonderfools.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#001a10,#001018)">✨</div>
-    </div>
-    <div class="series-info">
-      <div class="series-name">The Wonderfools</div>
-      <div class="series-ep-count">8 episodes · Season 1</div>
-      <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">සිංහල</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">한국어</span></div>
-    </div>
-  </div>
-  <div class="series-play-row">
-    <button class="btn-play">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
-      Download All
-    </button>
-    <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8
-          <div class="stab" onclick="switchSeason('from',2,this)">Season 2</div>
     <div class="stab" onclick="switchSeason('from',3,this)">Season 3</div>
     <div class="stab" onclick="switchSeason('from',4,this)">Season 4</div>
   </div>
@@ -649,7 +620,7 @@ html,body{
         <div class="sheet-title" id="sheetTitle"></div>
         <div class="sheet-ep" id="sheetEp"></div>
       </div>
-      <div class="sheet-x" onclick="document.getElementById('sheetOverlay').classList.remove('open')">
+            <div class="sheet-x" onclick="document.getElementById('sheetOverlay').classList.remove('open')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </div>
     </div>
@@ -687,7 +658,7 @@ html,body{
     <span>Search</span>
   </a>
   <a class="bn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 0 0 1 6.5 2z"/></svg>
     <span>Library</span>
   </a>
   <a class="bn">
@@ -764,7 +735,6 @@ const LANGS=[
 
 function epRow(sid, ep, num){
   const s=D[sid];
-  const n=num||'';
   return `<div class="qp-row" onclick="openSheet('${sid}','${ep.ep}')">
     <div class="qp-thumb">
       <img src="${s.poster}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -811,7 +781,9 @@ function buildQuickPicks(){
     {sid:'wednesday',season:1,epIdx:0},
     {sid:'from',season:4,epIdx:0}
   ];
-  document.getElementById('quickPicks').innerHTML=picks.map(p=>{
+  const container=document.getElementById('quickPicks');
+  if(!container) return;
+  container.innerHTML=picks.map(p=>{
     const ep=D[p.sid].seasons[p.season][p.epIdx];
     return ep?epRow(p.sid,ep):'';
   }).join('');
@@ -867,4 +839,96 @@ function selectDownload(sid,epCode,lang){
 function updateMiniPlayer(sid,ep,lang){
   const s=D[sid];
   const mp=document.getElementById('miniplayer');
-  mp.classList.add('                                                               
+  mp.classList.add('show');
+  document.getElementById('mpTitle').textContent=`${s.name} — ${ep.label}`;
+  const langLabel=lang?LANGS.find(l=>l.k===lang)?.label:'All languages';
+  document.getElementById('mpSub').textContent=`${ep.ep} · ${langLabel||'Select language'}`;
+  const mpArt=document.getElementById('mpArt');
+  mpArt.innerHTML=`<img src="${s.poster}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"><div class="mp-art-icon" style="display:none">${s.icon}</div>`;
+  const bar=document.getElementById('mpBar');
+  bar.style.width='0%';
+  setTimeout(()=>bar.style.width='100%',50);
+}
+
+function closeSheet(e){
+  if(e.target===document.getElementById('sheetOverlay'))
+    document.getElementById('sheetOverlay').classList.remove('open');
+}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='wednesday')renderList('wed-list','wednesday',1);
+  if(id==='from')renderList('from-list','from',1);
+  if(id==='wonderfools')renderList('wf-list','wonderfools',1);
+}
+
+function goHome(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-home').classList.add('active');
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  document.querySelector('.chip').classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function filterLang(lang,el){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  goHome();
+}
+
+function openSearch(){
+  document.getElementById('searchOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('searchInput').focus(),100);
+}
+function closeSearch(){
+  document.getElementById('searchOverlay').classList.remove('open');
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchResults').innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>';
+}
+
+function doSearch(val){
+  const res=document.getElementById('searchResults');
+  if(!val.trim()){
+    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>';
+    return;
+  }
+  const q=val.toLowerCase();
+  const hits=[];
+  Object.entries(D).forEach(([sid,s])=>{
+    if(s.name.toLowerCase().includes(q)){
+      Object.values(s.seasons).forEach(season=>season.forEach(ep=>{
+        if(hits.length<30)hits.push({sid,ep,s});
+      }));
+    } else {
+      Object.values(s.seasons).forEach(season=>season.forEach(ep=>{
+        if((s.name+' '+ep.ep+' '+ep.label).toLowerCase().includes(q)&&hits.length<30)
+          hits.push({sid,ep,s});
+      }));
+    }
+  });
+  if(!hits.length){
+    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">No results found</div>';
+    return;
+  }
+  res.innerHTML=hits.map(h=>`
+    <div class="sr-item" onclick="closeSearch();openSheet('${h.sid}','${h.ep.ep}')">
+      <div class="sr-icon">
+        <img src="${h.s.poster}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-size:20px">${h.s.icon}</span>
+      </div>
+      <div class="sr-text">
+        <div class="sr-title">${h.s.name} — ${h.ep.label}</div>
+        <div class="sr-sub">${h.ep.ep} · සිංහල · English · 한국어</div>
+      </div>
+      <div class="sr-go">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 17 9.2-9.2M17 17V7H7"/></svg>
+      </div>
+    </div>`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', buildQuickPicks);
+</script>
+</body>
+  </html>
