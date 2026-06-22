@@ -58,6 +58,32 @@ button{border:none;background:none;color:inherit;font:inherit;cursor:pointer}
 .trend-chip:active{transform:scale(.95)}
 .trend-chip-icon{font-size:16px}
 
+/* Hero - Dynamic Background */
+.hero{
+  height:220px;background:linear-gradient(135deg,#1a1a1a,#0f);
+  background-size:cover;background-position:center;
+  display:flex;align-items:flex-end;padding:16px;position:relative;
+  margin:0 0 12px;transition:background-image.5s ease;
+}
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.4),transparent);
+}
+.hero-content{position:relative;z-index:1;width:100%}
+.hero-badge{
+  background:var(--red);color:#fff;font-size:11px;font-weight:700;
+  padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;
+}
+.hero-title{font-size:22px;font-weight:700;margin-bottom:4px;line-height:1.2}
+.hero-sub{font-size:13px;color:var(--t2);margin-bottom:12px}
+.hero-btn{
+  background:var(--t1);color:var(--bg1);border-radius:20px;
+  padding:8px 16px;font-size:14px;font-weight:700;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.hero-btn:active{transform:scale(.95)}
+
+/* Shorts Section - Hero එකට යටින් */
 .shorts-section{
   padding:12px 0;border-bottom:1px solid var(--border);
 }
@@ -92,32 +118,8 @@ button{border:none;background:none;color:inherit;font:inherit;cursor:pointer}
 }
 .shorts-views{font-size:11px;color:var(--t2);margin-top:2px}
 
-.hero{
-  height:200px;background:linear-gradient(135deg,#1a1a1a,#0f0f0f);
-  background-size:cover;background-position:center;
-  display:flex;align-items:flex-end;padding:16px;position:relative;
-  margin:0 0 12px;
-}
-.hero::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,.3),transparent);
-}
-.hero-content{position:relative;z-index:1;width:100%}
-.hero-badge{
-  background:var(--red);color:#fff;font-size:11px;font-weight:700;
-  padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;
-}
-.hero-title{font-size:22px;font-weight:700;margin-bottom:4px;line-height:1.2}
-.hero-sub{font-size:13px;color:var(--t2);margin-bottom:12px}
-.hero-btn{
-  background:var(--t1);color:var(--bg1);border-radius:20px;
-  padding:8px 16px;font-size:14px;font-weight:700;
-  display:inline-flex;align-items:center;gap:6px;
-}
-.hero-btn:active{transform:scale(.95)}
-
 .fifa-live-card{
-  margin:0 16px 12px;background:var(--bg2);border-radius:12px;
+  margin:12px 16px;background:var(--bg2);border-radius:12px;
   overflow:hidden;border:2px solid var(--red);
 }
 .fifa-live-thumb{width:100%;aspect-ratio:16/9;object-fit:cover}
@@ -280,7 +282,7 @@ button{border:none;background:none;color:inherit;font:inherit;cursor:pointer}
   <div class="search-wrap">
     <input type="text" class="search-input" id="ytSearchInput" placeholder="Search" onkeypress="if(event.key==='Enter')searchYouTube()">
     <button class="search-btn" id="searchBtn" onclick="searchYouTube()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 0 0 0 16 9.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <svg width="20" height="20" viewBox="0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 0 0 0 16 9.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
     </button>
   </div>
   <button class="settings-btn" onclick="openSettings()">
@@ -301,15 +303,7 @@ button{border:none;background:none;color:inherit;font:inherit;cursor:pointer}
   <button class="trend-chip" onclick="selectCategory('kpop',this)">K-Pop</button>
 </div>
 
-<div class="shorts-section" id="shortsSection">
-  <div class="shorts-header">
-    <div class="shorts-title">
-      <span class="shorts-icon">▶</span>Shorts
-    </div>
-  </div>
-  <div class="shorts-scroll" id="shortsScroll"></div>
-</div>
-
+<!-- Hero Banner - Dynamic Background -->
 <div class="hero" id="heroBanner">
   <div class="hero-content">
     <div class="hero-badge">TRENDING</div>
@@ -322,6 +316,16 @@ button{border:none;background:none;color:inherit;font:inherit;cursor:pointer}
   </div>
 </div>
 
+<!-- Shorts Section - Hero එකට යටින් -->
+<div class="shorts-section" id="shortsSection">
+  <div class="shorts-header">
+    <div class="shorts-title">
+      <span class="shorts-icon">▶</span>Shorts
+    </div>
+  </div>
+  <div class="shorts-scroll" id="shortsScroll"></div>
+</div>
+
 <div id="fifaLiveContainer"></div>
 
 <div class="yt-results" id="ytResults"></div>
@@ -329,7 +333,7 @@ button{border:none;background:none;color:inherit;font:inherit;cursor:pointer}
 <div class="player-modal" id="ytPlayerModal" onclick="closePlayer(event)">
   <div class="player-header">
     <button class="close-btn" onclick="closePlayer()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 17.59 13.41 12z"/></svg>
     </button>
     <div class="player-title">Now Playing</div>
   </div>
@@ -341,7 +345,7 @@ button{border:none;background:none;color:inherit;font:inherit;cursor:pointer}
     <div class="settings-header">
       <div class="settings-title">Settings</div>
       <button class="close-btn" onclick="closeSettings()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 17.59 13.41 12z"/></svg>
       </button>
     </div>
     <div class="settings-item">
@@ -415,6 +419,7 @@ let failedKeys = JSON.parse(localStorage.getItem('failedKeys') || '[]');
 let keyUsageCount = JSON.parse(localStorage.getItem('keyUsage') || '{}');
 let lastResetDate = localStorage.getItem('lastReset') || '';
 
+// කලින් upload කරපු background photos
 const CATEGORY_BGS = {
   trending: 'images/image_trending.jpg',
   'kids songs': 'images/image_kids.gpj',
@@ -434,6 +439,7 @@ let settings = { bgPlay: false, quality: 'medium' };
 const searchCache = {};
 const CACHE_TIME = 3600000;
 let heroVideoId = '';
+let currentSongIndex = 0;
 
 function checkDailyReset(){
   const now = new Date();
@@ -593,8 +599,12 @@ async function searchYouTube(retryCount = 0){
       time: Date.now()
     };
     
+    // Song එකට background change වෙනවා
     if(searchData.items[0]){
       heroVideoId = searchData.items[0].id.videoId;
+      currentSongIndex = 0;
+      
+      // Category background or video thumbnail
       const bg = CATEGORY_BGS[currentCategory] || searchData.items[0].snippet.thumbnails.high.url;
       document.getElementById('heroBanner').style.backgroundImage = `url(${bg})`;
       document.getElementById('heroTitle').textContent = searchData.items[0].snippet.title;
@@ -621,7 +631,7 @@ async function searchYouTube(retryCount = 0){
           Trying next key... (${YT_API_KEYS.length-failedKeys.length} left)
         </div>`;
         setTimeout(() => searchYouTube(retryCount + 1), 1000);
-      } else {
+            } else {
         results.innerHTML = `<div class="error" style="grid-column:1/-1"><div class="error-title">Error</div>Too many retries</div>`;
         searchBtn.disabled = false;
       }
@@ -660,11 +670,11 @@ function displayResults({searchData, detailsData}){
           <div class="fifa-live-info">
             <div class="fifa-live-title">${liveMatch.title}</div>
             <div class="fifa-live-channel">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2C6.48 2 6.48 2 12s4.48 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
               ${liveMatch.channel}
             </div>
             <div class="fifa-live-stats">${liveMatch.views}</div>
-            <button class="watch-live-btn" onclick="playVideo('${liveMatch.id}')">
+            <button class="watch-live-btn" onclick="playVideo('${liveMatch.id}', '${liveMatch.thumbnail}')">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               Watch Live
             </button>
@@ -674,13 +684,13 @@ function displayResults({searchData, detailsData}){
     }
   }
   
-  results.innerHTML = videos.map(video=>`
-    <div class="yt-video" onclick="playVideo('${video.id}')">
+  results.innerHTML = videos.map((video, index)=>`
+    <div class="yt-video" onclick="playVideo('${video.id}', '${video.thumbnail}', ${index})">
       <div class="yt-thumb-wrap">
         <img src="${video.thumbnail}" class="yt-thumb" alt="${video.title}">
         <div class="yt-duration" style="${video.isLive? 'background:#FF0000;font-weight:700' : ''}">${video.duration}</div>
         <div class="yt-menu">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2.9-2 2.9 2 2 2zm0 2c-1.1 0-2.9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2.9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
         </div>
       </div>
       <div class="yt-info">
@@ -701,10 +711,20 @@ function playHeroVideo(){
   if(heroVideoId) playVideo(heroVideoId);
 }
 
-function playVideo(videoId){
+// Song එකක් click කරාම Hero background එක change වෙනවා
+function playVideo(videoId, thumbnail, index){
   const quality = settings.quality === 'high'? 'hd720' : settings.quality === 'low'? 'small' : 'medium';
   const modal = document.getElementById('ytPlayerModal');
   const player = document.getElementById('ytPlayer');
+  
+  // Hero background update - song එකේ thumbnail එකට
+  if(thumbnail){
+    document.getElementById('heroBanner').style.backgroundImage = `url(${thumbnail})`;
+  }
+  if(typeof index !== 'undefined'){
+    currentSongIndex = index;
+  }
+  
   player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&vq=${quality}&playsinline=1`;
   modal.classList.add('open');
 }
