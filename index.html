@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --red:#FF0000;
-  --bg:#0f0f0f;
+  --bg:#0f0f;
   --bg2:#1a1a1a;
   --bg3:#272727;
   --bg4:#3d3d3d;
@@ -397,9 +397,83 @@ html,body{
 .dl-btn:hover{background:#cc0000}
 .dl-sep{height:1px;background:var(--bg3);margin:4px 0}
 
+/* CINESUBZ RESULTS */
+.yt-results{
+  padding:0 16px 16px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.yt-video{
+  background:var(--bg2);border-radius:12px;overflow:hidden;
+  cursor:pointer;transition:all.15s;
+  display:flex;flex-direction:column;
+}
+.yt-video:active{transform:scale(.98)}
+.yt-thumb-wrap{
+  width:100%;aspect-ratio:16/9;position:relative;
+}
+.yt-thumb{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.yt-duration{
+  position:absolute;bottom:6px;right:6px;
+  background:rgba(0,0,0,.8);color:#fff;
+  font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px;
+}
+.yt-info{padding:10px}
+.yt-title{font-size:13px;font-weight:500;margin-bottom:4px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.yt-channel-row{
+  display:flex;align-items:center;gap:6px;margin-bottom:2px;
+}
+.yt-channel-icon{
+  width:20px;height:20px;border-radius:50%;background:var(--bg3);
+  flex-shrink:0;
+}
+.yt-channel{font-size:11px;color:var(--t2)}
+.yt-meta{font-size:11px;color:var(--t2)}
+
 /* CONTENT */
 .pb{height:120px}
+.loading,.error{
+  padding:40px 16px;text-align:center;color:var(--t2);
+  grid-column:1/-1;
+}
+.spinner{
+  width:32px;height:32px;border:3px solid var(--bg3);
+  border-top-color:var(--red);border-radius:50%;
+  animation:spin.8s linear infinite;margin:0 auto 12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-title{color:var(--red);font-weight:600;margin-bottom:8px;font-size:16px}
 
+.player-modal{
+  position:fixed;inset:0;z-index:200;background:var(--bg1);
+  display:none;flex-direction:column;
+}
+.player-modal.open{display:flex}
+.player-header{
+  padding:12px 16px;display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--border);
+}
+.close-btn{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.close-btn:active{background:var(--bg3)}
+.player-title{flex:1;font-size:15px;font-weight:600}
+.yt-player{width:100%;aspect-ratio:16/9;border:none;background:#000}
+
+@media(max-width:480px){
+.yt-results{grid-template-columns:1fr}
+.shorts-item{width:120px}
+}
+@media(min-width:768px){
+.yt-results{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:1024px){
+.yt-results{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
 <body>
@@ -418,7 +492,7 @@ html,body{
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
     </div>
     <div class="tb-icon" title="Notifications">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 1-3.46 0"/></svg>
     </div>
     <div class="avatar">C</div>
   </div>
@@ -432,11 +506,11 @@ html,body{
     </div>
     <div class="search-input-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Search series or episode..." oninput="doSearch(this.value)" autofocus>
+      <input type="text" id="searchInput" placeholder="Search movies & TV series..." oninput="doSearch(this.value)" autofocus>
     </div>
   </div>
   <div class="search-results" id="searchResults">
-    <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>
+    <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>
   </div>
 </div>
 
@@ -446,7 +520,7 @@ html,body{
   <button class="chip" onclick="filterLang('si',this)">Sinhala</button>
   <button class="chip" onclick="filterLang('en',this)">English</button>
   <button class="chip" onclick="filterLang('ko',this)">Korean</button>
-  <button class="chip" onclick="window.location.href='music.html'">🎵 Music</button>
+  <button class="chip" onclick="searchCinesubz('trending')">🎬 Movies</button>
 </div>
 
 <!-- HOME PAGE -->
@@ -554,7 +628,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -577,7 +651,7 @@ html,body{
         <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#1a0a00,#0a0800)">🌲</div>
       </div>
       <div class="series-info">
-        <div class="series-name">From</div>
+                <div class="series-name">From</div>
         <div class="series-ep-count">33 episodes · Seasons 1–4</div>
         <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
       </div>
@@ -589,7 +663,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -616,7 +690,7 @@ html,body{
       <div class="series-info">
         <div class="series-name">The Wonderfools</div>
         <div class="series-ep-count">8 episodes · Season 1</div>
-                <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
+        <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
       </div>
     </div>
   </div>
@@ -693,6 +767,20 @@ html,body{
     <div class="dl-section-title">Available Subtitles</div>
     <div id="sheetOptions"></div>
   </div>
+</div>
+
+<!-- CINESUBZ SEARCH RESULTS CONTAINER -->
+<div class="yt-results" id="results" style="padding:16px;display:none"></div>
+
+<!-- PLAYER MODAL -->
+<div class="player-modal" id="ytPlayerModal" onclick="closePlayer(event)">
+  <div class="player-header">
+    <button class="close-btn" onclick="closePlayer()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 17.59 13.41 12z"/></svg>
+    </button>
+    <div class="player-title">Now Playing</div>
+  </div>
+  <iframe class="yt-player" id="ytPlayer" allow="autoplay;encrypted-media" allowfullscreen></iframe>
 </div>
 
 <script>
@@ -897,6 +985,7 @@ function goHome(){
   document.getElementById('page-home').classList.add('active');
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
   document.querySelector('.chip').classList.add('on');
+  document.getElementById('results').style.display='none';
   window.scrollTo(0,0);
 }
 
@@ -913,52 +1002,106 @@ function openSearch(){
 function closeSearch(){
   document.getElementById('searchOverlay').classList.remove('open');
   document.getElementById('searchInput').value='';
-  document.getElementById('searchResults').innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>';
+  document.getElementById('searchResults').innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>';
 }
 
 function doSearch(val){
   const res=document.getElementById('searchResults');
   if(!val.trim()){
-    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for a series or episode</div>';
+    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>';
     return;
   }
-  const q=val.toLowerCase();
-  const hits=[];
-  Object.entries(D).forEach(([sid,s])=>{
-    if(s.name.toLowerCase().includes(q)){
-      Object.values(s.seasons).forEach(season=>season.forEach(ep=>{
-        if(hits.length<30)hits.push({sid,ep,s});
-      }));
-    } else {
-      Object.values(s.seasons).forEach(season=>season.forEach(ep=>{
-        if((s.name+' '+ep.ep+' '+ep.label).toLowerCase().includes(q)&&hits.length<30)
-          hits.push({sid,ep,s});
-      }));
-    }
-  });
-  if(!hits.length){
-    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">No results found</div>';
-    return;
-  }
-  res.innerHTML=hits.map(h=>`
-    <div class="sr-item" onclick="closeSearch();openSheet('${h.sid}','${h.ep.ep}')">
-      <div class="sr-icon">
-        <img src="${h.s.poster}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <span style="display:none;font-size:20px">${h.s.icon}</span>
-      </div>
-      <div class="sr-text">
-        <div class="sr-title">${h.s.name} — ${h.ep.label}</div>
-        <div class="sr-sub">${h.ep.ep} · Sinhala · English · Korean</div>
-      </div>
-      <div class="sr-go">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 17 9.2-9.2M17 17V7H7"/></svg>
-      </div>
-    </div>`).join('');
+  searchCinesubz(val);
 }
 
-// Page load උනාම Quick picks හදනවා
+function closePlayer(e){
+  if(!e || e.target === document.getElementById('ytPlayerModal')){
+    document.getElementById('ytPlayer').src = 'about:blank';
+    document.getElementById('ytPlayerModal').classList.remove('open');
+  }
+}
+
+// ==================== CINESUBZ API SEARCH ====================
+const CINESUBZ_API = 'https://api-dark-shan-yt.koyeb.app/movie/cinesubz-search';
+const CINESUBZ_KEY = '82406ca340409d44';
+
+async function searchCinesubz(query) {
+  const results = document.getElementById('results');
+  const pageHome = document.getElementById('page-home');
+  
+  if (!query.trim()) {
+    results.style.display = 'none';
+    return;
+  }
+  
+  // Show results container, hide home sections
+  results.style.display = 'grid';
+  pageHome.querySelector('.section').style.display = 'none';
+  pageHome.querySelector('.hero-section').style.display = 'none';
+  
+  results.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spinner"></div>Searching...</div>';
+  
+  try {
+    const res = await fetch(`${CINESUBZ_API}?q=${encodeURIComponent(query)}&apikey=${CINESUBZ_KEY}`);
+    const data = await res.json();
+    
+    if (!data.results ||!data.results.length) {
+      results.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--t3)">No results found</div>';
+      return;
+    }
+    
+    results.innerHTML = data.results.map(item => `
+      <div class="yt-video" onclick="openCinesubzDetails('${item.id}', '${item.title.replace(/'/g,"\\'")}', '${item.image}')">
+        <div class="yt-thumb-wrap">
+          <img class="yt-thumb" src="${item.image || 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+          <div class="yt-duration">${item.year || 'N/A'}</div>
+        </div>
+        <div class="yt-info">
+          <div class="yt-title">${item.title}</div>
+          <div class="yt-channel-row">
+            <div class="yt-channel-icon">🎬</div>
+            <div class="yt-channel">${item.type || 'Movie/Series'}</div>
+          </div>
+          <div class="yt-meta">${item.rating || 'N/A'} ★</div>
+        </div>
+      </div>
+    `).join('');
+    
+  } catch(err) {
+    results.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#ff4444">Error: ${err.message}</div>`;
+  }
+}
+
+function openCinesubzDetails(id, title, img) {
+  const modal = document.getElementById('ytPlayerModal');
+  const player = document.getElementById('ytPlayer');
+  document.querySelector('.player-title').textContent = title;
+  
+  player.src = 'about:blank';
+  player.srcdoc = `
+    <html>
+    <head><style>
+      body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;overflow:hidden}
+      img{max-width:100%;max-height:100%;object-fit:contain}
+     .info{position:absolute;bottom:0;left:0;right:0;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.9));padding:40px 20px 20px}
+      h2{margin:0 0 8px;font-size:24px}
+      p{margin:0;font-size:14px;color:#aaa}
+    </style></head>
+    <body>
+      <img src="${img}" alt="${title}" onerror="this.style.display='none'">
+      <div class="info">
+        <h2>${title}</h2>
+        <p>Visit Cinesubz website for full details and download links</p>
+      </div>
+    </body>
+    </html>
+  `;
+  modal.classList.add('open');
+}
+
+// Page load
 document.addEventListener('DOMContentLoaded', buildQuickPicks);
 </script>
 
 </body>
-  </html>
+</html>
