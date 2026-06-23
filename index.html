@@ -189,7 +189,7 @@ html,body{
 .btn-shuffle svg{width:18px;height:18px}
 
 /* SECTION */
-.section{padding:0 0 8px;margin-top:8px}
+.section{padding:0 8px;margin-top:8px}
 .section-head{
   display:flex;align-items:center;justify-content:space-between;
   padding:16px 16px 12px;
@@ -221,7 +221,7 @@ html,body{
 .mix-overlay{
   position:absolute;bottom:0;left:0;right:0;
   background:linear-gradient(transparent,rgba(0,0,0,.8));
-  padding:24px 10px 10px;
+  padding:24px 10px;
   display:flex;align-items:center;justify-content:space-between;
 }
 .mix-badge{
@@ -376,7 +376,7 @@ html,body{
   display:flex;align-items:center;gap:14px;
   padding:12px 16px;cursor:pointer;transition:background.1s;
 }
-.dl-row:hover,.dl-row:active{background:rgba(255,255,.05)}
+.dl-row:hover,.dl-row:active{background:rgba(255,255,255,.05)}
 .dl-icon{
   width:44px;height:44px;border-radius:10px;
   display:flex;align-items:center;justify-content:center;
@@ -397,9 +397,9 @@ html,body{
 .dl-btn:hover{background:#cc0000}
 .dl-sep{height:1px;background:var(--bg3);margin:4px 0}
 
-/* CINESUBZ RESULTS */
+/* RESULTS GRID */
 .yt-results{
-  padding:0 16px;
+  padding:16px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:12px;
@@ -467,7 +467,6 @@ html,body{
 @media(max-width:480px){
 .yt-results{grid-template-columns:1fr}
 .shorts-item{width:120px}
-}
 @media(min-width:768px){
 .yt-results{grid-template-columns:repeat(3,1fr)}
 }
@@ -502,25 +501,26 @@ html,body{
 <div class="search-overlay" id="searchOverlay">
   <div class="search-bar">
     <div class="search-back" onclick="closeSearch()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6 6-6"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
     </div>
     <div class="search-input-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Search movies & TV series..." oninput="doSearch(this.value)" autofocus>
+      <input type="text" id="searchInput" placeholder="Search movies, TV series & music..." onkeypress="if(event.key==='Enter')handleSearch(this.value)">
     </div>
   </div>
   <div class="search-results" id="searchResults">
-    <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>
+    <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies, TV series or music</div>
   </div>
 </div>
 
 <!-- MOOD CHIPS -->
 <div class="chips-wrap" id="chipsWrap">
-  <button class="chip on" onclick="filterLang('all',this)">All</button>
-  <button class="chip" onclick="filterLang('si',this)">Sinhala</button>
-  <button class="chip" onclick="filterLang('en',this)">English</button>
-  <button class="chip" onclick="filterLang('ko',this)">Korean</button>
-  <button class="chip" onclick="searchCinesubz('trending')">🎬 Movies</button>
+  <button class="chip on" onclick="switchTab('home',this)">All</button>
+  <button class="chip" onclick="switchTab('si',this)">Sinhala</button>
+  <button class="chip" onclick="switchTab('en',this)">English</button>
+  <button class="chip" onclick="switchTab('ko',this)">Korean</button>
+  <button class="chip" onclick="switchTab('movies',this)">🎬 Movies</button>
+  <button class="chip" onclick="switchTab('music',this)">🎵 Music</button>
 </div>
 
 <!-- HOME PAGE -->
@@ -628,7 +628,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -644,7 +644,7 @@ html,body{
 <div class="page" id="page-from">
   <div class="series-hero">
     <img src="from-s222.jpg" class="series-hero-bg" alt="" onerror="this.style.display='none'">
-    <div class="series-hero-overlay"></div>
+        <div class="series-hero-overlay"></div>
     <div class="series-header">
       <div class="series-art">
         <img src="from-s222.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -656,13 +656,14 @@ html,body{
         <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
       </div>
     </div>
+  </div>
   <div class="series-play-row">
     <button class="btn-play">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -670,7 +671,7 @@ html,body{
     <div class="stab on" onclick="switchSeason('from',1,this)">Season 1</div>
     <div class="stab" onclick="switchSeason('from',2,this)">Season 2</div>
     <div class="stab" onclick="switchSeason('from',3,this)">Season 3</div>
-        <div class="stab" onclick="switchSeason('from',4,this)">Season 4</div>
+    <div class="stab" onclick="switchSeason('from',4,this)">Season 4</div>
   </div>
   <div id="from-list"></div>
   <div class="pb"></div>
@@ -699,7 +700,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -768,14 +769,14 @@ html,body{
   </div>
 </div>
 
-<!-- CINESUBZ SEARCH RESULTS CONTAINER -->
+<!-- SEARCH & MUSIC RESULTS CONTAINER -->
 <div class="yt-results" id="results" style="padding:16px;display:none"></div>
 
 <!-- PLAYER MODAL -->
 <div class="player-modal" id="ytPlayerModal" onclick="closePlayer(event)">
   <div class="player-header">
     <button class="close-btn" onclick="closePlayer()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </button>
     <div class="player-title">Now Playing</div>
   </div>
@@ -865,7 +866,7 @@ function epRow(sid, ep, num){
       </div>
     </div>
     <div class="qp-dl" onclick="event.stopPropagation();openSheet('${sid}','${ep.ep}')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     </div>
     <div class="qp-more">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -990,10 +991,17 @@ function goHome(){
   window.scrollTo(0,0);
 }
 
-function filterLang(lang,el){
+function switchTab(tab,el){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
   el.classList.add('on');
-  goHome();
+  
+  if(tab==='home'||tab==='all'){
+    goHome();
+  }else if(tab==='movies'){
+    searchCinesubz('trending');
+  }else if(tab==='music'){
+    searchYouTubeMusic('trending songs');
+  }
 }
 
 function openSearch(){
@@ -1003,16 +1011,21 @@ function openSearch(){
 function closeSearch(){
   document.getElementById('searchOverlay').classList.remove('open');
   document.getElementById('searchInput').value='';
-  document.getElementById('searchResults').innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>';
+  document.getElementById('searchResults').innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies, TV series or music</div>';
 }
 
-function doSearch(val){
+function handleSearch(val){
   const res=document.getElementById('searchResults');
   if(!val.trim()){
-    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>';
+    res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies, TV series or music</div>';
     return;
   }
-  searchCinesubz(val);
+  // Check if music related
+  if(val.toLowerCase().includes('song')||val.toLowerCase().includes('music')){
+    searchYouTubeMusic(val);
+  }else{
+    searchCinesubz(val);
+  }
 }
 
 function closePlayer(e){
@@ -1042,7 +1055,7 @@ async function searchCinesubz(query) {
   document.querySelector('.hero-section').style.display = 'none';
   document.querySelector('.section').style.display = 'none';
   
-  results.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spinner"></div>Searching...</div>';
+  results.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spinner"></div>Searching movies...</div>';
   
   try {
     const res = await fetch(`${CINESUBZ_API}?q=${encodeURIComponent(query)}&apikey=${CINESUBZ_KEY}`);
@@ -1086,7 +1099,7 @@ function openCinesubzDetails(id, title, img) {
     <head><style>
       body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;overflow:hidden}
       img{max-width:100%;max-height:100%;object-fit:contain}
-     .info{position:absolute;bottom:0;left:0;right:0;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.9));padding:40px 20px 20px}
+    .info{position:absolute;bottom:0;left:0;right:0;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.9));padding:40px 20px 20px}
       h2{margin:0 0 8px;font-size:24px}
       p{margin:0;font-size:14px;color:#aaa}
     </style></head>
@@ -1100,6 +1113,136 @@ function openCinesubzDetails(id, title, img) {
     </html>
   `;
   modal.classList.add('open');
+}
+
+// ==================== YOUTUBE MUSIC SEARCH ====================
+const YT_API_URL = 'https://www.googleapis.com/youtube/v3';
+const YT_API_KEYS = [
+  'AIzaSyBmo2_cfffiJvts4fXtDnDLuqqINY7cTP0',
+  'AIzaSyCKujaEiRoGggrStbZMluXl9efLB6e7ow8',
+  'AIzaSyAZ8ZkCiThb4haQinA1JIeyiuwlgV4_FDY'
+];
+
+let currentKeyIndex = 0;
+let failedKeys = JSON.parse(localStorage.getItem('failedKeys') || '[]');
+
+function getApiKey(){
+  if(failedKeys.length >= YT_API_KEYS.length) return null;
+  let available = [];
+  for(let i = 0; i < YT_API_KEYS.length; i++){
+    if(!failedKeys.includes(i)) available.push(i);
+  }
+  currentKeyIndex = available[0];
+  return YT_API_KEYS[currentKeyIndex];
+}
+
+function markKeyFailed(){
+  if(!failedKeys.includes(currentKeyIndex)){
+    failedKeys.push(currentKeyIndex);
+    localStorage.setItem('failedKeys', JSON.stringify(failedKeys));
+  }
+}
+
+async function searchYouTubeMusic(query, retryCount = 0){
+  const results = document.getElementById('results');
+  const pageHome = document.getElementById('page-home');
+  
+  if(!query.trim()){
+    results.style.display = 'none';
+    document.querySelector('.hero-section').style.display = 'block';
+    document.querySelector('.section').style.display = 'block';
+    return;
+  }
+  
+  results.style.display = 'grid';
+  document.querySelector('.hero-section').style.display = 'none';
+  document.querySelector('.section').style.display = 'none';
+  results.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spinner"></div>Searching music...</div>';
+  
+  const YT_API_KEY = getApiKey();
+  if(!YT_API_KEY){
+    results.innerHTML = `<div class="error" style="grid-column:1/-1">
+      <div class="error-title">⚠️ All API Keys Exhausted</div>
+      Please try again later
+    </div>`;
+    return;
+  }
+  
+  try {
+    const searchRes = await fetch(`${YT_API_URL}/search?part=snippet&q=${encodeURIComponent(query)}&type=video&videoCategoryId=10&maxResults=20&key=${YT_API_KEY}`);
+    const searchData = await searchRes.json();
+    
+    if(searchData.error){
+      if(searchData.error.message.includes('quota')) throw new Error('quotaExceeded');
+      throw new Error(searchData.error.message);
+    }
+    
+    if(!searchData.items?.length){
+      results.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--t3)">No music found</div>`;
+      return;
+    }
+    
+    const videoIds = searchData.items.map(item => item.id.videoId).join(',');
+    const detailsRes = await fetch(`${YT_API_URL}/videos?part=contentDetails,statistics&id=${videoIds}&key=${YT_API_KEY}`);
+    const detailsData = await detailsRes.json();
+    
+    results.innerHTML = searchData.items.map((item, idx) => {
+      const details = detailsData.items.find(v => v.id === item.id.videoId);
+      const duration = details? formatDuration(details.contentDetails.duration) : '';
+      const views = details? formatViews(details.statistics.viewCount) : '';
+      return `
+        <div class="yt-video" onclick="playVideo('${item.id.videoId}', '${item.snippet.thumbnails.high.url}')">
+          <div class="yt-thumb-wrap">
+            <img class="yt-thumb" src="${item.snippet.thumbnails.high.url}" alt="${item.snippet.title}">
+            <div class="yt-duration">${duration}</div>
+          </div>
+          <div class="yt-info">
+            <div class="yt-title">${item.snippet.title}</div>
+            <div class="yt-channel-row">
+              <div class="yt-channel-icon">🎵</div>
+              <div class="yt-channel">${item.snippet.channelTitle}</div>
+            </div>
+            <div class="yt-meta">${views} views</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+  } catch(err) {
+    if(err.message === 'quotaExceeded'){
+      markKeyFailed();
+      if(failedKeys.length < YT_API_KEYS.length && retryCount < 3){
+        setTimeout(() => searchYouTubeMusic(query, retryCount + 1), 1000);
+      } else {
+        results.innerHTML = `<div class="error" style="grid-column:1/-1"><div class="error-title">All keys failed</div></div>`;
+      }
+    } else {
+      results.innerHTML = `<div class="error" style="grid-column:1/-1"><div class="error-title">Error</div>${err.message}</div>`;
+    }
+  }
+}
+
+function playVideo(videoId, thumbnail){
+  const modal = document.getElementById('ytPlayerModal');
+  const player = document.getElementById('ytPlayer');
+  player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&vq=hd720&playsinline=1`;
+  modal.classList.add('open');
+}
+
+function formatDuration(iso){
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  const h = parseInt(match[1]||0);
+  const m = parseInt(match[2]||0);
+  const s = parseInt(match[3]||0);
+  if(h) return `${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function formatViews(count){
+  const n = parseInt(count);
+  if(n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if(n >= 1000) return (n/1000).toFixed(1)+'K';
+  return n.toString();
 }
 
 // Page load
