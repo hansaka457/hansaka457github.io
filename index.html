@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --red:#FF0000;
-  --bg:#0f0f;
+  --bg:#0f0f0f;
   --bg2:#1a1a1a;
   --bg3:#272727;
   --bg4:#3d3d3d;
@@ -171,7 +171,7 @@ html,body{
 .series-name{font-size:22px;font-weight:700;margin-bottom:4px;text-shadow:0 2px 8px rgba(0,0,0,.8)}
 .series-ep-count{font-size:13px;color:var(--t2);text-shadow:0 1px 4px rgba(0,0,0,.8)}
 .series-play-row{
-  display:flex;align-items:center;gap:10px;padding:16px 16px 16px;
+  display:flex;align-items:center;gap:10px;padding:16px 16px;
 }
 .btn-play{
   flex:1;height:40px;background:var(--t1);color:#000;
@@ -376,7 +376,7 @@ html,body{
   display:flex;align-items:center;gap:14px;
   padding:12px 16px;cursor:pointer;transition:background.1s;
 }
-.dl-row:hover,.dl-row:active{background:rgba(255,255,255,.05)}
+.dl-row:hover,.dl-row:active{background:rgba(255,255,.05)}
 .dl-icon{
   width:44px;height:44px;border-radius:10px;
   display:flex;align-items:center;justify-content:center;
@@ -399,7 +399,7 @@ html,body{
 
 /* CINESUBZ RESULTS */
 .yt-results{
-  padding:0 16px 16px;
+  padding:0 16px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:12px;
@@ -492,7 +492,7 @@ html,body{
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
     </div>
     <div class="tb-icon" title="Notifications">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 1-3.46 0"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
     </div>
     <div class="avatar">C</div>
   </div>
@@ -502,7 +502,7 @@ html,body{
 <div class="search-overlay" id="searchOverlay">
   <div class="search-bar">
     <div class="search-back" onclick="closeSearch()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6 6-6"/></svg>
     </div>
     <div class="search-input-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
@@ -628,7 +628,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -651,19 +651,18 @@ html,body{
         <div class="series-art-icon" style="display:none;background:linear-gradient(135deg,#1a0a00,#0a0800)">🌲</div>
       </div>
       <div class="series-info">
-                <div class="series-name">From</div>
+        <div class="series-name">From</div>
         <div class="series-ep-count">33 episodes · Seasons 1–4</div>
         <div class="mix-langs" style="margin-top:6px"><span class="lbadge lb-si">Sinhala</span><span class="lbadge lb-en">English</span><span class="lbadge lb-ko">Korean</span></div>
       </div>
     </div>
-  </div>
   <div class="series-play-row">
     <button class="btn-play">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -671,7 +670,7 @@ html,body{
     <div class="stab on" onclick="switchSeason('from',1,this)">Season 1</div>
     <div class="stab" onclick="switchSeason('from',2,this)">Season 2</div>
     <div class="stab" onclick="switchSeason('from',3,this)">Season 3</div>
-    <div class="stab" onclick="switchSeason('from',4,this)">Season 4</div>
+        <div class="stab" onclick="switchSeason('from',4,this)">Season 4</div>
   </div>
   <div id="from-list"></div>
   <div class="pb"></div>
@@ -700,7 +699,7 @@ html,body{
       Download All
     </button>
     <button class="btn-shuffle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       Shuffle
     </button>
   </div>
@@ -776,7 +775,7 @@ html,body{
 <div class="player-modal" id="ytPlayerModal" onclick="closePlayer(event)">
   <div class="player-header">
     <button class="close-btn" onclick="closePlayer()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 17.59 13.41 12z"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </button>
     <div class="player-title">Now Playing</div>
   </div>
@@ -986,6 +985,8 @@ function goHome(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
   document.querySelector('.chip').classList.add('on');
   document.getElementById('results').style.display='none';
+  document.querySelector('.hero-section').style.display='block';
+  document.querySelector('.section').style.display='block';
   window.scrollTo(0,0);
 }
 
@@ -1031,13 +1032,15 @@ async function searchCinesubz(query) {
   
   if (!query.trim()) {
     results.style.display = 'none';
+    document.querySelector('.hero-section').style.display = 'block';
+    document.querySelector('.section').style.display = 'block';
     return;
   }
   
   // Show results container, hide home sections
   results.style.display = 'grid';
-  pageHome.querySelector('.section').style.display = 'none';
-  pageHome.querySelector('.hero-section').style.display = 'none';
+  document.querySelector('.hero-section').style.display = 'none';
+  document.querySelector('.section').style.display = 'none';
   
   results.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spinner"></div>Searching...</div>';
   
@@ -1104,4 +1107,4 @@ document.addEventListener('DOMContentLoaded', buildQuickPicks);
 </script>
 
 </body>
-</html>
+  </html>
