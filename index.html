@@ -129,6 +129,8 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 /* LOADING */
 .spinner{width:32px;height:32px;border:3px solid var(--bg3);border-top-color:var(--red);border-radius:50%;animation:spin.8s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
+.error-msg{padding:40px 16px;text-align:center;color:var(--t3)}
+.error-title{color:var(--red);font-weight:600;margin-bottom:8px;font-size:16px}
 
 /* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:0;width:100%;background:var(--bg2);border-top:1px solid var(--bg3);display:flex;z-index:97;padding-bottom:env(safe-area-inset-bottom,0)}
@@ -184,6 +186,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
       <input type="text" id="searchInput" placeholder="Search movies, TV series..." onkeypress="if(event.key==='Enter')handleSearch(this.value)">
     </div>
+  </div>
   <div class="search-results" id="searchResults">
     <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>
   </div>
@@ -191,7 +194,11 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
 <div id="page-home">
   <!-- HERO SLIDER -->
-  <div class="hero-slider" id="heroSlider"></div>
+  <div class="hero-slider" id="heroSlider">
+    <div style="height:600px;display:flex;align-items:center;justify-content:center">
+      <div class="spinner"></div>
+    </div>
+  </div>
 
   <!-- CATEGORY CHIPS -->
   <div class="chips-wrap">
@@ -262,11 +269,11 @@ const HERO_SERIES = [
 
 // Category IMDB IDs
 const CATEGORIES = {
-  trending: ['tt11198330','tt9813792','tt13443470','tt10919420','tt4574334','tt0903747','tt8111088','tt3032476','tt0386676','tt0944947'],
-  hollywood: ['tt0111161','tt1375666','tt0816692','tt0468569','tt0137523','tt0109830','tt0120737','tt0167260','tt4154796','tt7286456'],
-  kdrama: ['tt15266542','tt14689414','tt13370348','tt11280740','tt10262630','tt13443470','tt11198330','tt1190634'],
-  bollywood: ['tt8178634','tt15327088','tt12735488','tt1187043','tt12844910','tt10648342','tt0451850','tt0816442'],
-  sinhala: ['tt2386490','tt0111161','tt1375666','tt0816692','tt0468569']
+  trending: ['tt11198330','tt9813792','tt13443470','tt10919420','tt4574334','tt0903747','tt8111088','tt3032476','tt0386676','tt0944947','tt0108778','tt2560140'],
+  hollywood: ['tt0111161','tt1375666','tt0816692','tt0468569','tt0137523','tt0109830','tt0120737','tt0167260','tt4154796','tt7286456','tt15398776','tt9362722'],
+  kdrama: ['tt15266542','tt14689414','tt13370348','tt11280740','tt10262630','tt13443470','tt11198330','tt1190634','tt10850932','tt11212276'],
+  bollywood: ['tt8178634','tt15327088','tt12735488','tt1187043','tt12844910','tt10648342','tt0451850','tt0816442','tt0066763','tt0347304'],
+  sinhala: ['tt2386490','tt0111161','tt1375666','tt0816692','tt0468569','tt0137523']
 };
 
 let currentHeroSlide = 0;
@@ -276,6 +283,7 @@ let heroInterval;
 async function fetchOMDb(imdbID) {
   try {
     const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEY}&plot=full`);
+    if (!res.ok) throw new Error('Network error');
     const data = await res.json();
     return data.Response === 'True'? data : null;
   } catch(e) {
@@ -287,47 +295,59 @@ async function fetchOMDb(imdbID) {
 // ===== Build Hero Slider =====
 async function buildHeroSlider() {
   const slider = document.getElementById('heroSlider');
-  const slides = await Promise.all(HERO_SERIES.map(id => fetchOMDb(id.id)));
+  if (!slider) return;
 
-  slider.innerHTML = slides.filter(s => s).map((movie, idx) => `
-    <div class="hero-slide ${idx === 0? 'active' : ''}">
-      <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" class="hero-bg" alt="${movie.Title}" onerror="this.style.display='none'">
-      <div class="hero-gradient"></div>
-      <div class="hero-content">
-        <div class="hero-badge">TRENDING NOW</div>
-        <h1 class="hero-title">${movie.Title}</h1>
-        <div class="hero-meta">
-          <span>${movie.Year}</span>
-          <span class="lang-dot"></span>
-          <span>${movie.Runtime}</span>
-          <span class="lang-dot"></span>
-          <span>${movie.Rated}</span>
-          <span class="lang-dot"></span>
-          <span class="hero-rating">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ${movie.imdbRating}/10
-          </span>
-        </div>
-        <p class="hero-plot">${movie.Plot}</p>
-        <div class="hero-btns">
-          <button class="btn-hero btn-play" onclick="showMovieDetail('${movie.imdbID}')">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            Play
-          </button>
-          <button class="btn-hero btn-info" onclick="showMovieDetail('${movie.imdbID}')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            More Info
-          </button>
+  try {
+    const slides = await Promise.all(HERO_SERIES.map(id => fetchOMDb(id.id)));
+    const validSlides = slides.filter(s => s);
+
+    if (validSlides.length === 0) {
+      slider.innerHTML = '<div class="error-msg"><div class="error-title">Failed to load</div>Check your API key</div>';
+      return;
+    }
+
+    slider.innerHTML = validSlides.map((movie, idx) => `
+      <div class="hero-slide ${idx === 0? 'active' : ''}">
+        <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" class="hero-bg" alt="${movie.Title}" onerror="this.style.display='none'">
+        <div class="hero-gradient"></div>
+        <div class="hero-content">
+          <div class="hero-badge">TRENDING NOW</div>
+          <h1 class="hero-title">${movie.Title}</h1>
+          <div class="hero-meta">
+            <span>${movie.Year}</span>
+            <span class="lang-dot"></span>
+            <span>${movie.Runtime}</span>
+            <span class="lang-dot"></span>
+            <span>${movie.Rated}</span>
+            <span class="lang-dot"></span>
+            <span class="hero-rating">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              ${movie.imdbRating}/10
+            </span>
+          </div>
+          <p class="hero-plot">${movie.Plot}</p>
+          <div class="hero-btns">
+            <button class="btn-hero btn-play" onclick="showMovieDetail('${movie.imdbID}')">
+              <svg viewBox="0 0 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Play
+            </button>
+            <button class="btn-hero btn-info" onclick="showMovieDetail('${movie.imdbID}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              More Info
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('') + `
-    <div class="hero-dots">
-      ${slides.map((_, idx) => `<div class="hero-dot ${idx === 0? 'active' : ''}" onclick="goToSlide(${idx})"></div>`).join('')}
-    </div>
-  `;
+    `).join('') + `
+      <div class="hero-dots">
+        ${validSlides.map((_, idx) => `<div class="hero-dot ${idx === 0? 'active' : ''}" onclick="goToSlide(${idx})"></div>`).join('')}
+      </div>
+    `;
 
-  startHeroSlider();
+    startHeroSlider();
+  } catch(e) {
+    slider.innerHTML = '<div class="error-msg"><div class="error-title">Error</div>'+e.message+'</div>';
+  }
 }
 
 function startHeroSlider() {
@@ -354,25 +374,31 @@ function goToSlide(index) {
 // ===== Load Category =====
 async function loadCategory(category, containerId) {
   const container = document.getElementById(containerId);
-  container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spinner"></div>Loading...</div>';
+  if (!container) return;
 
-  const ids = CATEGORIES[category] || [];
-  const movies = await Promise.all(ids.map(id => fetchOMDb(id)));
+  container.innerHTML = '<div style="padding:40px 16px;text-align:center;width:100%"><div class="spinner"></div>Loading...</div>';
 
-  container.innerHTML = movies.filter(m => m).map(movie => `
-    <div class="hcard" onclick="showMovieDetail('${movie.imdbID}')">
-      <div class="hcard-poster">
-        <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" alt="${movie.Title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="hcard-poster-fallback" style="display:none">🎬</div>
-        <div class="hcard-rating">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          ${movie.imdbRating}
+  try {
+    const ids = CATEGORIES[category] || [];
+    const movies = await Promise.all(ids.map(id => fetchOMDb(id)));
+
+    container.innerHTML = movies.filter(m => m).map(movie => `
+      <div class="hcard" onclick="showMovieDetail('${movie.imdbID}')">
+        <div class="hcard-poster">
+          <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" alt="${movie.Title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="hcard-poster-fallback" style="display:none">🎬</div>
+          <div class="hcard-rating">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            ${movie.imdbRating}
+          </div>
         </div>
+        <div class="hcard-title">${movie.Title}</div>
+        <div class="hcard-year">${movie.Year}</div>
       </div>
-      <div class="hcard-title">${movie.Title}</div>
-      <div class="hcard-year">${movie.Year}</div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch(e) {
+    container.innerHTML = '<div class="error-msg">Failed to load</div>';
+  }
 }
 
 // ===== Filter Category =====
@@ -381,7 +407,7 @@ function filterCategory(cat, el) {
   el.classList.add('on');
 
   if (cat === 'all') {
-    document.getElementById('page-home').scrollTo(0, 0);
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 }
 
@@ -520,4 +546,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 
 </body>
-</html>
+    </html>
