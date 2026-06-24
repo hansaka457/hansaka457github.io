@@ -346,16 +346,21 @@ async function fetchOMDb(imdbID) {
 async function fetchSubDL(imdbID, season = null, episode = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&imdb_id=${imdbID}&subs_per_page=20&languages=EN,SI,TA,HI,KO,FR,DE,ES,PT,AR,TR,RU,IT,NL,ID,TH,VI,PL,ZH,JA`;
-    if (season!== null) url += `&season_number=${season}`;
-    if (episode!== null) url += `&episode_number=${episode}`;
+    if (season !== null) url += `&season_number=${season}`;
+    if (episode !== null) url += `&episode_number=${episode}`;
 
-    const res = await fetch(url);
+    // CORS proxy fix - allorigins.win use කරනවා
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    
+    const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL network error');
     const data = await res.json();
+    
+    console.log('SubDL Response:', data); // Debug කරන්න
     return data;
   } catch(e) {
     console.error('SubDL Error:', e);
-    return null;
+    return { subtitles: [] }; // Empty array return කරමු error ආවොත්
   }
 }
 
@@ -364,18 +369,24 @@ async function fetchSubDLByTitle(title, year, season = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&film_name=${encodeURIComponent(title)}&subs_per_page=20&languages=EN,SI,TA,HI,KO,FR,DE,ES,PT,AR,TR,RU,IT,NL,ID,TH,VI,PL,ZH,JA`;
     if (year) url += `&year=${year}`;
-    if (season!== null) url += `&season_number=${season}`;
+    if (season !== null) url += `&season_number=${season}`;
 
-    const res = await fetch(url);
+    // CORS proxy fix
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    
+    const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL fallback error');
     const data = await res.json();
+    
+    console.log('SubDL Fallback Response:', data);
     return data;
   } catch(e) {
     console.error('SubDL Fallback Error:', e);
-    return null;
-  }
+    return { subtitles: [] };
+  }  
 }
 
+  
 // ===== Build Subtitles UI =====
 let _currentSubsData = {}; // {season: [subtitles]}
 let _currentSubsTitle = '';
