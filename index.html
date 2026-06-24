@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -391,27 +391,22 @@ async function fetchOMDb(imdbID) {
   }
 }
 
-// FIXED: Timeout එකක් යෙදීම සහ data.subtitles වෙනුවට data.results භාවිතය
+// FIXED: Using corsproxy.io instead of allorigins
 async function fetchSubDL(imdbID, season = null, episode = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&imdb_id=${imdbID}&subs_per_page=30&languages=en,si,ta,hi,ko,fr,de,es`;
-    if (season !== null) url += `&season_number=${season}`;
-    if (episode !== null) url += `&episode_number=${episode}`;
+    if (season!== null) url += `&season_number=${season}`;
+    if (episode!== null) url += `&episode_number=${episode}`;
 
     const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-    
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // තත්පර 8කින් request එක නතර කරයි (Stuck වීම වැලැක්වීමට)
 
-    const res = await fetch(proxyUrl, { signal: controller.signal });
-    clearTimeout(timeoutId);
-
+    const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL Network Error');
     const data = await res.json();
     return data;
   } catch(e) {
     console.error('SubDL Error:', e);
-    return { results: [] };
+    return { subtitles: [] };
   }
 }
 
@@ -419,22 +414,17 @@ async function fetchSubDLByTitle(title, year, season = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&film_name=${encodeURIComponent(title)}&subs_per_page=30&languages=en,si,ta,hi,ko,fr,de,es`;
     if (year) url += `&year=${year}`;
-    if (season !== null) url += `&season_number=${season}`;
+    if (season!== null) url += `&season_number=${season}`;
 
     const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-    const res = await fetch(proxyUrl, { signal: controller.signal });
-    clearTimeout(timeoutId);
-
+    const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL fallback error');
     const data = await res.json();
     return data;
   } catch(e) {
     console.error('SubDL Fallback Error:', e);
-    return { results: [] };
+    return { subtitles: [] };
   }
 }
 
@@ -467,14 +457,13 @@ async function buildSubtitlesSection(movieData) {
   }
 }
 
-// FIXED: result.subtitles වෙනුවට result.results ලෙස වෙනස් කරන ලදි
 async function buildMovieSubtitles(imdbID, title, year, container) {
   let result = await fetchSubDL(imdbID);
-  let subs = result && Array.isArray(result.results)? result.results : [];
+  let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year);
-    subs = fb && Array.isArray(fb.results)? fb.results : [];
+    subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
   }
 
   if (subs.length === 0) {
@@ -507,7 +496,6 @@ async function buildSeriesSubtitles(imdbID, title, year, totalSeasons, container
   await loadSeasonSubs(imdbID, title, year, 1);
 }
 
-// FIXED: result.results ලෙස හඳුන්වා දීම
 async function loadSeasonSubs(imdbID, title, year, season) {
   const content = document.getElementById('subs-season-content');
   if (!content) return;
@@ -520,11 +508,11 @@ async function loadSeasonSubs(imdbID, title, year, season) {
   content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
 
   let result = await fetchSubDL(imdbID, season);
-  let subs = result && Array.isArray(result.results)? result.results : [];
+  let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year, season);
-    subs = fb && Array.isArray(fb.results)? fb.results : [];
+    subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
   }
 
   _currentSubsData[season] = subs;
@@ -602,7 +590,7 @@ async function buildHeroSlider() {
       return;
     }
 
-    slider.innerHTML = validSlides.map((movie, idx) => `
+        slider.innerHTML = validSlides.map((movie, idx) => `
       <div class="hero-slide ${idx === 0? 'active' : ''}">
         <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" class="hero-bg" alt="${movie.Title}" onerror="this.style.display='none'">
         <div class="hero-gradient"></div>
@@ -684,7 +672,6 @@ async function loadCategory(category, containerId) {
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             ${movie.imdbRating!== 'N/A'? movie.imdbRating : 'N/A'}
           </div>
-        </div>
         <div class="hcard-title">${movie.Title}</div>
         <div class="hcard-year">${movie.Year}</div>
       </div>
@@ -842,4 +829,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 
 </body>
-</html>
+      </html>
