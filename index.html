@@ -23,7 +23,7 @@
 html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;min-height:100vh;overflow-x:hidden}
 
 /* TOPBAR */
-.topbar{position:sticky;top:0;z-index:99;background:linear-gradient(to bottom,rgba(15,15,15,.95) 0%,rgba(15,15,15,0) 100%);display:flex;align-items:center;padding:0 16px;height:56px;backdrop-filter:blur(10px)}
+.topbar{position:sticky;top:0;z-index:99;background:linear-gradient(to bottom,rgba(15,15,15,.98) 0%,rgba(15,15,15,0) 100%);display:flex;align-items:center;padding:0 16px;height:56px;backdrop-filter:blur(10px)}
 .tb-logo{display:flex;align-items:center;gap:4px;flex:1}
 .tb-logo svg{width:34px;height:24px}
 .tb-logo-txt{font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--red)}
@@ -54,68 +54,55 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .sr-go{color:var(--t3)}
 .sr-go svg{width:18px;height:18px}
 
-/* HERO SLIDER */
-.hero-slider{position:relative;height:480px;overflow:hidden}
-.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease-in-out}
+/* HERO SLIDER - ලොකු කරා */
+.hero-slider{position:relative;height:600px;overflow:hidden}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
 .hero-slide.active{opacity:1}
 .hero-bg{width:100%;height:100%;object-fit:cover;filter:brightness(.5)}
-.hero-gradient{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,transparent 60%,var(--bg) 100%)}
-.hero-content{position:absolute;bottom:0;left:0;right:0;padding:0 16px 40px;z-index:2}
-.hero-badge{display:inline-block;padding:4px 10px;background:var(--red);border-radius:4px;font-size:11px;font-weight:700;margin-bottom:12px;letter-spacing:1px}
-.hero-title{font-size:42px;font-weight:900;line-height:1;margin-bottom:12px;text-shadow:0 2px 8px rgba(0,0,0,.8)}
-.hero-meta{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--t2);margin-bottom:16px;flex-wrap:wrap}
-.hero-rating{display:flex;align-items:center;gap:4px;color:#FFD700;font-weight:700}
-.hero-rating svg{width:16px;height:16px}
-.hero-plot{font-size:14px;line-height:1.6;color:var(--t2);max-width:600px;margin-bottom:20px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,transparent 50%,var(--bg) 100%)}
+.hero-content{position:absolute;bottom:0;left:0;right:0;padding:0 20px 50px;z-index:2}
+.hero-badge{display:inline-block;padding:5px 12px;background:var(--red);border-radius:4px;font-size:11px;font-weight:700;margin-bottom:14px;letter-spacing:1.5px}
+.hero-title{font-size:52px;font-weight:900;line-height:1;margin-bottom:14px;text-shadow:0 4px 12px rgba(0,0,0,.9);max-width:600px}
+.hero-meta{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--t2);margin-bottom:18px;flex-wrap:wrap}
+.hero-rating{display:flex;align-items:center;gap:5px;color:#FFD700;font-weight:700;font-size:15px}
+.hero-rating svg{width:18px;height:18px}
+.hero-plot{font-size:15px;line-height:1.7;color:var(--t2);max-width:650px;margin-bottom:24px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 2px 6px rgba(0,0,0,.8)}
 .hero-btns{display:flex;gap:12px}
-.btn-hero{padding:10px 24px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;gap:8px;transition:all.2s}
+.btn-hero{padding:12px 28px;border-radius:6px;font-size:16px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;gap:10px;transition:all.2s}
 .btn-play{background:var(--t1);color:#000}
-.btn-play:hover{background:#e0e0e0}
+.btn-play:hover{background:#e0e0e0;transform:scale(1.05)}
 .btn-info{background:rgba(109,109,110,0.7);color:var(--t1)}
 .btn-info:hover{background:rgba(109,109,110,0.9)}
-.btn-hero svg{width:20px;height:20px}
-.hero-dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
-.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all.3s}
-.hero-dot.active{background:var(--t1);width:24px;border-radius:4px}
+.btn-hero svg{width:22px;height:22px}
+.hero-dots{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:3}
+.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all.3s}
+.hero-dot.active{background:var(--t1);width:28px;border-radius:5px}
 
 /* CATEGORY CHIPS */
-.chips-wrap{overflow-x:auto;padding:16px 12px 12px;display:flex;gap:8px;scrollbar-width:none;position:sticky;top:56px;z-index:98;background:var(--bg)}
+.chips-wrap{overflow-x:auto;padding:18px 16px 14px;display:flex;gap:10px;scrollbar-width:none;position:sticky;top:56px;z-index:98;background:var(--bg)}
 .chips-wrap::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;padding:8px 16px;border-radius:20px;background:var(--chip-bg);color:var(--t1);font-size:13px;font-weight:600;cursor:pointer;border:none;white-space:nowrap;transition:all.15s}
+.chip{flex-shrink:0;padding:9px 18px;border-radius:24px;background:var(--chip-bg);color:var(--t1);font-size:14px;font-weight:600;cursor:pointer;border:none;white-space:nowrap;transition:all.15s;display:flex;align-items:center;gap:6px}
 .chip.on{background:var(--chip-active);color:var(--chip-active-text)}
 .chip:active{opacity:.7}
 
 /* SECTION */
-.section{padding:0 8px;margin-top:24px}
-.section-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 12px}
-.section-title{font-size:18px;font-weight:700}
-.section-all{font-size:13px;color:var(--t2);font-weight:600;cursor:pointer}
-.section-all:hover{color:var(--t1)}
+.section{padding:0 8px;margin-top:28px}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 14px}
+.section-title{font-size:20px;font-weight:700}
 
-/* HORIZONTAL SCROLL */
-.hscroll{display:flex;gap:8px;padding:0 16px 4px;overflow-x:auto;scrollbar-width:none}
+/* HORIZONTAL SCROLL - ඔක්කොම හරහට */
+.hscroll{display:flex;gap:10px;padding:0 16px 8px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
 .hscroll::-webkit-scrollbar{display:none}
-.hcard{flex-shrink:0;width:140px;cursor:pointer;transition:transform.2s}
+.hcard{flex-shrink:0;width:150px;cursor:pointer;transition:transform.2s}
+.hcard:hover{transform:scale(1.05)}
 .hcard:active{transform:scale(.96)}
-.hcard-poster{width:140px;height:210px;border-radius:6px;overflow:hidden;background:var(--bg3);margin-bottom:6px;position:relative}
+.hcard-poster{width:150px;height:225px;border-radius:6px;overflow:hidden;background:var(--bg3);margin-bottom:8px;position:relative}
 .hcard-poster img{width:100%;height:100%;object-fit:cover}
 .hcard-poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--bg3)}
-.hcard-rating{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.85);padding:3px 7px;border-radius:4px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}
-.hcard-rating svg{width:12px;height:12px;color:#FFD700}
-.hcard-title{font-size:12px;font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.hcard-year{font-size:11px;color:var(--t3);margin-top:2px}
-
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px 16px}
-.card{cursor:pointer;transition:transform.15s}
-.card:active{transform:scale(.96)}
-.card-poster{width:100%;aspect-ratio:2/3;border-radius:8px;overflow:hidden;background:var(--bg3);margin-bottom:8px;position:relative}
-.card-poster img{width:100%;height:100%;object-fit:cover}
-.card-poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--bg3)}
-.card-rating{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.85);padding:4px 8px;border-radius:4px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}
-.card-rating svg{width:12px;height:12px;color:#FFD700}
-.card-title{font-size:13px;font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:2px}
-.card-meta{font-size:11px;color:var(--t3)}
+.hcard-rating{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.85);padding:4px 8px;border-radius:4px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
+.hcard-rating svg{width:13px;height:13px;color:#FFD700}
+.hcard-title{font-size:13px;font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.hcard-year{font-size:12px;color:var(--t3);margin-top:3px}
 
 /* DETAIL PAGE */
 .detail-hero{position:relative;min-height:450px}
@@ -126,8 +113,8 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .detail-poster img{width:100%;height:100%;object-fit:cover}
 .detail-poster-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:60px;background:var(--bg3)}
 .detail-title{font-size:32px;font-weight:900;margin-bottom:10px}
-.detail-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;font-size:14px;color:var(--t2)}
-.detail-rating{display:flex;align-items:center;gap:4px;color:#FFD700;font-weight:700}
+.detail-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;font-size:14px;color:var(--t2)}
+.detail-rating{display:flex;align-items:center;gap:5px;color:#FFD700;font-weight:700}
 .detail-rating svg{width:18px;height:18px}
 .detail-plot{font-size:15px;line-height:1.8;color:var(--t2);margin-bottom:24px}
 .detail-info-grid{display:grid;grid-template-columns:auto 1fr;gap:14px 20px;font-size:14px;margin-bottom:24px}
@@ -152,18 +139,22 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .pb{height:80px}
 
 @media(min-width:768px){
-.grid{grid-template-columns:repeat(4,1fr)}
-.hcard{width:160px}
-.hcard-poster{width:160px;height:240px}
-.hero-title{font-size:56px}
+.hcard{width:170px}
+.hcard-poster{width:170px;height:255px}
+.hero-title{font-size:64px}
+.hero-slider{height:650px}
 .detail-content{display:flex;gap:40px;align-items:flex-start}
 .detail-poster{flex-shrink:0}
 .detail-info{flex:1}
 }
 @media(min-width:1024px){
-.grid{grid-template-columns:repeat(6,1fr)}
-.hcard{width:180px}
-.hcard-poster{width:180px;height:270px}
+.hcard{width:190px}
+.hcard-poster{width:190px;height:285px}
+}
+@media(max-width:480px){
+.hero-slider{height:550px}
+.hero-title{font-size:38px}
+.hero-plot{-webkit-line-clamp:2}
 }
 </style>
 </head>
@@ -193,7 +184,6 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
       <input type="text" id="searchInput" placeholder="Search movies, TV series..." onkeypress="if(event.key==='Enter')handleSearch(this.value)">
     </div>
-  </div>
   <div class="search-results" id="searchResults">
     <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>
   </div>
@@ -201,9 +191,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
 <div id="page-home">
   <!-- HERO SLIDER -->
-  <div class="hero-slider" id="heroSlider">
-    <!-- Slides will be inserted here -->
-  </div>
+  <div class="hero-slider" id="heroSlider"></div>
 
   <!-- CATEGORY CHIPS -->
   <div class="chips-wrap">
@@ -217,26 +205,26 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
   <!-- TRENDING SERIES -->
   <div class="section">
-    <div class="section-head">
-      <div class="section-title">🔥 Trending Series</div>
-    </div>
+    <div class="section-head"><div class="section-title">🔥 Trending Series</div></div>
     <div class="hscroll" id="trendingSeries"></div>
   </div>
 
   <!-- HOLLYWOOD -->
   <div class="section">
-    <div class="section-head">
-      <div class="section-title">🎬 Hollywood Hits</div>
-    </div>
-    <div class="grid" id="hollywoodGrid"></div>
+    <div class="section-head"><div class="section-title">🎬 Hollywood Hits</div></div>
+    <div class="hscroll" id="hollywoodScroll"></div>
   </div>
 
   <!-- K-DRAMA -->
   <div class="section">
-    <div class="section-head">
-      <div class="section-title">🇰🇷 K-Drama Popular</div>
-    </div>
+    <div class="section-head"><div class="section-title">🇰🇷 K-Drama Popular</div></div>
     <div class="hscroll" id="kdramaScroll"></div>
+  </div>
+
+  <!-- BOLLYWOOD -->
+  <div class="section">
+    <div class="section-head"><div class="section-title">🇮🇳 Bollywood Movies</div></div>
+    <div class="hscroll" id="bollywoodScroll"></div>
   </div>
 
   <div class="pb"></div>
@@ -274,11 +262,11 @@ const HERO_SERIES = [
 
 // Category IMDB IDs
 const CATEGORIES = {
-  trending: ['tt11198330','tt9813792','tt13443470','tt10919420','tt4574334','tt0903747','tt8111088','tt3032476'],
-  hollywood: ['tt0111161','tt1375666','tt0816692','tt0468569','tt0137523','tt0109830','tt0120737','tt0167260'],
-  kdrama: ['tt15266542','tt14689414','tt13370348','tt11280740','tt10262630','tt13443470'],
-  bollywood: ['tt8178634','tt15327088','tt12735488','tt1187043','tt12844910','tt10648342'],
-  sinhala: ['tt2386490','tt0111161','tt1375666'] // Sinhala dubbed popular ones
+  trending: ['tt11198330','tt9813792','tt13443470','tt10919420','tt4574334','tt0903747','tt8111088','tt3032476','tt0386676','tt0944947'],
+  hollywood: ['tt0111161','tt1375666','tt0816692','tt0468569','tt0137523','tt0109830','tt0120737','tt0167260','tt4154796','tt7286456'],
+  kdrama: ['tt15266542','tt14689414','tt13370348','tt11280740','tt10262630','tt13443470','tt11198330','tt1190634'],
+  bollywood: ['tt8178634','tt15327088','tt12735488','tt1187043','tt12844910','tt10648342','tt0451850','tt0816442'],
+  sinhala: ['tt2386490','tt0111161','tt1375666','tt0816692','tt0468569']
 };
 
 let currentHeroSlide = 0;
@@ -289,7 +277,7 @@ async function fetchOMDb(imdbID) {
   try {
     const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEY}&plot=full`);
     const data = await res.json();
-    return data.Response === 'True' ? data : null;
+    return data.Response === 'True'? data : null;
   } catch(e) {
     console.error('OMDb Error:', e);
     return null;
@@ -300,10 +288,10 @@ async function fetchOMDb(imdbID) {
 async function buildHeroSlider() {
   const slider = document.getElementById('heroSlider');
   const slides = await Promise.all(HERO_SERIES.map(id => fetchOMDb(id.id)));
-  
+
   slider.innerHTML = slides.filter(s => s).map((movie, idx) => `
-    <div class="hero-slide ${idx === 0 ? 'active' : ''}">
-      <img src="${movie.Poster !== 'N/A' ? movie.Poster : ''}" class="hero-bg" alt="${movie.Title}" onerror="this.style.display='none'">
+    <div class="hero-slide ${idx === 0? 'active' : ''}">
+      <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" class="hero-bg" alt="${movie.Title}" onerror="this.style.display='none'">
       <div class="hero-gradient"></div>
       <div class="hero-content">
         <div class="hero-badge">TRENDING NOW</div>
@@ -312,6 +300,8 @@ async function buildHeroSlider() {
           <span>${movie.Year}</span>
           <span class="lang-dot"></span>
           <span>${movie.Runtime}</span>
+          <span class="lang-dot"></span>
+          <span>${movie.Rated}</span>
           <span class="lang-dot"></span>
           <span class="hero-rating">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -333,10 +323,10 @@ async function buildHeroSlider() {
     </div>
   `).join('') + `
     <div class="hero-dots">
-      ${slides.map((_, idx) => `<div class="hero-dot ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})"></div>`).join('')}
+      ${slides.map((_, idx) => `<div class="hero-dot ${idx === 0? 'active' : ''}" onclick="goToSlide(${idx})"></div>`).join('')}
     </div>
   `;
-  
+
   startHeroSlider();
 }
 
@@ -362,56 +352,36 @@ function goToSlide(index) {
 }
 
 // ===== Load Category =====
-async function loadCategory(category, containerId, isHorizontal = false) {
+async function loadCategory(category, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spinner"></div>Loading...</div>';
-  
+
   const ids = CATEGORIES[category] || [];
   const movies = await Promise.all(ids.map(id => fetchOMDb(id)));
-  
-  if (isHorizontal) {
-    container.innerHTML = movies.filter(m => m).map(movie => `
-      <div class="hcard" onclick="showMovieDetail('${movie.imdbID}')">
-        <div class="hcard-poster">
-          <img src="${movie.Poster !== 'N/A' ? movie.Poster : ''}" alt="${movie.Title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="hcard-poster-fallback" style="display:none">🎬</div>
-          <div class="hcard-rating">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ${movie.imdbRating}
-          </div>
-        <div class="hcard-title">${movie.Title}</div>
-        <div class="hcard-year">${movie.Year}</div>
-      </div>
-    `).join('');
-  } else {
-    container.innerHTML = movies.filter(m => m).map(movie => `
-      <div class="card" onclick="showMovieDetail('${movie.imdbID}')">
-        <div class="card-poster">
-          <img src="${movie.Poster !== 'N/A' ? movie.Poster : ''}" alt="${movie.Title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="card-poster-fallback" style="display:none">🎬</div>
-          <div class="card-rating">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ${movie.imdbRating}
-          </div>
+
+  container.innerHTML = movies.filter(m => m).map(movie => `
+    <div class="hcard" onclick="showMovieDetail('${movie.imdbID}')">
+      <div class="hcard-poster">
+        <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" alt="${movie.Title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="hcard-poster-fallback" style="display:none">🎬</div>
+        <div class="hcard-rating">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          ${movie.imdbRating}
         </div>
-        <div class="card-title">${movie.Title}</div>
-        <div class="card-meta">${movie.Year} · ${movie.Type}</div>
       </div>
-    `).join('');
-  }
+      <div class="hcard-title">${movie.Title}</div>
+      <div class="hcard-year">${movie.Year}</div>
+    </div>
+  `).join('');
 }
 
 // ===== Filter Category =====
 function filterCategory(cat, el) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
-  
+
   if (cat === 'all') {
     document.getElementById('page-home').scrollTo(0, 0);
-  } else if (cat === 'hollywood') {
-    document.getElementById('hollywoodGrid').scrollIntoView({behavior: 'smooth'});
-  } else if (cat === 'kdrama') {
-    document.getElementById('kdramaScroll').scrollIntoView({behavior: 'smooth'});
   }
 }
 
@@ -422,18 +392,18 @@ async function handleSearch(val){
     res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>';
     return;
   }
-  
+
   res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--t2)"><div class="spinner"></div>Searching...</div>';
-  
+
   try {
     const omdbRes = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(val)}&apikey=${OMDB_KEY}`);
     const omdbData = await omdbRes.json();
-    
+
     if(omdbData.Response === 'True' && omdbData.Search){
       res.innerHTML = omdbData.Search.slice(0,10).map(m => `
         <div class="sr-item" onclick="showMovieDetail('${m.imdbID}')">
           <div class="sr-icon">
-            <img src="${m.Poster !== 'N/A' ? m.Poster : ''}" alt="" onerror="this.style.display='none'">
+            <img src="${m.Poster!== 'N/A'? m.Poster : ''}" alt="" onerror="this.style.display='none'">
           </div>
           <div class="sr-text">
             <div class="sr-title">${m.Title}</div>
@@ -455,21 +425,21 @@ async function showMovieDetail(imdbID) {
   closeSearch();
   const homePage = document.getElementById('page-home');
   const detailPage = document.getElementById('page-detail');
-  
+
   homePage.style.display = 'none';
   detailPage.style.display = 'block';
   detailPage.innerHTML = '<div style="padding:100px 16px;text-align:center"><div class="spinner"></div>Loading...</div>';
   window.scrollTo(0,0);
-  
+
   const data = await fetchOMDb(imdbID);
   if(!data) {
     detailPage.innerHTML = '<div style="padding:100px 16px;text-align:center;color:var(--red)">Movie not found</div>';
     return;
   }
-  
-  const poster = data.Poster !== 'N/A' ? data.Poster : '';
-  const genres = data.Genre ? data.Genre.split(', ') : [];
-  
+
+  const poster = data.Poster!== 'N/A'? data.Poster : '';
+  const genres = data.Genre? data.Genre.split(', ') : [];
+
   detailPage.innerHTML = `
     <button class="back-btn" onclick="goHome()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
@@ -491,7 +461,7 @@ async function showMovieDetail(imdbID) {
           <span>${data.Runtime}</span>
           <span class="lang-dot"></span>
           <span>${data.Rated}</span>
-          ${data.imdbRating !== 'N/A' ? `
+          ${data.imdbRating!== 'N/A'? `
             <span class="lang-dot"></span>
             <span class="detail-rating">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -512,7 +482,7 @@ async function showMovieDetail(imdbID) {
           <span class="detail-value">${data.Language}</span>
           <span class="detail-label">Country</span>
           <span class="detail-value">${data.Country}</span>
-          ${data.Awards !== 'N/A' ? `
+          ${data.Awards!== 'N/A'? `
             <span class="detail-label">Awards</span>
             <span class="detail-value">${data.Awards}</span>
           ` : ''}
@@ -542,9 +512,10 @@ function goHome(){
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', async () => {
   await buildHeroSlider();
-  await loadCategory('trending', 'trendingSeries', true);
-  await loadCategory('hollywood', 'hollywoodGrid', false);
-  await loadCategory('kdrama', 'kdramaScroll', true);
+  await loadCategory('trending', 'trendingSeries');
+  await loadCategory('hollywood', 'hollywoodScroll');
+  await loadCategory('kdrama', 'kdramaScroll');
+  await loadCategory('bollywood', 'bollywoodScroll');
 });
 </script>
 
