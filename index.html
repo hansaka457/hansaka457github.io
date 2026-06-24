@@ -109,7 +109,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
   flex-shrink:0;
   width:150px;
   cursor:pointer;
-  transition:transform .2s;
+  transition:transform.2s;
   position:relative;
 }
 .hcard:hover{transform:scale(1.03)}
@@ -391,38 +391,21 @@ async function fetchOMDb(imdbID) {
   }
 }
 
-// CORS Proxy එක මඟින් ආරක්ෂිතව Subtitles ලබා ගැනීමට සකසා ඇත
+// FIXED: Using corsproxy.io instead of allorigins
 async function fetchSubDL(imdbID, season = null, episode = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&imdb_id=${imdbID}&subs_per_page=30&languages=en,si,ta,hi,ko,fr,de,es`;
-    if (season !== null) url += `&season_number=${season}`;
-    if (episode !== null) url += `&episode_number=${episode}`;
+    if (season!== null) url += `&season_number=${season}`;
+    if (episode!== null) url += `&episode_number=${episode}`;
 
-    // AllOrigins JSON Wrapper Proxy ක්‍රමය භාවිත කර ඇත
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-    
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+
     const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL Network Error');
-    const wrapper = await res.json();
-    const data = JSON.parse(wrapper.contents);
+    const data = await res.json();
     return data;
   } catch(e) {
-    console.error('SubDL Error, trying fallback proxy:', e);
-    return await fetchSubDLFallback(imdbID, season, episode);
-  }
-}
-
-// දෙවන Proxy එකක් (CORS-Anywhere Fallback)
-async function fetchSubDLFallback(imdbID, season = null, episode = null) {
-  try {
-    let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&imdb_id=${imdbID}&subs_per_page=30&languages=en,si,ta,hi,ko,fr,de,es`;
-    if (season !== null) url += `&season_number=${season}`;
-    if (episode !== null) url += `&episode_number=${episode}`;
-
-    const res = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
-    if(!res.ok) return { subtitles: [] };
-    return await res.json();
-  } catch(e) {
+    console.error('SubDL Error:', e);
     return { subtitles: [] };
   }
 }
@@ -431,19 +414,18 @@ async function fetchSubDLByTitle(title, year, season = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&film_name=${encodeURIComponent(title)}&subs_per_page=30&languages=en,si,ta,hi,ko,fr,de,es`;
     if (year) url += `&year=${year}`;
-    if (season !== null) url += `&season_number=${season}`;
+    if (season!== null) url += `&season_number=${season}`;
 
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-    
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+
     const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL fallback error');
-    const wrapper = await res.json();
-    const data = JSON.parse(wrapper.contents);
+    const data = await res.json();
     return data;
   } catch(e) {
     console.error('SubDL Fallback Error:', e);
     return { subtitles: [] };
-  }  
+  }
 }
 
 let _currentSubsData = {};
@@ -477,11 +459,11 @@ async function buildSubtitlesSection(movieData) {
 
 async function buildMovieSubtitles(imdbID, title, year, container) {
   let result = await fetchSubDL(imdbID);
-  let subs = result && result.subtitles? result.subtitles : [];
+  let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year);
-    subs = fb && fb.subtitles? fb.subtitles : [];
+    subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
   }
 
   if (subs.length === 0) {
@@ -526,11 +508,11 @@ async function loadSeasonSubs(imdbID, title, year, season) {
   content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
 
   let result = await fetchSubDL(imdbID, season);
-  let subs = result && result.subtitles? result.subtitles : [];
+  let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year, season);
-    subs = fb && fb.subtitles? fb.subtitles : [];
+    subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
   }
 
   _currentSubsData[season] = subs;
@@ -608,7 +590,7 @@ async function buildHeroSlider() {
       return;
     }
 
-    slider.innerHTML = validSlides.map((movie, idx) => `
+        slider.innerHTML = validSlides.map((movie, idx) => `
       <div class="hero-slide ${idx === 0? 'active' : ''}">
         <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" class="hero-bg" alt="${movie.Title}" onerror="this.style.display='none'">
         <div class="hero-gradient"></div>
@@ -639,7 +621,7 @@ async function buildHeroSlider() {
       </div>
     `).join('') + `
       <div class="hero-dots">
-        ${validSlides.map((_, idx) => `<div class="hero-dot ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})"></div>`).join('')}
+        ${validSlides.map((_, idx) => `<div class="hero-dot ${idx === 0? 'active' : ''}" onclick="goToSlide(${idx})"></div>`).join('')}
       </div>
     `;
 
@@ -684,13 +666,12 @@ async function loadCategory(category, containerId) {
     container.innerHTML = movies.filter(m => m).map(movie => `
       <div class="hcard" onclick="showMovieDetail('${movie.imdbID}')">
         <div class="hcard-poster">
-          <img src="${movie.Poster !== 'N/A' ? movie.Poster : ''}" alt="${movie.Title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" alt="${movie.Title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="hcard-poster-fallback" style="display:none">🎬</div>
           <div class="hcard-rating">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ${movie.imdbRating !== 'N/A' ? movie.imdbRating : 'N/A'}
+            ${movie.imdbRating!== 'N/A'? movie.imdbRating : 'N/A'}
           </div>
-        </div>
         <div class="hcard-title">${movie.Title}</div>
         <div class="hcard-year">${movie.Year}</div>
       </div>
@@ -723,7 +704,7 @@ async function handleSearch(val) {
       res.innerHTML = omdbData.Search.slice(0, 10).map(m => `
         <div class="sr-item" onclick="showMovieDetail('${m.imdbID}')">
           <div class="sr-icon">
-            <img src="${m.Poster !== 'N/A' ? m.Poster : ''}" alt="" onerror="this.style.display='none'">
+            <img src="${m.Poster!== 'N/A'? m.Poster : ''}" alt="" onerror="this.style.display='none'">
           </div>
           <div class="sr-text">
             <div class="sr-title">${m.Title}</div>
@@ -757,8 +738,8 @@ async function showMovieDetail(imdbID) {
     return;
   }
 
-  const poster = data.Poster !== 'N/A' ? data.Poster : '';
-  const genres = data.Genre ? data.Genre.split(', ') : [];
+  const poster = data.Poster!== 'N/A'? data.Poster : '';
+  const genres = data.Genre? data.Genre.split(', ') : [];
   const isSeriesType = data.Type === 'series';
 
   detailPage.innerHTML = `
@@ -780,7 +761,7 @@ async function showMovieDetail(imdbID) {
           <span>${data.Year}</span>
           <span>${data.Runtime}</span>
           <span>${data.Rated}</span>
-          ${data.imdbRating !== 'N/A' ? `
+          ${data.imdbRating!== 'N/A'? `
             <span class="detail-rating">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               ${data.imdbRating}/10
@@ -800,7 +781,7 @@ async function showMovieDetail(imdbID) {
           <span class="detail-value">${data.Language}</span>
           <span class="detail-label">Country</span>
           <span class="detail-value">${data.Country}</span>
-          ${data.Awards !== 'N/A' ? `
+          ${data.Awards!== 'N/A'? `
             <span class="detail-label">Awards</span>
             <span class="detail-value">${data.Awards}</span>
           ` : ''}
@@ -811,7 +792,7 @@ async function showMovieDetail(imdbID) {
     <div class="subs-section">
       <div class="subs-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M6 12h4M6 16h8M14 12h4"/></svg>
-        ${isSeriesType ? 'Subtitles by Season' : 'Subtitles'}
+        ${isSeriesType? 'Subtitles by Season' : 'Subtitles'}
       </div>
       <div id="subs-container"></div>
     </div>
