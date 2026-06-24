@@ -93,7 +93,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 /* HORIZONTAL SCROLL */
 .hscroll{
   display:flex;
-  gap:12px;
+  gap:14px;
   padding:0 16px 8px;
   overflow-x:auto;
   overflow-y:hidden;
@@ -107,7 +107,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
 .hcard{
   flex-shrink:0;
-  width:140px;
+  width:150px;
   cursor:pointer;
   transition:transform .2s;
   position:relative;
@@ -116,12 +116,12 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
 .hcard-poster{
   width:100%;
-  height:200px;
+  height:220px;
   border-radius:8px;
   overflow:hidden;
   background:var(--bg3);
   position:relative;
-  margin-bottom:6px;
+  margin-bottom:8px;
 }
 .hcard-poster img{
   width:100%;
@@ -139,9 +139,9 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .hcard-rating{
   position:absolute;
   top:8px;
-  left:8px;
-  background:rgba(0,0,0,0.7);
-  padding:2px 6px;
+  right:8px;
+  background:rgba(0,0,0,0.75);
+  padding:3px 6px;
   border-radius:4px;
   font-size:11px;
   font-weight:700;
@@ -149,9 +149,10 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
   display:flex;
   align-items:center;
   gap:3px;
+  backdrop-filter:blur(4px);
 }
 .hcard-rating svg{width:12px;height:12px}
-.hcard-title{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hcard-title{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 .hcard-year{font-size:11px;color:var(--t3);margin-top:2px}
 
 /* DETAIL PAGE */
@@ -220,7 +221,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
 @media(min-width:768px){
 .hcard{width:160px}
-.hcard-poster{height:230px}
+.hcard-poster{height:240px}
 .hero-title{font-size:64px}
 .hero-slider{height:650px}
 .detail-content{display:flex;gap:40px;align-items:flex-start}
@@ -229,7 +230,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 }
 @media(min-width:1024px){
 .hcard{width:180px}
-.hcard-poster{height:260px}
+.hcard-poster{height:270px}
 }
 @media(max-width:480px){
 .hero-slider{height:550px}
@@ -347,7 +348,6 @@ const CATEGORIES = {
   sinhala: ['tt2386490','tt0111161','tt1375666','tt0816692','tt0468569','tt0137523']
 };
 
-// Language flag + name map
 const LANG_MAP = {
   'en': {flag:'🇬🇧', name:'English'},
   'si': {flag:'🇱🇰', name:'Sinhala'},
@@ -379,7 +379,6 @@ function getLang(code) {
 let currentHeroSlide = 0;
 let heroInterval;
 
-// ===== OMDb Fetch =====
 async function fetchOMDb(imdbID) {
   try {
     const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEY}&plot=full`);
@@ -392,7 +391,6 @@ async function fetchOMDb(imdbID) {
   }
 }
 
-// ===== SubDL: Fetch subtitles by IMDB ID =====
 async function fetchSubDL(imdbID, season = null, episode = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&imdb_id=${imdbID}&subs_per_page=20&languages=EN,SI,TA,HI,KO,FR,DE,ES,PT,AR,TR,RU,IT,NL,ID,TH,VI,PL,ZH,JA`;
@@ -404,8 +402,6 @@ async function fetchSubDL(imdbID, season = null, episode = null) {
     const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL network error');
     const data = await res.json();
-    
-    console.log('SubDL Response:', data);
     return data;
   } catch(e) {
     console.error('SubDL Error:', e);
@@ -413,7 +409,6 @@ async function fetchSubDL(imdbID, season = null, episode = null) {
   }
 }
 
-// ===== SubDL: Fallback using title search =====
 async function fetchSubDLByTitle(title, year, season = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&film_name=${encodeURIComponent(title)}&subs_per_page=20&languages=EN,SI,TA,HI,KO,FR,DE,ES,PT,AR,TR,RU,IT,NL,ID,TH,VI,PL,ZH,JA`;
@@ -425,8 +420,6 @@ async function fetchSubDLByTitle(title, year, season = null) {
     const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL fallback error');
     const data = await res.json();
-    
-    console.log('SubDL Fallback Response:', data);
     return data;
   } catch(e) {
     console.error('SubDL Fallback Error:', e);
@@ -434,8 +427,6 @@ async function fetchSubDLByTitle(title, year, season = null) {
   }  
 }
 
-  
-// ===== Build Subtitles UI =====
 let _currentSubsData = {};
 let _currentSubsTitle = '';
 let _currentSubsType = 'movie';
@@ -678,7 +669,7 @@ async function loadCategory(category, containerId) {
           <div class="hcard-poster-fallback" style="display:none">🎬</div>
           <div class="hcard-rating">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ${movie.imdbRating}
+            ${movie.imdbRating !== 'N/A' ? movie.imdbRating : 'N/A'}
           </div>
         </div>
         <div class="hcard-title">${movie.Title}</div>
@@ -690,14 +681,12 @@ async function loadCategory(category, containerId) {
   }
 }
 
-// ===== Filter Category =====
 function filterCategory(cat, el) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
   if (cat === 'all') window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
-// ===== Search =====
 async function handleSearch(val) {
   const res = document.getElementById('searchResults');
   if (!val.trim()) {
@@ -732,7 +721,6 @@ async function handleSearch(val) {
   }
 }
 
-// ===== Show Movie Detail =====
 async function showMovieDetail(imdbID) {
   closeSearch();
   const homePage = document.getElementById('page-home');
@@ -801,7 +789,6 @@ async function showMovieDetail(imdbID) {
       </div>
     </div>
 
-    <!-- SUBTITLES SECTION -->
     <div class="subs-section">
       <div class="subs-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M6 12h4M6 16h8M14 12h4"/></svg>
@@ -817,7 +804,6 @@ async function showMovieDetail(imdbID) {
   await buildSubtitlesSection(data);
 }
 
-// ===== Navigation =====
 function openSearch() {
   document.getElementById('searchOverlay').classList.add('open');
   setTimeout(() => document.getElementById('searchInput').focus(), 100);
@@ -833,7 +819,6 @@ function goHome() {
   window.scrollTo(0, 0);
 }
 
-// ===== Init =====
 document.addEventListener('DOMContentLoaded', async () => {
   await buildHeroSlider();
   await loadCategory('trending', 'trendingSeries');
