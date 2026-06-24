@@ -54,7 +54,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .sr-go{color:var(--t3)}
 .sr-go svg{width:18px;height:18px}
 
-/* HERO SLIDER - ලොකු කරා */
+/* HERO SLIDER */
 .hero-slider{position:relative;height:600px;overflow:hidden}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
 .hero-slide.active{opacity:1}
@@ -90,7 +90,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 14px}
 .section-title{font-size:20px;font-weight:700}
 
-/* HORIZONTAL SCROLL - ඔක්කොම හරහට */
+/* HORIZONTAL SCROLL */
 .hscroll{display:flex;gap:10px;padding:0 16px 8px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
 .hscroll::-webkit-scrollbar{display:none}
 .hcard{flex-shrink:0;width:150px;cursor:pointer;transition:transform.2s}
@@ -125,6 +125,21 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .back-btn{position:fixed;top:70px;left:16px;z-index:98;width:44px;height:44px;background:rgba(0,0,0,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:var(--t1);backdrop-filter:blur(10px)}
 .back-btn:hover{background:rgba(0,0,0,.9)}
 .back-btn svg{width:24px;height:24px}
+
+/* SUBTITLE SECTION - ලස්සනට */
+.subtitle-section{margin-top:30px;padding-top:24px;border-top:1px solid var(--bg3)}
+.subtitle-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.subtitle-title svg{width:20px;height:20px;color:var(--red)}
+.subtitle-lang-group{margin-bottom:20px}
+.subtitle-lang-title{font-size:13px;font-weight:700;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.subtitle-grid{display:flex;flex-wrap:wrap;gap:10px}
+.subtitle-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg3);border-radius:8px;text-decoration:none;color:var(--t1);font-size:14px;font-weight:600;transition:all.2s;border:none;cursor:pointer}
+.subtitle-btn:hover{background:var(--red);transform:translateY(-2px);box-shadow:0 4px 12px rgba(229,9,20,0.4)}
+.subtitle-btn svg{width:18px;height:18px}
+.subtitle-btn:active{transform:scale(.96)}
+.subtitle-empty{color:var(--t3);font-size:13px;padding:20px 0;text-align:center}
+.subtitle-loading{display:flex;align-items:center;gap:10px;color:var(--t2);font-size:13px;padding:20px 0}
+.subtitle-note{font-size:11px;color:var(--t3);margin-top:16px;padding-top:16px;border-top:1px solid var(--bg3)}
 
 /* LOADING */
 .spinner{width:32px;height:32px;border:3px solid var(--bg3);border-top-color:var(--red);border-radius:50%;animation:spin.8s linear infinite;margin:0 auto 12px}
@@ -193,14 +208,12 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 </div>
 
 <div id="page-home">
-  <!-- HERO SLIDER -->
   <div class="hero-slider" id="heroSlider">
     <div style="height:600px;display:flex;align-items:center;justify-content:center">
       <div class="spinner"></div>
     </div>
   </div>
 
-  <!-- CATEGORY CHIPS -->
   <div class="chips-wrap">
     <button class="chip on" onclick="filterCategory('all',this)">🔥 Trending</button>
     <button class="chip" onclick="filterCategory('hollywood',this)">🎬 Hollywood</button>
@@ -210,25 +223,21 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
     <button class="chip" onclick="window.location.href='music.html'">🎵 Music</button>
   </div>
 
-  <!-- TRENDING SERIES -->
   <div class="section">
     <div class="section-head"><div class="section-title">🔥 Trending Series</div></div>
     <div class="hscroll" id="trendingSeries"></div>
   </div>
 
-  <!-- HOLLYWOOD -->
   <div class="section">
     <div class="section-head"><div class="section-title">🎬 Hollywood Hits</div></div>
     <div class="hscroll" id="hollywoodScroll"></div>
   </div>
 
-  <!-- K-DRAMA -->
   <div class="section">
     <div class="section-head"><div class="section-title">🇰🇷 K-Drama Popular</div></div>
     <div class="hscroll" id="kdramaScroll"></div>
   </div>
 
-  <!-- BOLLYWOOD -->
   <div class="section">
     <div class="section-head"><div class="section-title">🇮🇳 Bollywood Movies</div></div>
     <div class="hscroll" id="bollywoodScroll"></div>
@@ -256,8 +265,8 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
 <script>
 const OMDB_KEY = '5daa34a1';
+const OPENSUBTITLES_KEY = 'HYmbEWABAylmAeYqczaW2AZjOXCZYOGw';
 
-// Hero Slider Data - ජනප්‍රිය Series 6
 const HERO_SERIES = [
   {id:'tt11198330',title:'House of the Dragon',year:'2022',rating:'8.5',plot:'The story of the Targaryen civil war that took place about 200 years before the events of Game of Thrones.'},
   {id:'tt9813792',title:'From',year:'2022',rating:'7.8',plot:'Unravel the mystery of a city in middle U.S.A. that imprisons everyone who enters.'},
@@ -267,7 +276,6 @@ const HERO_SERIES = [
   {id:'tt0903747',title:'Breaking Bad',year:'2008',rating:'9.5',plot:'A chemistry teacher diagnosed with cancer turns to making meth to secure his family\'s future.'}
 ];
 
-// Category IMDB IDs
 const CATEGORIES = {
   trending: ['tt11198330','tt9813792','tt13443470','tt10919420','tt4574334','tt0903747','tt8111088','tt3032476','tt0386676','tt0944947','tt0108778','tt2560140'],
   hollywood: ['tt0111161','tt1375666','tt0816692','tt0468569','tt0137523','tt0109830','tt0120737','tt0167260','tt4154796','tt7286456','tt15398776','tt9362722'],
@@ -279,7 +287,6 @@ const CATEGORIES = {
 let currentHeroSlide = 0;
 let heroInterval;
 
-// ===== Fetch OMDb Data =====
 async function fetchOMDb(imdbID) {
   try {
     const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEY}&plot=full`);
@@ -292,7 +299,6 @@ async function fetchOMDb(imdbID) {
   }
 }
 
-// ===== Build Hero Slider =====
 async function buildHeroSlider() {
   const slider = document.getElementById('heroSlider');
   if (!slider) return;
@@ -328,7 +334,7 @@ async function buildHeroSlider() {
           <p class="hero-plot">${movie.Plot}</p>
           <div class="hero-btns">
             <button class="btn-hero btn-play" onclick="showMovieDetail('${movie.imdbID}')">
-              <svg viewBox="0 0 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               Play
             </button>
             <button class="btn-hero btn-info" onclick="showMovieDetail('${movie.imdbID}')">
@@ -371,7 +377,6 @@ function goToSlide(index) {
   startHeroSlider();
 }
 
-// ===== Load Category =====
 async function loadCategory(category, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -401,17 +406,12 @@ async function loadCategory(category, containerId) {
   }
 }
 
-// ===== Filter Category =====
 function filterCategory(cat, el) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
-
-  if (cat === 'all') {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }
+  if (cat === 'all') window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
-// ===== Search =====
 async function handleSearch(val){
   const res=document.getElementById('searchResults');
   if(!val.trim()){
@@ -443,6 +443,115 @@ async function handleSearch(val){
     }
   } catch(e) {
     res.innerHTML='<div style="padding:40px 16px;text-align:center;color:var(--red);font-size:14px">Error: '+e.message+'</div>';
+  }
+}
+
+<script>
+// ... උඩ තියෙන code එකට පස්සෙ මේක දාන්න
+
+// ===== SUBTITLE LOADER =====
+async function loadSubtitles(imdbID, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = '<div class="subtitle-loading"><div class="spinner" style="width:24px;height:24px"></div><span>Loading subtitles...</span></div>';
+
+  try {
+    const res = await fetch(`https://api.opensubtitles.com/api/v1/subtitles?imdb_id=${imdbID.replace('tt','')}&languages=si,en,ta`, {
+      headers: {
+        'Api-Key': OPENSUBTITLES_KEY,
+        'Content-Type': 'application/json',
+        'User-Agent': 'CinemaxElite v1.0'
+      }
+    });
+
+    if (!res.ok) throw new Error('API request failed');
+
+    const data = await res.json();
+
+    if (!data.data || data.data.length === 0) {
+      container.innerHTML = '<div class="subtitle-empty">No subtitles found for this movie/series</div><div class="subtitle-note">Free plan: 100 downloads/day (Under Development mode)</div>';
+      return;
+    }
+
+    // Group by language
+    const subsByLang = {};
+    data.data.forEach(item => {
+      const lang = item.attributes.language;
+      if (!subsByLang) subsByLang = [];
+      subsByLang.push(item);
+    });
+
+    const langNames = {
+      'si': '🇱🇰 Sinhala',
+      'en': '🇬🇧 English',
+      'ta': '🇮🇳 Tamil'
+    };
+
+    container.innerHTML = Object.keys(subsByLang).map(lang => {
+      const langName = langNames || lang.toUpperCase();
+      const files = subsByLang.slice(0, 3);
+
+      return `
+        <div class="subtitle-lang-group">
+          <div class="subtitle-lang-title">${langName}</div>
+          <div class="subtitle-grid">
+            ${files.map(file => {
+              const fileId = file.attributes.files[0].file_id;
+              const releaseName = file.attributes.release || file.attributes.movie_name || 'Download';
+              return `
+                <button class="subtitle-btn" onclick="downloadSubtitle(${fileId}, '${releaseName.replace(/'/g, "\\'")}')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  ${releaseName}
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }).join('') + '<div class="subtitle-note">Free plan: 100 downloads/day (Under Development mode). Click to download .srt file.</div>';
+
+  } catch(e) {
+    console.error('Subtitle Error:', e);
+    container.innerHTML = '<div class="subtitle-empty">Error loading subtitles. Try again later.</div>';
+  }
+}
+
+// ===== DOWNLOAD SUBTITLE =====
+async function downloadSubtitle(fileId, filename) {
+  try {
+    const res = await fetch(`https://api.opensubtitles.com/api/v1/download`, {
+      method: 'POST',
+      headers: {
+        'Api-Key': OPENSUBTITLES_KEY,
+        'Content-Type': 'application/json',
+        'User-Agent': 'CinemaxElite v1.0'
+      },
+      body: JSON.stringify({
+        file_id: fileId
+      })
+    });
+
+    if (!res.ok) {
+      if (res.status === 402) {
+        alert('Download limit reached! Free plan: 100/day');
+      } else {
+        alert('Download failed. Please try again.');
+      }
+      return;
+    }
+
+    const data = await res.json();
+    
+    // Download the file
+    const link = document.createElement('a');
+    link.href = data.link;
+    link.download = filename + '.srt';
+    link.click();
+
+  } catch(e) {
+    console.error('Download Error:', e);
+    alert('Download failed. Please try again.');
   }
 }
 
@@ -513,10 +622,23 @@ async function showMovieDetail(imdbID) {
             <span class="detail-value">${data.Awards}</span>
           ` : ''}
         </div>
+
+        <!-- SUBTITLE SECTION -->
+        <div class="subtitle-section">
+          <h3 class="subtitle-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Download Subtitles
+          </h3>
+          <div id="subtitleList-${data.imdbID}"></div>
+        </div>
+
       </div>
     </div>
     <div class="pb"></div>
   `;
+
+  // Load subtitles after page render
+  setTimeout(() => loadSubtitles(imdbID, `subtitleList-${imdbID}`), 100);
 }
 
 // ===== Navigation =====
@@ -546,4 +668,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 
 </body>
-    </html>
+</html>
