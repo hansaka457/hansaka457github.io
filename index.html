@@ -96,7 +96,6 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
   grid-template-columns:repeat(auto-fill, minmax(110px, 1fr));
   gap:12px;
   padding:0 16px 8px;
-  overflow-x:auto;
   scrollbar-width:none;
   scroll-behavior:smooth;
   -webkit-overflow-scrolling:touch;
@@ -260,6 +259,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
       <input type="text" id="searchInput" placeholder="Search movies, TV series..." onkeypress="if(event.key==='Enter')handleSearch(this.value)">
     </div>
+  </div>
   <div class="search-results" id="searchResults">
     <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>
   </div>
