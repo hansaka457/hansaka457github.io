@@ -90,24 +90,20 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 14px}
 .section-title{font-size:20px;font-weight:700}
 
-/* HORIZONTAL SCROLL */
+/* HORIZONTAL SCROLL - FIXED */
 .hscroll{
-  display:flex;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
   gap:14px;
   padding:0 16px 8px;
   overflow-x:auto;
-  overflow-y:hidden;
   scrollbar-width:none;
   scroll-behavior:smooth;
   -webkit-overflow-scrolling:touch;
-  flex-wrap:nowrap;
-  width:100%;
 }
 .hscroll::-webkit-scrollbar{display:none}
 
 .hcard{
-  flex-shrink:0;
-  width:150px;
   cursor:pointer;
   transition:transform.2s;
   position:relative;
@@ -220,7 +216,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .pb{height:80px}
 
 @media(min-width:768px){
-.hcard{width:160px}
+.hscroll{grid-template-columns:repeat(auto-fill, minmax(160px, 1fr))}
 .hcard-poster{height:240px}
 .hero-title{font-size:64px}
 .hero-slider{height:650px}
@@ -229,13 +225,14 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .detail-info{flex:1}
 }
 @media(min-width:1024px){
-.hcard{width:180px}
+.hscroll{grid-template-columns:repeat(auto-fill, minmax(180px, 1fr))}
 .hcard-poster{height:270px}
 }
 @media(max-width:480px){
 .hero-slider{height:550px}
 .hero-title{font-size:38px}
 .hero-plot{-webkit-line-clamp:2}
+.hscroll{grid-template-columns:repeat(2, 1fr)}
 }
 </style>
 </head>
@@ -251,7 +248,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
   </div>
   <div class="tb-icons">
     <div class="tb-icon" onclick="openSearch()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
     </div>
   </div>
 </div>
@@ -330,6 +327,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 <script>
 const OMDB_KEY = '35d0198a';
 const SUBDL_KEY = 'subdl_Rwmf--bQfVdu54oCADQtIRslcr7tu4xHOg6wGNnZImI';
+const OPENSUB_API_KEY = 'jS8TPEUJmATWzOh4BGA2K9pnMvS0I3d7';
 
 const HERO_SERIES = [
   {id:'tt11198330',title:'House of the Dragon',year:'2022',rating:'8.5',plot:'The story of the Targaryen civil war that took place about 200 years before the events of Game of Thrones.'},
@@ -391,7 +389,7 @@ async function fetchOMDb(imdbID) {
   }
 }
 
-// FIXED: Using corsproxy.io instead of allorigins
+// SUBDL API with corsproxy.io
 async function fetchSubDL(imdbID, season = null, episode = null) {
   try {
     let url = `https://api.subdl.com/api/v1/subtitles?api_key=${SUBDL_KEY}&imdb_id=${imdbID}&subs_per_page=30&languages=en,si,ta,hi,ko,fr,de,es`;
@@ -399,7 +397,6 @@ async function fetchSubDL(imdbID, season = null, episode = null) {
     if (episode!== null) url += `&episode_number=${episode}`;
 
     const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-
     const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL Network Error');
     const data = await res.json();
@@ -417,13 +414,46 @@ async function fetchSubDLByTitle(title, year, season = null) {
     if (season!== null) url += `&season_number=${season}`;
 
     const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-
     const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error('SubDL fallback error');
     const data = await res.json();
     return data;
   } catch(e) {
     console.error('SubDL Fallback Error:', e);
+    return { subtitles: [] };
+  }
+}
+
+// FALLBACK: OpenSubtitles API
+async function fetchOpenSubs(imdbID, season = null, episode = null) {
+  try {
+    let url = `https://api.opensubtitles.com/api/v1/subtitles?imdb_id=${imdbID.replace('tt','')}&languages=en,si,ta,hi`;
+    if (season!== null) url += `&season_number=${season}`;
+    if (episode!== null) url += `&episode_number=${episode}`;
+
+    const res = await fetch(url, {
+      headers: {
+        'Api-Key': OPENSUB_API_KEY,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!res.ok) return { subtitles: [] };
+    const data = await res.json();
+    // Convert OpenSubtitles format to SubDL format
+    const converted = {
+      subtitles: data.data?.map(item => ({
+        lang: item.attributes.language,
+        language: item.attributes.language,
+        release_name: item.attributes.release || item.attributes.files[0]?.file_name || 'Subtitle',
+        url: item.attributes.url,
+        download_url: item.attributes.url,
+        author: item.attributes.uploader?.name || '',
+        fps: item.attributes.fps || ''
+      })) || []
+    };
+    return converted;
+  } catch(e) {
+    console.error('OpenSubtitles Error:', e);
     return { subtitles: [] };
   }
 }
@@ -458,12 +488,21 @@ async function buildSubtitlesSection(movieData) {
 }
 
 async function buildMovieSubtitles(imdbID, title, year, container) {
+  // Try SubDL first
   let result = await fetchSubDL(imdbID);
   let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
+  // Try SubDL by title if no results
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year);
     subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
+  }
+
+  // FALLBACK: Try OpenSubtitles if SubDL fails
+  if (subs.length === 0) {
+    console.log('SubDL failed, trying OpenSubtitles...');
+    const os = await fetchOpenSubs(imdbID);
+    subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
   }
 
   if (subs.length === 0) {
@@ -507,12 +546,21 @@ async function loadSeasonSubs(imdbID, title, year, season) {
 
   content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
 
+  // Try SubDL first
   let result = await fetchSubDL(imdbID, season);
   let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
+  // Try SubDL by title if no results
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year, season);
     subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
+  }
+
+  // FALLBACK: Try OpenSubtitles if SubDL fails
+  if (subs.length === 0) {
+    console.log('SubDL failed, trying OpenSubtitles...');
+    const os = await fetchOpenSubs(imdbID, season);
+    subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
   }
 
   _currentSubsData[season] = subs;
@@ -542,7 +590,7 @@ window.switchSeasonTab = async function(season, el) {
 
 function renderSubCard(s, season) {
   const lang = getLang(s.lang || s.language);
-  const dlUrl = s.url? `https://dl.subdl.com${s.url}` : (s.download_url || '#');
+  const dlUrl = s.url? (s.url.startsWith('http')? s.url : `https://dl.subdl.com${s.url}`) : (s.download_url || '#');
   const relName = s.release_name || s.name || 'Subtitle';
   const author = s.author || s.uploader || '';
   const fps = s.fps? `${s.fps}fps` : '';
@@ -590,7 +638,7 @@ async function buildHeroSlider() {
       return;
     }
 
-        slider.innerHTML = validSlides.map((movie, idx) => `
+    slider.innerHTML = validSlides.map((movie, idx) => `
       <div class="hero-slide ${idx === 0? 'active' : ''}">
         <img src="${movie.Poster!== 'N/A'? movie.Poster : ''}" class="hero-bg" alt="${movie.Title}" onerror="this.style.display='none'">
         <div class="hero-gradient"></div>
@@ -672,6 +720,7 @@ async function loadCategory(category, containerId) {
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             ${movie.imdbRating!== 'N/A'? movie.imdbRating : 'N/A'}
           </div>
+        </div>
         <div class="hcard-title">${movie.Title}</div>
         <div class="hcard-year">${movie.Year}</div>
       </div>
