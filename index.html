@@ -90,11 +90,11 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 14px}
 .section-title{font-size:20px;font-weight:700}
 
-/* HORIZONTAL SCROLL - FIXED */
+/* HORIZONTAL SCROLL - 10 ITEMS PER ROW */
 .hscroll{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fill, minmax(110px, 1fr));
+  gap:12px;
   padding:0 16px 8px;
   overflow-x:auto;
   scrollbar-width:none;
@@ -108,16 +108,16 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
   transition:transform.2s;
   position:relative;
 }
-.hcard:hover{transform:scale(1.03)}
+.hcard:hover{transform:scale(1.05);z-index:2}
 
 .hcard-poster{
   width:100%;
-  height:220px;
-  border-radius:8px;
+  height:165px;
+  border-radius:6px;
   overflow:hidden;
   background:var(--bg3);
   position:relative;
-  margin-bottom:8px;
+  margin-bottom:6px;
 }
 .hcard-poster img{
   width:100%;
@@ -130,26 +130,26 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:40px;
+  font-size:32px;
 }
 .hcard-rating{
   position:absolute;
-  top:8px;
-  right:8px;
+  top:6px;
+  right:6px;
   background:rgba(0,0,0,0.75);
-  padding:3px 6px;
+  padding:2px 5px;
   border-radius:4px;
-  font-size:11px;
+  font-size:10px;
   font-weight:700;
   color:#FFD700;
   display:flex;
   align-items:center;
-  gap:3px;
+  gap:2px;
   backdrop-filter:blur(4px);
 }
-.hcard-rating svg{width:12px;height:12px}
-.hcard-title{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
-.hcard-year{font-size:11px;color:var(--t3);margin-top:2px}
+.hcard-rating svg{width:10px;height:10px}
+.hcard-title{font-size:12px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.hcard-year{font-size:10px;color:var(--t3);margin-top:1px}
 
 /* DETAIL PAGE */
 .detail-hero{position:relative;min-height:450px}
@@ -173,18 +173,14 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .back-btn:hover{background:rgba(0,0,0,.9)}
 .back-btn svg{width:24px;height:24px}
 
-/* ===== SUBTITLES SECTION ===== */
+/* SUBTITLES SECTION */
 .subs-section{padding:0 16px 16px}
 .subs-title{font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .subs-title svg{width:20px;height:20px;color:var(--red)}
-
-/* Season Tabs */
 .subs-season-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:2px}
 .subs-season-tabs::-webkit-scrollbar{display:none}
 .season-tab{flex-shrink:0;padding:7px 16px;border-radius:20px;background:var(--bg3);color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all.15s}
 .season-tab.on{background:var(--red);color:#fff}
-
-/* Subtitle Cards */
 .subs-list{display:flex;flex-direction:column;gap:8px}
 .sub-card{background:var(--bg2);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;border:1px solid var(--bg3)}
 .sub-flag{font-size:22px;flex-shrink:0}
@@ -195,8 +191,6 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .sub-dl-btn{flex-shrink:0;padding:8px 16px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none;transition:opacity.15s}
 .sub-dl-btn:hover{opacity:.85}
 .sub-dl-btn svg{width:15px;height:15px}
-
-/* Subtitle loading/empty states */
 .subs-loading{padding:24px;text-align:center;color:var(--t3)}
 .subs-empty{padding:24px;text-align:center;color:var(--t3);font-size:14px}
 .subs-empty svg{width:36px;height:36px;margin-bottom:8px;opacity:.3}
@@ -216,8 +210,8 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .pb{height:80px}
 
 @media(min-width:768px){
-.hscroll{grid-template-columns:repeat(auto-fill, minmax(160px, 1fr))}
-.hcard-poster{height:240px}
+.hscroll{grid-template-columns:repeat(auto-fill, minmax(140px, 1fr))}
+.hcard-poster{height:210px}
 .hero-title{font-size:64px}
 .hero-slider{height:650px}
 .detail-content{display:flex;gap:40px;align-items:flex-start}
@@ -225,14 +219,18 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .detail-info{flex:1}
 }
 @media(min-width:1024px){
-.hscroll{grid-template-columns:repeat(auto-fill, minmax(180px, 1fr))}
-.hcard-poster{height:270px}
+.hscroll{grid-template-columns:repeat(auto-fill, minmax(120px, 1fr))}
+.hcard-poster{height:180px}
+}
+@media(min-width:1440px){
+.hscroll{grid-template-columns:repeat(auto-fill, minmax(130px, 1fr))}
 }
 @media(max-width:480px){
 .hero-slider{height:550px}
 .hero-title{font-size:38px}
 .hero-plot{-webkit-line-clamp:2}
-.hscroll{grid-template-columns:repeat(2, 1fr)}
+.hscroll{grid-template-columns:repeat(3, 1fr)}
+.hcard-poster{height:150px}
 }
 </style>
 </head>
@@ -262,7 +260,6 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
       <input type="text" id="searchInput" placeholder="Search movies, TV series..." onkeypress="if(event.key==='Enter')handleSearch(this.value)">
     </div>
-  </div>
   <div class="search-results" id="searchResults">
     <div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">Search for movies or TV series</div>
   </div>
@@ -315,7 +312,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
     <span>Home</span>
   </a>
   <a class="bn" href="#" onclick="openSearch();return false">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35"/></svg>
     <span>Search</span>
   </a>
   <a class="bn" href="music.html">
@@ -326,8 +323,8 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 
 <script>
 const OMDB_KEY = '35d0198a';
-const SUBDL_KEY = 'subdl_Rwmf--bQfVdu54oCADQtIRslcr7tu4xHOg6wGNnZImI';
-const OPENSUB_API_KEY = 'jS8TPEUJmATWzOh4BGA2K9pnMvS0I3d7';
+const SUBDL_KEY = 'subdl_4M8I70ru8mbUim5eaHftWWlLvfSC5DUs64kioqp6igs';
+const OPENSUB_API_KEY = 'bqdHXy0PfXYKXVai3bIRDkANyZpeLtSG';
 
 const HERO_SERIES = [
   {id:'tt11198330',title:'House of the Dragon',year:'2022',rating:'8.5',plot:'The story of the Targaryen civil war that took place about 200 years before the events of Game of Thrones.'},
@@ -424,7 +421,7 @@ async function fetchSubDLByTitle(title, year, season = null) {
   }
 }
 
-// FALLBACK: OpenSubtitles API
+// OpenSubtitles API
 async function fetchOpenSubs(imdbID, season = null, episode = null) {
   try {
     let url = `https://api.opensubtitles.com/api/v1/subtitles?imdb_id=${imdbID.replace('tt','')}&languages=en,si,ta,hi`;
@@ -439,7 +436,6 @@ async function fetchOpenSubs(imdbID, season = null, episode = null) {
     });
     if (!res.ok) return { subtitles: [] };
     const data = await res.json();
-    // Convert OpenSubtitles format to SubDL format
     const converted = {
       subtitles: data.data?.map(item => ({
         lang: item.attributes.language,
@@ -488,17 +484,14 @@ async function buildSubtitlesSection(movieData) {
 }
 
 async function buildMovieSubtitles(imdbID, title, year, container) {
-  // Try SubDL first
   let result = await fetchSubDL(imdbID);
   let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
-  // Try SubDL by title if no results
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year);
     subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
   }
 
-  // FALLBACK: Try OpenSubtitles if SubDL fails
   if (subs.length === 0) {
     console.log('SubDL failed, trying OpenSubtitles...');
     const os = await fetchOpenSubs(imdbID);
@@ -546,17 +539,14 @@ async function loadSeasonSubs(imdbID, title, year, season) {
 
   content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
 
-  // Try SubDL first
   let result = await fetchSubDL(imdbID, season);
   let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
 
-  // Try SubDL by title if no results
   if (subs.length === 0) {
     const fb = await fetchSubDLByTitle(title, year, season);
     subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
   }
 
-  // FALLBACK: Try OpenSubtitles if SubDL fails
   if (subs.length === 0) {
     console.log('SubDL failed, trying OpenSubtitles...');
     const os = await fetchOpenSubs(imdbID, season);
