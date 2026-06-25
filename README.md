@@ -1,4 +1,4 @@
-# CINEMAX 🔥
+# CINEMAX ELite 🔥
 
 ![CINEMAX Banner](bg.jpg)
 
@@ -8,7 +8,7 @@
 
 ### ✨ Features
 
-- 🎥 **cinemax main site** - සිංහල හඩ කැවු film+tv sereis 
+- 🎥 **cinemax main site** - සිංහල subtitles සමග film+tv sereis 
 - 📱 **100% Mobile Responsive** - Phone/Desktop දෙකටම වැඩ කරනවා 
 - 🔍 **Search Function** - Series හොයන්න පුළුවන්
 - 💬 **WhatsApp Integration** - Direct WhatsApp Links
