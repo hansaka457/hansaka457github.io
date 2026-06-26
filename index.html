@@ -264,7 +264,7 @@ html[data-theme="light"] .google-btn:hover{background:#f8f9fa}
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
-  // ===== Firebase Config - මෙතන ඔයාගේ values දාන්න =====
+  // ===== Firebase Config =====
 const firebaseConfig = {
   apiKey: "AIzaSyD1Q1cgiM7lbHb8_79HLSbrbZYFGPz7o94",
   authDomain: "cinemax-web.firebaseapp.com",
@@ -323,7 +323,6 @@ const firebaseConfig = {
   </div>
 </div>
 
-<!-- LOGIN MODAL -->
 <div class="login-modal" id="loginModal">
   <button class="login-close" onclick="closeLogin()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -357,7 +356,6 @@ const firebaseConfig = {
   </div>
 </div>
 
-<!-- SETTINGS PANEL -->
 <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
 <div class="settings-panel" id="settingsPanel">
   <div class="settings-header">
@@ -495,7 +493,9 @@ const firebaseConfig = {
 </div>
 
 <script>
-const OMDB_KEY = '35d0198a';
+// ===== බහුකාර්ය OMDb Keys (එකක් ඉවර වුණොත් අනෙක ක්‍රියාත්මක වේ) =====
+const OMDB_KEYS = ['7a316873', '51e44f67'];
+
 const SUBDL_KEY = 'subdl_4M8I70ru8mbUim5eaHftWWlLvfSC5DUs64kioqp6igs';
 const OPENSUB_API_KEY = 'bqdHXy0PfXYKXVai3bIRDkANyZpeLtSG';
 
@@ -738,17 +738,27 @@ function initTheme() {
   });
 }
 
-// ===== OMDb & Subtitles =====
+// ===== OMDb & Subtitles (Auto Switch Keys) =====
 async function fetchOMDb(imdbID) {
-  try {
-    const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEY}&plot=full`);
-    if (!res.ok) throw new Error('Network error');
-    const data = await res.json();
-    return data.Response === 'True'? data : null;
-  } catch(e) {
-    console.error('OMDb Error:', e);
-    return null;
+  // Array එකේ ඇති සියලුම Keys එකින් එක පරික්ශා කරයි
+  for (let i = 0; i < OMDB_KEYS.length; i++) {
+    try {
+      const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEYS[i]}&plot=full`);
+      if (!res.ok) throw new Error('Network error');
+      const data = await res.json();
+      
+      // Key එකේ Limit ඉවරනම් Response එක False වේ හෝ Request limit reached මැසේජ් එකක් එයි.
+      if (data.Response === 'True') {
+        return data;
+      } else if (data.Error && (data.Error.includes('limit') || data.Error.includes('key'))) {
+        console.warn(`OMDb Key [${OMDB_KEYS[i]}] limit reached or invalid. Trying next...`);
+        continue; // ඊළඟ Key එකට මාරු වේ
+      }
+    } catch(e) {
+      console.error(`OMDb Error with key [${OMDB_KEYS[i]}]:`, e);
+    }
   }
+  return null; // සියලුම Keys අසාර්ථක වුවහොත්
 }
 
 async function fetchSubDL(imdbID, season = null, episode = null) {
@@ -981,7 +991,7 @@ async function buildHeroSlider() {
     const validSlides = slides.filter(s => s);
 
     if (validSlides.length === 0) {
-      slider.innerHTML = '<div class="error-msg"><div class="error-title">Failed to load</div>Check your API key</div>';
+      slider.innerHTML = '<div class="error-msg"><div class="error-title">Failed to load</div>Check your API keys</div>';
       return;
     }
 
@@ -1083,6 +1093,7 @@ function filterCategory(cat, el) {
   if (cat === 'all') window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
+// ===== SEARCH WITH AUTO-SWITCH KEYS =====
 async function handleSearch(val) {
   const res = document.getElementById('searchResults');
   if (!val.trim()) {
@@ -1092,28 +1103,43 @@ async function handleSearch(val) {
 
   res.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--t2)"><div class="spinner"></div>Searching...</div>';
 
-  try {
-    const omdbRes = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(val)}&apikey=${OMDB_KEY}`);
-    const omdbData = await omdbRes.json();
+  let searchSuccess = false;
 
-        if (omdbData.Response === 'True' && omdbData.Search) {
-      res.innerHTML = omdbData.Search.slice(0, 10).map(m => `
-        <div class="sr-item" onclick="showMovieDetail('${m.imdbID}')">
-          <div class="sr-icon">
-            <img src="${m.Poster!== 'N/A'? m.Poster : ''}" alt="" onerror="this.style.display='none'">
+  for (let i = 0; i < OMDB_KEYS.length; i++) {
+    try {
+      const omdbRes = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(val)}&apikey=${OMDB_KEYS[i]}`);
+      const omdbData = await omdbRes.json();
+
+      if (omdbData.Response === 'True' && omdbData.Search) {
+        res.innerHTML = omdbData.Search.slice(0, 10).map(m => `
+          <div class="sr-item" onclick="showMovieDetail('${m.imdbID}')">
+            <div class="sr-icon">
+              <img src="${m.Poster!== 'N/A'? m.Poster : ''}" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="sr-text">
+              <div class="sr-title">${m.Title}</div>
+              <div class="sr-sub">${m.Year} · ${m.Type}</div>
+            </div>
+            <div class="sr-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
           </div>
-          <div class="sr-text">
-            <div class="sr-title">${m.Title}</div>
-            <div class="sr-sub">${m.Year} · ${m.Type}</div>
-          </div>
-          <div class="sr-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-        </div>
-      `).join('');
-    } else {
-      res.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">No results found</div>';
+        `).join('');
+        searchSuccess = true;
+        break; // සාර්ථක නම් Loop එක නවත්වන්න
+      } else if (omdbData.Error && (omdbData.Error.includes('limit') || omdbData.Error.includes('key'))) {
+        console.warn(`Search Key [${OMDB_KEYS[i]}] limit reached. Trying next...`);
+        continue;
+      } else {
+        res.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--t3);font-size:14px">No results found</div>';
+        searchSuccess = true;
+        break;
+      }
+    } catch(e) {
+      console.error(`Search Error with key [${OMDB_KEYS[i]}]:`, e);
     }
-  } catch(e) {
-    res.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--red);font-size:14px">Error: '+e.message+'</div>';
+  }
+
+  if (!searchSuccess) {
+    res.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--red);font-size:14px">All OMDb Keys failed or limit exceeded.</div>';
   }
 }
 
@@ -1132,7 +1158,7 @@ async function showMovieDetail(imdbID) {
 
   const data = await fetchOMDb(imdbID);
   if (!data) {
-    detailPage.innerHTML = '<div style="padding:100px 16px;text-align:center;color:var(--red)">Movie not found</div>';
+    detailPage.innerHTML = '<div style="padding:100px 16px;text-align:center;color:var(--red)">Movie not found or API limit reached</div>';
     return;
   }
 
