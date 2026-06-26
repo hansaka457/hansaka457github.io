@@ -493,11 +493,12 @@ const firebaseConfig = {
 </div>
 
 <script>
-// ===== බහුකාර්ය OMDb Keys (එකක් ඉවර වුණොත් අනෙක ක්‍රියාත්මක වේ) =====
+// ===== බහුකාර්ය OMDb Keys =====
 const OMDB_KEYS = ['7a316873', '51e44f67'];
 
 const SUBDL_KEY = 'subdl_4M8I70ru8mbUim5eaHftWWlLvfSC5DUs64kioqp6igs';
 const OPENSUB_API_KEY = 'bqdHXy0PfXYKXVai3bIRDkANyZpeLtSG';
+const WYZIE_KEY = 'wyzie-py8u0ol1g1xb60pf3z1kiy3ylweuug1l'; // ඔබ ලබාදුන් Wyzie API Key එක
 
 const HERO_SERIES = [
   {id:'tt11198330',title:'House of the Dragon',year:'2022',rating:'8.5',plot:'The story of the Targaryen civil war that took place about 200 years before the events of Game of Thrones.'},
@@ -738,27 +739,25 @@ function initTheme() {
   });
 }
 
-// ===== OMDb & Subtitles (Auto Switch Keys) =====
+// ===== OMDb & Subtitles =====
 async function fetchOMDb(imdbID) {
-  // Array එකේ ඇති සියලුම Keys එකින් එක පරික්ශා කරයි
   for (let i = 0; i < OMDB_KEYS.length; i++) {
     try {
       const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEYS[i]}&plot=full`);
       if (!res.ok) throw new Error('Network error');
       const data = await res.json();
       
-      // Key එකේ Limit ඉවරනම් Response එක False වේ හෝ Request limit reached මැසේජ් එකක් එයි.
       if (data.Response === 'True') {
         return data;
       } else if (data.Error && (data.Error.includes('limit') || data.Error.includes('key'))) {
         console.warn(`OMDb Key [${OMDB_KEYS[i]}] limit reached or invalid. Trying next...`);
-        continue; // ඊළඟ Key එකට මාරු වේ
+        continue;
       }
     } catch(e) {
       console.error(`OMDb Error with key [${OMDB_KEYS[i]}]:`, e);
     }
   }
-  return null; // සියලුම Keys අසාර්ථක වුවහොත්
+  return null;
 }
 
 async function fetchSubDL(imdbID, season = null, episode = null) {
@@ -827,6 +826,38 @@ async function fetchOpenSubs(imdbID, season = null, episode = null) {
   }
 }
 
+// ===== FALLBACK WYZIE API INTEGRATION =====
+async function fetchWyzieSubs(imdbID, season = null, episode = null) {
+  try {
+    let url = `https://api.wyzie.xyz/v1/subs?imdb_id=${imdbID}`;
+    if (season !== null) url += `&season=${season}`;
+    if (episode !== null) url += `&episode=${episode}`;
+
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${WYZIE_KEY}`
+      }
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    
+    // Wyzie API response එක standard format එකකට හරවයි
+    return (data.subtitles || data.results || []).map(item => ({
+      lang: item.lang || item.language || 'si',
+      language: item.language || 'Sinhala',
+      release_name: item.release_name || item.filename || 'Wyzie Sinhala Subtitle',
+      url: item.download_url || item.url,
+      download_url: item.download_url || item.url,
+      author: item.author || item.uploader || 'Wyzie',
+      fps: item.fps || ''
+    }));
+  } catch(e) {
+    console.error('Wyzie API Error:', e);
+    return [];
+  }
+}
+
 let _currentSubsData = {};
 let _currentSubsTitle = '';
 let _currentSubsType = 'movie';
@@ -868,6 +899,12 @@ async function buildMovieSubtitles(imdbID, title, year, container) {
   if (subs.length === 0) {
     const os = await fetchOpenSubs(imdbID);
     subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
+  }
+
+  // ===== විකල්ප පියවර: අනෙක් ඒවා වැඩ නැත්නම් Wyzie API එක ක්‍රියාත්මක වේ =====
+  if (subs.length === 0) {
+    console.log("SubDL/OpenSubs empty. Fetching from Wyzie API...");
+    subs = await fetchWyzieSubs(imdbID);
   }
 
   if (subs.length === 0) {
@@ -918,6 +955,12 @@ async function loadSeasonSubs(imdbID, title, year, season) {
   if (subs.length === 0) {
     const os = await fetchOpenSubs(imdbID, season);
     subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
+  }
+
+  // ===== විකල්ප පියවර (Series): Wyzie API එක ක්‍රියාත්මක වේ =====
+  if (subs.length === 0) {
+    console.log(`SubDL/OpenSubs empty for S${season}. Fetching from Wyzie API...`);
+    subs = await fetchWyzieSubs(imdbID, season);
   }
 
   _currentSubsData[season] = subs;
@@ -1124,7 +1167,7 @@ async function handleSearch(val) {
           </div>
         `).join('');
         searchSuccess = true;
-        break; // සාර්ථක නම් Loop එක නවත්වන්න
+        break;
       } else if (omdbData.Error && (omdbData.Error.includes('limit') || omdbData.Error.includes('key'))) {
         console.warn(`Search Key [${OMDB_KEYS[i]}] limit reached. Trying next...`);
         continue;
