@@ -265,14 +265,15 @@ html[data-theme="light"] .google-btn:hover{background:#f8f9fa}
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
   // ===== Firebase Config - මෙතන ඔයාගේ values දාන්න =====
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyD1Q1cgiM7lbHb8_79HLSbrbZYFGPz7o94",
+  authDomain: "cinemax-web.firebaseapp.com",
+  projectId: "cinemax-web",
+  storageBucket: "cinemax-web.firebasestorage.app",
+  messagingSenderId: "122378538633",
+  appId: "1:122378538633:web:be7b93c4efd4c936ff0058",
+  measurementId: "G-SQ9Y495SLN"
+};
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
