@@ -3,18 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Film AI Assistant</title>
+    <title>Film AI Assistant - Cinemax Elite</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #141414; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .chat-container { width: 400px; height: 500px; background: #222; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        .chat-header { background: #E50914; padding: 15px; text-align: center; font-weight: bold; font-size: 1.2em; }
-        .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px; border-radius: 8px; max-width: 80%; word-wrap: break-word; }
-        .user-msg { background: #0078ff; align-self: flex-end; }
-        .ai-msg { background: #333; align-self: flex-start; border: 1px solid #444; }
-        .input-area { display: flex; padding: 10px; background: #111; }
-        .input-area input { flex: 1; padding: 10px; border: none; border-radius: 5px; background: #333; color: white; }
-        .input-area button { background: #E50914; color: white; border: none; padding: 10px 15px; margin-left: 5px; border-radius: 5px; cursor: pointer; }
+        * {margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent}
+        body { 
+            font-family: 'Roboto', Arial, sans-serif; 
+            background-color: #0f0f0f; 
+            color: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0;
+            padding: 20px;
+        }
+        .chat-container { 
+            width: 100%;
+            max-width: 450px; 
+            height: 600px; 
+            background: #1a1a1a; 
+            border-radius: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            border: 1px solid #272727;
+        }
+        .chat-header { 
+            background: #E50914; 
+            padding: 18px; 
+            text-align: center; 
+            font-weight: 900; 
+            font-size: 1.3em;
+            letter-spacing: -0.5px;
+        }
+        .chat-box { 
+            flex: 1; 
+            padding: 16px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px;
+            scrollbar-width: thin;
+            scrollbar-color: #3d3d3d #1a1a1a;
+        }
+        .chat-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #3d3d3d;
+            border-radius: 3px;
+        }
+        .msg { 
+            padding: 12px 14px; 
+            border-radius: 10px; 
+            max-width: 85%; 
+            word-wrap: break-word;
+            line-height: 1.5;
+            font-size: 14px;
+            animation: fadeIn 0.2s ease-in;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(5px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .user-msg { 
+            background: #0078ff; 
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .ai-msg { 
+            background: #272727; 
+            align-self: flex-start;
+            border: 1px solid #3d3d3d;
+            border-bottom-left-radius: 4px;
+        }
+        .input-area { 
+            display: flex; 
+            padding: 12px; 
+            background: #0f0f0f;
+            gap: 8px;
+            border-top: 1px solid #272727;
+        }
+        .input-area input { 
+            flex: 1; 
+            padding: 12px 16px; 
+            border: 1px solid #3d3d3d;
+            border-radius: 24px; 
+            background: #272727; 
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        .input-area input:focus {
+            border-color: #E50914;
+        }
+        .input-area input::placeholder {
+            color: #717171;
+        }
+        .input-area button { 
+            background: #E50914; 
+            color: white; 
+            border: none; 
+            padding: 12px 20px;
+            border-radius: 24px; 
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 15px;
+            transition: opacity 0.15s;
+        }
+        .input-area button:hover {
+            opacity: 0.85;
+        }
+        .input-area button:active {
+            opacity: 0.7;
+        }
+        .typing {
+            display: flex;
+            gap: 4px;
+            padding: 8px 0;
+        }
+        .typing span {
+            width: 8px;
+            height: 8px;
+            background: #717171;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.7; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -22,7 +143,7 @@
 <div class="chat-container">
     <div class="chat-header">🎬 Film AI Assistant</div>
     <div class="chat-box" id="chatBox">
-        <div class="msg ai-msg">හලෝ! මම ඔයාගේ සයිට් එකේ Film AI එක. ඔයාට බලන්න හොඳ ෆිල්ම්ස් ගැන මගෙන් අහන්න පුළුවන්.</div>
+        <div class="msg ai-msg">හලෝ! මම Cinemax Elite එකේ Film AI එක. ඔයාට බලන්න හොඳ Films, TV Series ගැන මගෙන් අහන්න පුළුවන්. මොකක්ද බලන්න ආස?</div>
     </div>
     <div class="input-area">
         <input type="text" id="userInput" placeholder="ප්‍රශ්නය මෙතන ලියන්න...">
@@ -31,52 +152,79 @@
 </div>
 
 <script>
+const chatBox = document.getElementById("chatBox");
+const inputField = document.getElementById("userInput");
+
 async function sendMessage() {
-    const inputField = document.getElementById("userInput");
-    const chatBox = document.getElementById("chatBox");
     const userText = inputField.value.trim();
-    
     if (!userText) return;
 
-    // User ගේ මැසේජ් එක Screen එකට දාන්න
-    chatBox.innerHTML += `<div class="msg user-msg">${userText}</div>`;
+    // User message එක දාන්න
+    chatBox.innerHTML += `<div class="msg user-msg">${escapeHtml(userText)}</div>`;
     inputField.value = "";
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // GitHub Models API එකට Request එක යැවීම
-    const token = "ඔයාගේ_GITHUB_TOKEN_එක_මෙතනට_දාන්න"; 
-    const endpoint = "https://models.inference.ai.azure.com/chat/completions";
+    // Typing indicator
+    const loadingId = 'loading-' + Date.now();
+    chatBox.innerHTML += `<div class="msg ai-msg" id="${loadingId}"><div class="typing"><span></span><span></span><span></span></div></div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // OpenRouter Free API - Key ඕන නෑ
+    const endpoint = "https://api.openrouter.ai/api/v1/chat/completions";
 
     try {
         const response = await fetch(endpoint, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                model: "meta-llama/llama-3.2-3b-instruct:free",
                 messages: [
-                    { role: "system", content: "You are a friendly movie expert. Help users find good movies. Speak in Sinhala if the user speaks in Sinhala." },
+                    { 
+                        role: "system", 
+                        content: "You are Film AI Assistant for Cinemax Elite website. You are a friendly movie and TV series expert. Help users find movies, explain plots, suggest based on mood/genre. Always reply in Sinhala if the user speaks Sinhala. Keep answers short, helpful and fun. Use emojis sometimes." 
+                    },
                     { role: "user", content: userText }
                 ],
-                model: "gpt-4o-mini"
+                max_tokens: 500,
+                temperature: 0.8
             })
         });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
 
         const data = await response.json();
         const aiReply = data.choices[0].message.content;
 
-        // AI ගේ පිළිතුර Screen එකට දාන්න
-        chatBox.innerHTML += `<div class="msg ai-msg">${aiReply}</div>`;
+        document.getElementById(loadingId).remove();
+        chatBox.innerHTML += `<div class="msg ai-msg">${escapeHtml(aiReply)}</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
 
     } catch (error) {
-        chatBox.innerHTML += `<div class="msg ai-msg" style="color:red;">Error එකක් ආවා. පසුව උත්සාහ කරන්න.</div>`;
+        document.getElementById(loadingId).remove();
+        chatBox.innerHTML += `<div class="msg ai-msg" style="color:#ff4757;">සමාවෙන්න, Error එකක් ආවා 😔 <br>Error: ${error.message}<br>පසුව උත්සාහ කරන්න.</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
         console.error(error);
     }
 }
+
+// HTML escape කරලා XSS වලින් බේරෙනවා
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Enter key එකෙන් send වෙන්න
+inputField.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
 </script>
 
 </body>
 </html>
-
