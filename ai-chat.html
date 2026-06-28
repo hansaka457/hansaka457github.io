@@ -19,25 +19,44 @@
             display: flex;
             flex-direction: column;
         }
-      .chat-container {
+     .chat-container {
             width: 100%;
             height: 100%;
             background: #1a1a1a;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
         }
-      .chat-header {
-            background: #E50914;
+        /* Background Image */
+     .chat-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('chat.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+        }
+     .chat-header {
+            background: rgba(229, 9, 20, 0.95);
+            backdrop-filter: blur(10px);
             padding: 16px;
             text-align: center;
             font-weight: 900;
             font-size: 1.2em;
             letter-spacing: -0.5px;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            z-index: 2;
+            position: relative;
         }
-      .chat-box {
+     .chat-box {
             flex: 1;
             padding: 16px;
             overflow-y: auto;
@@ -45,15 +64,17 @@
             flex-direction: column;
             gap: 12px;
             -webkit-overflow-scrolling: touch;
+            z-index: 1;
+            position: relative;
         }
-      .chat-box::-webkit-scrollbar {
+     .chat-box::-webkit-scrollbar {
             width: 5px;
         }
-      .chat-box::-webkit-scrollbar-thumb {
-            background: #3d3d3d;
+     .chat-box::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
             border-radius: 3px;
         }
-      .msg {
+     .msg {
             padding: 12px 14px;
             border-radius: 12px;
             max-width: 85%;
@@ -62,51 +83,57 @@
             font-size: 15px;
             animation: fadeIn 0.2s ease-in;
             white-space: pre-wrap;
+            backdrop-filter: blur(8px);
         }
         @keyframes fadeIn {
             from {opacity: 0; transform: translateY(5px);}
             to {opacity: 1; transform: translateY(0);}
         }
-      .user-msg {
-            background: #0078ff;
+     .user-msg {
+            background: rgba(0, 120, 255, 0.9);
             align-self: flex-end;
             border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-      .ai-msg {
-            background: #272727;
+     .ai-msg {
+            background: rgba(39, 39, 39, 0.9);
             align-self: flex-start;
-            border: 1px solid #3d3d3d;
+            border: 1px solid rgba(255,255,255,0.1);
             border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-       .msg img {
+      .msg img {
             max-width: 100%;
             border-radius: 8px;
             margin-top: 8px;
             display: block;
         }
-      .input-area {
+     .input-area {
             display: flex;
             padding: 12px;
-            background: #0f0f0f;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(10px);
             gap: 8px;
-            border-top: 1px solid #272727;
+            border-top: 1px solid rgba(255,255,255,0.1);
             flex-shrink: 0;
             padding-bottom: max(12px, env(safe-area-inset-bottom));
+            z-index: 2;
+            position: relative;
         }
-       .input-left {
+      .input-left {
             display: flex;
             align-items: center;
             gap: 8px;
             flex: 1;
-            background: #272727;
+            background: rgba(39, 39, 39, 0.9);
             border-radius: 24px;
             padding: 0 4px 0 16px;
-            border: 1px solid #3d3d3d;
+            border: 1px solid rgba(255,255,255,0.15);
         }
-       .input-left:focus-within {
+      .input-left:focus-within {
             border-color: #E50914;
         }
-      .input-area input[type="text"] {
+     .input-area input[type="text"] {
             flex: 1;
             padding: 12px 0;
             border: none;
@@ -115,10 +142,10 @@
             font-size: 16px;
             outline: none;
         }
-      .input-area input::placeholder {
-            color: #717171;
+     .input-area input::placeholder {
+            color: #999;
         }
-       .img-btn {
+      .img-btn {
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -130,15 +157,17 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            transition: all 0.2s;
         }
-       .img-btn:hover {
-            background: #3d3d3d;
+      .img-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
         }
-       .img-btn svg {
+      .img-btn svg {
             width: 22px;
             height: 22px;
         }
-      .input-area button.send {
+     .input-area button.send {
             background: #E50914;
             color: white;
             border: none;
@@ -149,28 +178,29 @@
             font-size: 15px;
             transition: opacity 0.15s;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
         }
-      .input-area button.send:hover {
+     .input-area button.send:hover {
             opacity: 0.85;
         }
-      .input-area button.send:disabled {
+     .input-area button.send:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-      .typing {
+     .typing {
             display: flex;
             gap: 4px;
             padding: 8px 0;
         }
-      .typing span {
+     .typing span {
             width: 8px;
             height: 8px;
-            background: #717171;
+            background: #999;
             border-radius: 50%;
             animation: typing 1.4s infinite;
         }
-      .typing span:nth-child(2) { animation-delay: 0.2s; }
-      .typing span:nth-child(3) { animation-delay: 0.4s; }
+     .typing span:nth-child(2) { animation-delay: 0.2s; }
+     .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typing {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.7; }
             30% { transform: translateY(-10px); opacity: 1; }
@@ -178,7 +208,7 @@
         #imageInput {
             display: none;
         }
-       .preview-img {
+      .preview-img {
             max-width: 120px;
             max-height: 120px;
             border-radius: 8px;
@@ -212,7 +242,7 @@ const sendBtn = document.getElementById("sendBtn");
 let selectedImage = null;
 
 let chatHistory = [
-    {role: "system", content: "You are Film AI Assistant for Cinemax Elite website. You are a friendly movie and TV series expert. If user uploads an image, identify the movie/series and give details like plot, rating, cast, where to watch. Help users find movies, explain plots, suggest based on mood/genre/actors. Always reply in Sinhala if the user speaks Sinhala. Keep answers helpful, short and fun. Use emojis. Don't say you are an AI model."}
+    {role: "system", content: "You are Film AI Assistant for Cinemax Elite website. You are a friendly movie and TV series expert. If user uploads an image, identify the movie/series and give details like plot, rating, main cast, and where to watch. Help users find movies, explain plots, suggest based on mood/genre/actors. Always reply in Sinhala if the user speaks Sinhala. Keep answers helpful, short and fun. Use emojis. Don't say you are an AI model."}
 ];
 
 function handleImageUpload(event) {
@@ -222,7 +252,6 @@ function handleImageUpload(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
         selectedImage = e.target.result;
-        // Preview එක show කරන්න
         chatBox.innerHTML += `<div class="msg user-msg">Photo uploaded:<img src="${selectedImage}" class="preview-img"></div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
         inputField.placeholder = "Photo එක ගැන අහන්න...";
@@ -234,7 +263,6 @@ async function sendMessage() {
     const userText = inputField.value.trim();
     if (!userText &&!selectedImage) return;
 
-    // User message එක display කරන්න
     if (selectedImage) {
         chatBox.innerHTML += `<div class="msg user-msg">${userText || 'මේ photo එකේ තියෙන series/movie එක මොකක්ද? විස්තර කියන්න.'}</div>`;
     } else {
@@ -254,11 +282,10 @@ async function sendMessage() {
         let messages = [...chatHistory];
 
         if (selectedImage) {
-            // Image එකත් එක්ක message එක යවන්න - Pollinations vision model
             messages.push({
                 role: "user",
                 content: [
-                    {type: "text", text: userText || "What movie or TV series is in this image? Give me details about it in Sinhala."},
+                    {type: "text", text: userText || "What movie or TV series is shown in this image? Identify it and give me details like plot, rating, main cast, and where to watch. Answer in Sinhala."},
                     {type: "image_url", image_url: {url: selectedImage}}
                 ]
             });
@@ -274,9 +301,9 @@ async function sendMessage() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "openai",
+                model: "gpt-4o",
                 messages: messages,
-                max_tokens: 600,
+                max_tokens: 800,
                 temperature: 0.7
             })
         });
@@ -288,7 +315,7 @@ async function sendMessage() {
         const data = await response.json();
         const aiReply = data.choices[0].message.content;
 
-        chatHistory.push({role: "user", content: selectedImage? "[Image uploaded] " + userText : userText});
+        chatHistory.push({role: "user", content: selectedImage? "[Image] " + (userText || "Identify this") : userText});
         chatHistory.push({role: "assistant", content: aiReply});
 
         document.getElementById(loadingId).remove();
@@ -297,7 +324,7 @@ async function sendMessage() {
 
     } catch (error) {
         document.getElementById(loadingId).remove();
-        chatBox.innerHTML += `<div class="msg ai-msg" style="color:#ff4757;">සමාවෙන්න, දැනට සම්බන්ධ වෙන්න බැරි උනා 😔<br>ටිකකින් ආයේ try කරන්න.</div>`;
+        chatBox.innerHTML += `<div class="msg ai-msg" style="color:#ff4757;">සමාවෙන්න, Image එක analyze කරන්න බැරි උනා 😔<br>Photo එක clear ද? ආයේ try කරන්න.</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
         console.error(error);
     } finally {
