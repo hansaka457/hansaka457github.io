@@ -2,65 +2,64 @@
 <html lang="si">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Film AI Assistant - Cinemax Elite</title>
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent}
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
         body {
             font-family: 'Roboto', Arial, sans-serif;
             background-color: #0f0f0f;
             color: white;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            flex-direction: column;
         }
-       .chat-container {
+      .chat-container {
             width: 100%;
-            max-width: 450px;
-            height: 600px;
+            height: 100%;
             background: #1a1a1a;
-            border-radius: 12px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-            border: 1px solid #272727;
         }
-       .chat-header {
+      .chat-header {
             background: #E50914;
-            padding: 18px;
+            padding: 16px;
             text-align: center;
             font-weight: 900;
-            font-size: 1.3em;
+            font-size: 1.2em;
             letter-spacing: -0.5px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-       .chat-box {
+      .chat-box {
             flex: 1;
             padding: 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            scrollbar-width: thin;
-            scrollbar-color: #3d3d3d #1a1a1a;
+            -webkit-overflow-scrolling: touch;
         }
-       .chat-box::-webkit-scrollbar {
-            width: 6px;
+      .chat-box::-webkit-scrollbar {
+            width: 5px;
         }
-       .chat-box::-webkit-scrollbar-thumb {
+      .chat-box::-webkit-scrollbar-thumb {
             background: #3d3d3d;
             border-radius: 3px;
         }
-       .msg {
+      .msg {
             padding: 12px 14px;
-            border-radius: 10px;
+            border-radius: 12px;
             max-width: 85%;
             word-wrap: break-word;
             line-height: 1.6;
-            font-size: 14px;
+            font-size: 15px;
             animation: fadeIn 0.2s ease-in;
             white-space: pre-wrap;
         }
@@ -68,41 +67,78 @@
             from {opacity: 0; transform: translateY(5px);}
             to {opacity: 1; transform: translateY(0);}
         }
-       .user-msg {
+      .user-msg {
             background: #0078ff;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
         }
-       .ai-msg {
+      .ai-msg {
             background: #272727;
             align-self: flex-start;
             border: 1px solid #3d3d3d;
             border-bottom-left-radius: 4px;
         }
-       .input-area {
+       .msg img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 8px;
+            display: block;
+        }
+      .input-area {
             display: flex;
             padding: 12px;
             background: #0f0f0f;
             gap: 8px;
             border-top: 1px solid #272727;
+            flex-shrink: 0;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
         }
-       .input-area input {
+       .input-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             flex: 1;
-            padding: 12px 16px;
-            border: 1px solid #3d3d3d;
-            border-radius: 24px;
             background: #272727;
-            color: white;
-            font-size: 15px;
-            outline: none;
+            border-radius: 24px;
+            padding: 0 4px 0 16px;
+            border: 1px solid #3d3d3d;
         }
-       .input-area input:focus {
+       .input-left:focus-within {
             border-color: #E50914;
         }
-       .input-area input::placeholder {
+      .input-area input[type="text"] {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            background: none;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+      .input-area input::placeholder {
             color: #717171;
         }
-       .input-area button {
+       .img-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+       .img-btn:hover {
+            background: #3d3d3d;
+        }
+       .img-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+      .input-area button.send {
             background: #E50914;
             color: white;
             border: none;
@@ -112,31 +148,41 @@
             font-weight: 700;
             font-size: 15px;
             transition: opacity 0.15s;
+            flex-shrink: 0;
         }
-       .input-area button:hover {
+      .input-area button.send:hover {
             opacity: 0.85;
         }
-       .input-area button:disabled {
+      .input-area button.send:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-       .typing {
+      .typing {
             display: flex;
             gap: 4px;
             padding: 8px 0;
         }
-       .typing span {
+      .typing span {
             width: 8px;
             height: 8px;
             background: #717171;
             border-radius: 50%;
             animation: typing 1.4s infinite;
         }
-       .typing span:nth-child(2) { animation-delay: 0.2s; }
-       .typing span:nth-child(3) { animation-delay: 0.4s; }
+      .typing span:nth-child(2) { animation-delay: 0.2s; }
+      .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typing {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.7; }
             30% { transform: translateY(-10px); opacity: 1; }
+        }
+        #imageInput {
+            display: none;
+        }
+       .preview-img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 8px;
+            margin-top: 8px;
         }
     </style>
 </head>
@@ -145,11 +191,17 @@
 <div class="chat-container">
     <div class="chat-header">🎬 Film AI Assistant</div>
     <div class="chat-box" id="chatBox">
-        <div class="msg ai-msg">හලෝ! මම Cinemax Elite එකේ Film AI එක 🎬<br><br>ඔයාට බලන්න හොඳ Films, TV Series ගැන මගෙන් අහන්න. මොකක්ද බලන්න ආස? 😊</div>
+        <div class="msg ai-msg">හලෝ! මම Cinemax Elite එකේ Film AI එක 🎬<br><br>📷 Series එකක photo එකක් upload කරලා ඒ ගැන විස්තර අහන්න.<br>💬 නැත්නම් බලන්න හොඳ Films, TV Series ගැන මගෙන් අහන්න.<br><br>මොකක්ද දැනගන්න ඕන? 😊</div>
     </div>
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="ප්‍රශ්නය මෙතන ලියන්න...">
-        <button id="sendBtn" onclick="sendMessage()">Send</button>
+        <div class="input-left">
+            <input type="text" id="userInput" placeholder="Message or upload photo...">
+            <button class="img-btn" onclick="document.getElementById('imageInput').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </button>
+            <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)">
+        </div>
+        <button class="send" id="sendBtn" onclick="sendMessage()">Send</button>
     </div>
 </div>
 
@@ -157,54 +209,86 @@
 const chatBox = document.getElementById("chatBox");
 const inputField = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
+let selectedImage = null;
 
-// Chat history එක තියාගන්න
 let chatHistory = [
-    {role: "system", content: "You are Film AI Assistant for Cinemax Elite website. You are a friendly movie and TV series expert. Help users find movies, explain plots, suggest based on mood/genre/actors. Always reply in Sinhala if the user speaks Sinhala. Keep answers helpful, short and fun. Use emojis. Don't say you are an AI model."}
+    {role: "system", content: "You are Film AI Assistant for Cinemax Elite website. You are a friendly movie and TV series expert. If user uploads an image, identify the movie/series and give details like plot, rating, cast, where to watch. Help users find movies, explain plots, suggest based on mood/genre/actors. Always reply in Sinhala if the user speaks Sinhala. Keep answers helpful, short and fun. Use emojis. Don't say you are an AI model."}
 ];
+
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        selectedImage = e.target.result;
+        // Preview එක show කරන්න
+        chatBox.innerHTML += `<div class="msg user-msg">Photo uploaded:<img src="${selectedImage}" class="preview-img"></div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        inputField.placeholder = "Photo එක ගැන අහන්න...";
+    };
+    reader.readAsDataURL(file);
+}
 
 async function sendMessage() {
     const userText = inputField.value.trim();
-    if (!userText) return;
+    if (!userText &&!selectedImage) return;
 
-    // User message දාන්න
-    chatBox.innerHTML += `<div class="msg user-msg">${escapeHtml(userText)}</div>`;
+    // User message එක display කරන්න
+    if (selectedImage) {
+        chatBox.innerHTML += `<div class="msg user-msg">${userText || 'මේ photo එකේ තියෙන series/movie එක මොකක්ද? විස්තර කියන්න.'}</div>`;
+    } else {
+        chatBox.innerHTML += `<div class="msg user-msg">${escapeHtml(userText)}</div>`;
+    }
+
     inputField.value = "";
+    inputField.placeholder = "Message or upload photo...";
     chatBox.scrollTop = chatBox.scrollHeight;
-
-    // Disable button
     sendBtn.disabled = true;
 
-    // Typing indicator
     const loadingId = 'loading-' + Date.now();
     chatBox.innerHTML += `<div class="msg ai-msg" id="${loadingId}"><div class="typing"><span></span><span></span></div></div>`;
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Pollinations AI - 100% Free, No API Key, No CORS
     try {
-        // History එකට user message එක add කරන්න
-        chatHistory.push({role: "user", content: userText});
+        let messages = [...chatHistory];
 
-        // Prompt එක හදනවා
-        const systemPrompt = chatHistory[0].content;
-        const conversation = chatHistory.slice(1).map(m => `${m.role}: ${m.content}`).join('\n');
-        const fullPrompt = `${systemPrompt}\n\nConversation:\n${conversation}\n\nassistant:`;
+        if (selectedImage) {
+            // Image එකත් එක්ක message එක යවන්න - Pollinations vision model
+            messages.push({
+                role: "user",
+                content: [
+                    {type: "text", text: userText || "What movie or TV series is in this image? Give me details about it in Sinhala."},
+                    {type: "image_url", image_url: {url: selectedImage}}
+                ]
+            });
+        } else {
+            messages.push({role: "user", content: userText});
+        }
 
-        // Pollinations text API - මේකට key ඕන නෑ
-        const encodedPrompt = encodeURIComponent(fullPrompt);
-        const endpoint = `https://text.pollinations.ai/${encodedPrompt}`;
+        const endpoint = "https://text.pollinations.ai/openai";
 
         const response = await fetch(endpoint, {
-            method: "GET"
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "openai",
+                messages: messages,
+                max_tokens: 600,
+                temperature: 0.7
+            })
         });
 
         if (!response.ok) {
             throw new Error(`Server error: ${response.status}`);
         }
 
-        const aiReply = await response.text();
+        const data = await response.json();
+        const aiReply = data.choices[0].message.content;
 
-        // History එකට AI reply එක add කරන්න
+        chatHistory.push({role: "user", content: selectedImage? "[Image uploaded] " + userText : userText});
         chatHistory.push({role: "assistant", content: aiReply});
 
         document.getElementById(loadingId).remove();
@@ -218,17 +302,17 @@ async function sendMessage() {
         console.error(error);
     } finally {
         sendBtn.disabled = false;
+        selectedImage = null;
+        document.getElementById('imageInput').value = '';
     }
 }
 
-// HTML escape
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// Enter key
 inputField.addEventListener("keypress", function(event) {
     if (event.key === "Enter" &&!sendBtn.disabled) {
         sendMessage();
