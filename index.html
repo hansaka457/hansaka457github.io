@@ -398,7 +398,7 @@ const firebaseConfig = {
       <div class="settings-section-title">Other</div>
       <a href="https://cinemaxlk.vercel.app" target="_blank" class="settings-item">
         <div class="settings-item-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         </div>
         <div class="settings-item-text">Other Site</div>
         <div class="settings-item-value">
@@ -750,7 +750,7 @@ async function fetchOMDb(imdbID) {
       if (data.Response === 'True') {
         return data;
       } else if (data.Error && (data.Error.includes('limit') || data.Error.includes('key'))) {
-        console.warn(`OMDb Key [${OMDB_KEYS[i]}] limit reached or invalid. Trying next...`);
+        console.warn(`OMDb Key [${OMDB_KEYS[i]}], limit reached or invalid. Trying next...`);
         continue;
       }
     } catch(e) {
@@ -842,7 +842,6 @@ async function fetchWyzieSubs(imdbID, season = null, episode = null) {
     if (!res.ok) return [];
     const data = await res.json();
     
-    // Wyzie API response එක standard format එකකට හරවයි
     return (data.subtitles || data.results || []).map(item => ({
       lang: item.lang || item.language || 'si',
       language: item.language || 'Sinhala',
@@ -901,7 +900,6 @@ async function buildMovieSubtitles(imdbID, title, year, container) {
     subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
   }
 
-  // ===== විකල්ප පියවර: අනෙක් ඒවා වැඩ නැත්නම් Wyzie API එක ක්‍රියාත්මක වේ =====
   if (subs.length === 0) {
     console.log("SubDL/OpenSubs empty. Fetching from Wyzie API...");
     subs = await fetchWyzieSubs(imdbID);
@@ -916,8 +914,13 @@ async function buildMovieSubtitles(imdbID, title, year, container) {
 }
 
 async function buildSeriesSubtitles(imdbID, title, year, totalSeasons, container) {
+  let adjustedSeasons = totalSeasons;
+  if (imdbID === 'tt9813792' && adjustedSeasons < 4) {
+    adjustedSeasons = 4;
+  }
+
   const seasons = [];
-  for (let i = 1; i <= Math.min(totalSeasons, 10); i++) seasons.push(i);
+  for (let i = 1; i <= Math.min(adjustedSeasons, 10); i++) seasons.push(i);
 
   const tabsHTML = seasons.map((s, i) => `
     <button class="season-tab ${i === 0? 'on' : ''}" onclick="switchSeasonTab(${s}, this)" id="stab-${s}">
@@ -927,6 +930,7 @@ async function buildSeriesSubtitles(imdbID, title, year, totalSeasons, container
 
   container.innerHTML = `
     <div class="subs-season-tabs">${tabsHTML}</div>
+    <div id="episodes-container" style="margin-bottom: 20px;"></div>
     <div id="subs-season-content"><div class="subs-loading"><div class="spinner"></div></div></div>
   `;
 
@@ -957,7 +961,6 @@ async function loadSeasonSubs(imdbID, title, year, season) {
     subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
   }
 
-  // ===== විකල්ප පියවර (Series): Wyzie API එක ක්‍රියාත්මක වේ =====
   if (subs.length === 0) {
     console.log(`SubDL/OpenSubs empty for S${season}. Fetching from Wyzie API...`);
     subs = await fetchWyzieSubs(imdbID, season);
@@ -969,6 +972,38 @@ async function loadSeasonSubs(imdbID, title, year, season) {
 
 function renderSeasonContent(season, content) {
   const subs = _currentSubsData[season] || [];
+  const epContainer = document.getElementById('episodes-container');
+  const dp = document.getElementById('page-detail');
+  const imdbID = dp ? dp.dataset.imdbid : '';
+
+  if (imdbID === 'tt9813792' && season === 4) {
+    const videoUrl = "https://www.seedr.cc/download/archive/4cfa2c8916a9f7466f293122f384e7a7d870f108627c413df4d9a3ab63f3579c?token=42f4d87cb2fa53fd9c033ef3aefac8b590fc5cb7b476375a614e5cb72760282e&exp=1782711589";
+    
+    epContainer.innerHTML = `
+      <div style="background: var(--bg2); padding: 16px; border-radius: 12px; border: 1px solid var(--bg3); margin-bottom: 20px;">
+        <h3 style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: var(--red); font-weight: 700;">
+          🎬 Season 04 - Episode 10
+        </h3>
+        
+        <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:8px; background:#000; margin-bottom:12px;">
+          <video controls controlsList="nodownload" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit: contain;">
+            <source src="${videoUrl}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <a href="${videoUrl}" target="_blank" download style="flex: 1; text-align: center; background: var(--red); color: #fff; padding: 12px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Episode 10
+          </a>
+        </div>
+      </div>
+    `;
+  } else {
+    if (epContainer) epContainer.innerHTML = '';
+  }
+
   if (subs.length === 0) {
     content.innerHTML = renderSubsEmpty(`No subtitles found for Season ${season}.`);
     return;
@@ -1259,7 +1294,7 @@ async function showMovieDetail(imdbID) {
     <div class="subs-section">
       <div class="subs-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M6 12h4M6 16h8M14 12h4"/></svg>
-        ${isSeriesType? 'Subtitles by Season' : 'Subtitles'}
+        ${isSeriesType? 'Subtitles & Episodes' : 'Subtitles'}
       </div>
       <div id="subs-container"></div>
     </div>
@@ -1299,3 +1334,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 </body>
 </html>
+
