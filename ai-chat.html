@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film AI Assistant</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #141414; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .chat-container { width: 400px; height: 500px; background: #222; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .chat-header { background: #E50914; padding: 15px; text-align: center; font-weight: bold; font-size: 1.2em; }
+        .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px; border-radius: 8px; max-width: 80%; word-wrap: break-word; }
+        .user-msg { background: #0078ff; align-self: flex-end; }
+        .ai-msg { background: #333; align-self: flex-start; border: 1px solid #444; }
+        .input-area { display: flex; padding: 10px; background: #111; }
+        .input-area input { flex: 1; padding: 10px; border: none; border-radius: 5px; background: #333; color: white; }
+        .input-area button { background: #E50914; color: white; border: none; padding: 10px 15px; margin-left: 5px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">🎬 Film AI Assistant</div>
+    <div class="chat-box" id="chatBox">
+        <div class="msg ai-msg">හලෝ! මම ඔයාගේ සයිට් එකේ Film AI එක. ඔයාට බලන්න හොඳ ෆිල්ම්ස් ගැන මගෙන් අහන්න පුළුවන්.</div>
+    </div>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="ප්‍රශ්නය මෙතන ලියන්න...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+async function sendMessage() {
+    const inputField = document.getElementById("userInput");
+    const chatBox = document.getElementById("chatBox");
+    const userText = inputField.value.trim();
+    
+    if (!userText) return;
+
+    // User ගේ මැසේජ් එක Screen එකට දාන්න
+    chatBox.innerHTML += `<div class="msg user-msg">${userText}</div>`;
+    inputField.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // GitHub Models API එකට Request එක යැවීම
+    const token = "ඔයාගේ_GITHUB_TOKEN_එක_මෙතනට_දාන්න"; 
+    const endpoint = "https://models.inference.ai.azure.com/chat/completions";
+
+    try {
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                messages: [
+                    { role: "system", content: "You are a friendly movie expert. Help users find good movies. Speak in Sinhala if the user speaks in Sinhala." },
+                    { role: "user", content: userText }
+                ],
+                model: "gpt-4o-mini"
+            })
+        });
+
+        const data = await response.json();
+        const aiReply = data.choices[0].message.content;
+
+        // AI ගේ පිළිතුර Screen එකට දාන්න
+        chatBox.innerHTML += `<div class="msg ai-msg">${aiReply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+    } catch (error) {
+        chatBox.innerHTML += `<div class="msg ai-msg" style="color:red;">Error එකක් ආවා. පසුව උත්සාහ කරන්න.</div>`;
+        console.error(error);
+    }
+}
+</script>
+
+</body>
+</html>
+
