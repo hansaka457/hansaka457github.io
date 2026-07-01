@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Film AI Assistant - Cinemax Elite</title>
+    <title>Cinemax AI Assistant</title>
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent}
         html, body {
@@ -19,31 +19,32 @@
             display: flex;
             flex-direction: column;
         }
-     .chat-container {
+.chat-container {
             width: 100%;
             height: 100%;
-            background: #1a1a1a;
+            background: #0a0a0a;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
         }
         /* Background Image */
-     .chat-container::before {
+.chat-container::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('https://www.google.com/imgres?imgurl=https%3A%2F%2Fwallpapercave.com%2Fwp%2Fwp8894729.jpg&tbnid=qFc86jEds74XHM&vet=1&imgrefurl=https%3A%2F%2Fwallpapercave.com%2Fgirl-anime-phone-wallpapers&docid=nJqRV9BNlH5I_M&w=1200&h=1920&hl=en-US&source=sh%2Fx%2Fim%2Fm6%2F4&kgs=4d21c2d249af2e4c&shem=epsd1%2Cnisbtsac%2Crimspwouoe');
+            background-image: url('./chat.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.15;
+            opacity: 0.4;
             z-index: 0;
+            filter: brightness(0.7);
         }
-     .chat-header {
+.chat-header {
             background: rgba(229, 9, 20, 0.95);
             backdrop-filter: blur(10px);
             padding: 16px;
@@ -56,7 +57,7 @@
             z-index: 2;
             position: relative;
         }
-     .chat-box {
+.chat-box {
             flex: 1;
             padding: 16px;
             overflow-y: auto;
@@ -67,14 +68,14 @@
             z-index: 1;
             position: relative;
         }
-     .chat-box::-webkit-scrollbar {
+.chat-box::-webkit-scrollbar {
             width: 5px;
         }
-     .chat-box::-webkit-scrollbar-thumb {
+.chat-box::-webkit-scrollbar-thumb {
             background: rgba(255,255,255,0.3);
             border-radius: 3px;
         }
-     .msg {
+.msg {
             padding: 12px 14px;
             border-radius: 12px;
             max-width: 85%;
@@ -83,32 +84,32 @@
             font-size: 15px;
             animation: fadeIn 0.2s ease-in;
             white-space: pre-wrap;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
         }
         @keyframes fadeIn {
             from {opacity: 0; transform: translateY(5px);}
             to {opacity: 1; transform: translateY(0);}
         }
-     .user-msg {
-            background: rgba(0, 120, 255, 0.9);
+.user-msg {
+            background: rgba(0, 120, 255, 0.95);
             align-self: flex-end;
             border-bottom-right-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
         }
-     .ai-msg {
-            background: rgba(39, 39, 39, 0.9);
+.ai-msg {
+            background: rgba(39, 39, 39, 0.95);
             align-self: flex-start;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
             border-bottom-left-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
         }
-      .msg img {
+ .msg img {
             max-width: 100%;
             border-radius: 8px;
             margin-top: 8px;
             display: block;
         }
-     .input-area {
+.input-area {
             display: flex;
             padding: 12px;
             background: rgba(15, 15, 15, 0.95);
@@ -120,20 +121,20 @@
             z-index: 2;
             position: relative;
         }
-      .input-left {
+ .input-left {
             display: flex;
             align-items: center;
             gap: 8px;
             flex: 1;
-            background: rgba(39, 39, 39, 0.9);
+            background: rgba(39, 39, 39, 0.95);
             border-radius: 24px;
             padding: 0 4px 0 16px;
             border: 1px solid rgba(255,255,255,0.15);
         }
-      .input-left:focus-within {
+ .input-left:focus-within {
             border-color: #E50914;
         }
-     .input-area input[type="text"] {
+.input-area input[type="text"] {
             flex: 1;
             padding: 12px 0;
             border: none;
@@ -142,10 +143,10 @@
             font-size: 16px;
             outline: none;
         }
-     .input-area input::placeholder {
+.input-area input::placeholder {
             color: #999;
         }
-      .img-btn {
+ .img-btn {
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -159,15 +160,15 @@
             flex-shrink: 0;
             transition: all 0.2s;
         }
-      .img-btn:hover {
+ .img-btn:hover {
             background: rgba(255,255,255,0.1);
             color: white;
         }
-      .img-btn svg {
+ .img-btn svg {
             width: 22px;
             height: 22px;
         }
-     .input-area button.send {
+.input-area button.send {
             background: #E50914;
             color: white;
             border: none;
@@ -180,27 +181,27 @@
             flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
         }
-     .input-area button.send:hover {
+.input-area button.send:hover {
             opacity: 0.85;
         }
-     .input-area button.send:disabled {
+.input-area button.send:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-     .typing {
+.typing {
             display: flex;
             gap: 4px;
             padding: 8px 0;
         }
-     .typing span {
+.typing span {
             width: 8px;
             height: 8px;
             background: #999;
             border-radius: 50%;
             animation: typing 1.4s infinite;
         }
-     .typing span:nth-child(2) { animation-delay: 0.2s; }
-     .typing span:nth-child(3) { animation-delay: 0.4s; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typing {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.7; }
             30% { transform: translateY(-10px); opacity: 1; }
@@ -208,7 +209,7 @@
         #imageInput {
             display: none;
         }
-      .preview-img {
+ .preview-img {
             max-width: 120px;
             max-height: 120px;
             border-radius: 8px;
@@ -219,9 +220,9 @@
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">🎬 Film AI Assistant</div>
+    <div class="chat-header">💬 Cinemax AI Assistant</div>
     <div class="chat-box" id="chatBox">
-        <div class="msg ai-msg">හලෝ! මම Cinemax Elite එකේ Film AI එක 🎬<br><br>📷 Series එකක photo එකක් upload කරලා ඒ ගැන විස්තර අහන්න.<br>💬 නැත්නම් බලන්න හොඳ Films, TV Series ගැන මගෙන් අහන්න.<br><br>මොකක්ද දැනගන්න ඕන? 😊</div>
+        <div class="msg ai-msg">හලෝ! මම Cinemax AI එක 😊<br><br>📷 ඕනම photo එකක් upload කරලා අහන්න<br>💬 Films, Science, Tech, Homework, ඕනම දෙයක් ගැන මගෙන් අහන්න<br><br>මොකක්ද දැනගන්න ඕන? 🚀</div>
     </div>
     <div class="input-area">
         <div class="input-left">
@@ -241,8 +242,9 @@ const inputField = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 let selectedImage = null;
 
+// General AI - ඕනම දෙයක් දන්නවා
 let chatHistory = [
-    {role: "system", content: "You are Film AI Assistant for Cinemax Elite website. You are a friendly movie and TV series expert. If user uploads an image, identify the movie/series and give details like plot, rating, main cast, and where to watch. Help users find movies, explain plots, suggest based on mood/genre/actors. Always reply in Sinhala if the user speaks Sinhala. Keep answers helpful, short and fun. Use emojis. Don't say you are an AI model."}
+    {role: "system", content: "You are Cinemax AI, a helpful, friendly and intelligent assistant. You can answer questions about ANY topic - movies, science, technology, history, math, coding, homework, general knowledge, etc. If user uploads an image, analyze it and describe what you see. Always reply in Sinhala if the user speaks Sinhala, otherwise use the user's language. Keep answers helpful, accurate and conversational. Use emojis to make it fun. You are NOT just a movie bot anymore - you are a general AI assistant."}
 ];
 
 function handleImageUpload(event) {
@@ -264,7 +266,7 @@ async function sendMessage() {
     if (!userText &&!selectedImage) return;
 
     if (selectedImage) {
-        chatBox.innerHTML += `<div class="msg user-msg">${userText || 'මේ photo එකේ තියෙන series/movie එක මොකක්ද? විස්තර කියන්න.'}</div>`;
+        chatBox.innerHTML += `<div class="msg user-msg">${userText || 'මේ photo එකේ මොකක්ද තියෙන්නේ? විස්තර කියන්න.'}</div>`;
     } else {
         chatBox.innerHTML += `<div class="msg user-msg">${escapeHtml(userText)}</div>`;
     }
@@ -285,7 +287,7 @@ async function sendMessage() {
             messages.push({
                 role: "user",
                 content: [
-                    {type: "text", text: userText || "What movie or TV series is shown in this image? Identify it and give me details like plot, rating, main cast, and where to watch. Answer in Sinhala."},
+                    {type: "text", text: userText || "What is in this image? Describe it in detail. Answer in Sinhala."},
                     {type: "image_url", image_url: {url: selectedImage}}
                 ]
             });
@@ -303,8 +305,8 @@ async function sendMessage() {
             body: JSON.stringify({
                 model: "gpt-4o",
                 messages: messages,
-                max_tokens: 800,
-                temperature: 0.7
+                max_tokens: 1000,
+                temperature: 0.8
             })
         });
 
@@ -315,7 +317,7 @@ async function sendMessage() {
         const data = await response.json();
         const aiReply = data.choices[0].message.content;
 
-        chatHistory.push({role: "user", content: selectedImage? "[Image] " + (userText || "Identify this") : userText});
+        chatHistory.push({role: "user", content: selectedImage? "[Image] " + (userText || "Describe this") : userText});
         chatHistory.push({role: "assistant", content: aiReply});
 
         document.getElementById(loadingId).remove();
@@ -324,7 +326,7 @@ async function sendMessage() {
 
     } catch (error) {
         document.getElementById(loadingId).remove();
-        chatBox.innerHTML += `<div class="msg ai-msg" style="color:#ff4757;">සමාවෙන්න, Image එක analyze කරන්න බැරි උනා 😔<br>Photo එක clear ද? ආයේ try කරන්න.</div>`;
+        chatBox.innerHTML += `<div class="msg ai-msg" style="color:#ff4757;">සමාවෙන්න, දැනට සම්බන්ධ වෙන්න බැරි උනා 😔<br>ටිකකින් ආයේ try කරන්න.</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
         console.error(error);
     } finally {
