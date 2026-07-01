@@ -532,10 +532,20 @@ const EPISODES_DATA = {
         name: 'Episode 2: The Red Dragon and the Gold'
       }
     }
+  },
+  'tt12345678': { // Obsession (2026) - අලුතෙන්
+    'movie': { // Movie එකක් නිසා 'movie' key එක use කරනවා
+      '1': {
+        videoUrl: 'https://hub.airbender.buzz/8eda6e05bd1c6668fcc135d48c06590d?token=1782922178139',
+        subtitleUrl: 'obse.srt',
+        name: 'Obsession (2026) Full Movie'
+      }
+    }
   }
 };
 
 const HERO_SERIES = [
+  {id:'tt12345678',title:'Obsession',year:'2026',rating:'7.8',plot:'A gripping psychological thriller about love, secrets, and dangerous obsession that destroys everything.'}, // අලුතෙන්
   {id:'tt11198330',title:'House of the Dragon',year:'2022',rating:'8.5',plot:'The story of the Targaryen civil war that took place about 200 years before the events of Game of Thrones.'},
   {id:'tt9813792',title:'From',year:'2022',rating:'7.8',plot:'Unravel the mystery of a city in middle U.S.A. that imprisons everyone who enters.'},
   {id:'tt13443470',title:'Wednesday',year:'2022',rating:'8.1',plot:'Follows Wednesday Addams years as a student at Nevermore Academy.'},
@@ -976,19 +986,28 @@ async function loadSeasonSubs(imdbID, title, year, season) {
   const playerContainer = document.getElementById('episodes-player-container');
   if (!content) return;
 
-  // ===== EPISODES PLAYER UPDATE =====
+  // ===== EPISODES PLAYER UPDATE - Movies වලටත් support කරනවා =====
   if (playerContainer) {
-    // තෝරාගත් Season එකට අදාලව Hardcoded Episodes තිබේදැයි බලයි
+    // Series සහ Movie දෙකටම බලනවා
+    let epData = null;
     if (EPISODES_DATA[imdbID] && EPISODES_DATA[imdbID][season]) {
-      const eps = EPISODES_DATA[imdbID][season];
+      epData = EPISODES_DATA[imdbID][season]; // Series
+    } else if (EPISODES_DATA[imdbID] && EPISODES_DATA[imdbID]['movie']) {
+      epData = EPISODES_DATA[imdbID]['movie']; // Movie
+      season = 'Full Movie'; // Display වෙන නම වෙනස් කරනවා
+    }
+
+    if (epData) {
+      const eps = epData;
       let epHTML = `<div class="ep-list">`;
-      
+
       for (let epNum in eps) {
         const ep = eps[epNum];
+        const epLabel = season === 'Full Movie'? 'Watch Now' : `S${season}E${epNum}`;
         epHTML += `
           <div class="ep-card">
             <div class="ep-info">
-              <div class="ep-name">S${season}E${epNum} - ${ep.name}</div>
+              <div class="ep-name">${epLabel} - ${ep.name}</div>
             </div>
             <div class="ep-actions">
               <button class="btn-action btn-watch" onclick="playEpisode('${ep.videoUrl}', '${ep.subtitleUrl}')">
@@ -999,7 +1018,7 @@ async function loadSeasonSubs(imdbID, title, year, season) {
               </a>
             </div>
           </div>
-          <div class="video-container" id="video-player-S${season}E${epNum}">
+          <div class="video-container" id="video-player-${imdbID}-${epNum}">
             <video controls controlsList="nodownload">
               <source src="${ep.videoUrl}" type="video/mp4">
               <track src="${ep.subtitleUrl}" kind="subtitles" srclang="si" label="Sinhala" default>
@@ -1012,7 +1031,7 @@ async function loadSeasonSubs(imdbID, title, year, season) {
       playerContainer.innerHTML = `
         <div class="player-title" style="margin-top:15px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Available Episodes
+          Watch & Download
         </div>
         ${epHTML}
       `;
@@ -1025,6 +1044,56 @@ async function loadSeasonSubs(imdbID, title, year, season) {
     renderSeasonContent(season, content);
     return;
   }
+
+  content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
+
+  let result = await fetchSubDL(imdbID, season!== 'Full Movie'? season : null);
+  let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
+
+  if (subs.length === 0) {
+    const fb = await fetchSubDLByTitle(title, year, season!== 'Full Movie'? season : null);
+    subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
+  }
+
+  if (subs.length === 0) {
+    const os = await fetchOpenSubs(imdbID, season!== 'Full Movie'? season : null);
+    subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
+  }
+
+  if (subs.length === 0) {
+    console.log(`SubDL/OpenSubs empty for S${season}. Fetching from Wyzie API...`);
+    subs = await fetchWyzieSubs(imdbID, season!== 'Full Movie'? season : null);
+  }
+
+  // Obsession movie එකට hardcoded sub එක දානවා
+  if (imdbID === 'tt12345678') {
+    subs.unshift({
+      lang: 'si',
+      language: 'Sinhala',
+      release_name: 'obse.srt (Sinhala Subtitle)',
+      url: 'obse.srt',
+      download_url: 'obse.srt',
+      author: 'Cinemax Elite',
+      fps: ''
+    });
+  }
+
+  // ඔබ ලබාදුන් සින්හල සබ් එක Season 3 වල ලිස්ට් එකටත් එකතු කර පෙන්වමු
+  if (season === 3 && imdbID === 'tt11198330') {
+    subs.unshift({
+      lang: 'si',
+      language: 'Sinhala',
+      release_name: 'houseofthedragon.srt (Local Custom Sub)',
+      url: 'houseofthedragon.srt',
+      download_url: 'houseofthedragon.srt',
+      author: 'Cinemax Elite',
+      fps: ''
+    });
+  }
+
+  _currentSubsData[season] = subs;
+  renderSeasonContent(season, content);
+      }
 
   content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
 
