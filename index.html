@@ -519,21 +519,25 @@ const WYZIE_KEY = 'wyzie-py8u0ol1g1xb60pf3z1kiy3ylweuug1l';
 
 // ===== HARDCODED EPISODES & MOVIES DATA =====
 const EPISODES_DATA = {
-  'tt11198330': { // House of the Dragon IMDb ID
-    '3': { // Season 3
-      '1': { 
-        videoUrl: 'https://rapidseedbox85742-secure.swift-031.seedbox.vip/media/aa287beec019e30627cb772020be67a1/House.of.the.Dragon.S03E01.720p.HMAX.WEB-DL.DDP5.1.Atmos.H.264-Draken02.mkv',
-        subtitleUrl: 'houseofthedragon.srt',
-        name: 'Episode 1: Season 3 Premiere'
-      },
-      '2': { 
-        videoUrl: 'https://hub.airbender.buzz/1c962f145e53f144b539f7721c2139c4',
-        subtitleUrl: 'houseofthedragon.srt', 
-        name: 'Episode 2: The Red Dragon and the Gold'
-      }
+  'tt12345678': { // Obsession (2026)
+  'movie': {
+    '1': {
+      videoUrl: 'https://hub.airbender.buzz/8eda6e05bd1c6668fcc135d48c06590d?token=1782922178139',
+      subtitleUrl: 'obse.srt',
+      name: 'Obsession (2026) - 720p'
+    },
+    '2': {
+      videoUrl: 'https://video-downloads.googleusercontent.com/ADGPM2latvNTA6_IYzTduA0kzTu7sb8F7hrzzODGj4cKdG9Z0elioPQiC8ILv-GmNySO_rF7vkzW2Dlbt3eKREhgeReCJLYwQSCZiCUHHLkm0wwGTmzTNAXdoHdhL4RaBw9IzNJ__wJKQ2QXNFEoAg2rfT-vHeCvWMEjYh63thSc8u_0kBbX2zFete-PpaoMZDsIbQ0IEJQdCToV23YSygyB4CeKp7aS9MMkUvjr9slKqlvFf2aeDOIWic3nQNy36QgNhVSG-CzZNbCkuZSSWlmfGwlAuVRe0-ThrTWZOqrldr_R0nQBi_-jW69fC5pwXglKOUUrCREDClrCrScEvNuhiTFwHhBwOqXj7PjW1-GdHfS-Ln9rXAnYNaa4Itws3Pzk4legCqhCkA8npWeGtCCmrF9YRMwd2_qcdzhKJKZdLLVirnorZmtIjN0LO1UrBNWXSTLBt02_XHIvOmR9eu71bZb1hmRI-PHnw82jFvLc19AcYPrAsNvBRto9-6EdlMgdCzJXqXCmUlqoDPh0U2CF17w8ZN9EF1x36Ljl6U0dzGa1U1F52CDRZ7v8gYOqYldiRzoh95Y10d_mnYQO8jOdbqaR_4GxbvnGcwM3afxvTF3QwOxxQd1VX5GLBxa73eua2Sr8WYngw-x4ye3r6YZepqLEXuG4zF8Qe284PqHOmvpxOZ7WTXrZxUL1KFcoHa-YzDm0IOikHZy_OvoVCF20ix97afl2I22OKYc4U7BVhfwn1wuR93T8_Yp6Cv_tGo6mbS-p4wlOe1IebwmjKPNY85-VYD-y1TjfbgkOFYV5NIJEw4rRT6kRsetYWyW7PP22RzsMNhDFicQgrbAesErQ4fLZbDe0r0KUDln2icJPEKVNUEiPhYloDd8pst1zdCpXp_aEWl6EMnFWjnSWUj8gdwscdbEZPDYqX3a83ebcwSnFo7aQZjbfYNPUl612Hi9x4b0eD2EXYMVGiddRwhIJthXTapSMM3no1tj38EKnUznIpJlR1RETaV8rXmMlxvMbFyMw-kThspKp1Hs_vEo4_DvPqLjqCqLcSGPFiAYZ3OLLLiQ6ugvY9SXQTPVmPfzaexM3ncyR',
+      subtitleUrl: 'obse.srt',
+      name: 'Obsession (2026) - HD Quality'
+    },
+    '3': {
+      videoUrl: 'https://cdn.fsl-buckets.work/Obsession.2026.1080p.AMZN.WEB-DL.DDP5.1.H.264-KyoGo.mkv?token=e30301ea156694c04b27d1f52e628e5c_111',
+      subtitleUrl: 'obse.srt',
+      name: 'Obsession (2026) - 1080p AMZN'
     }
   }
-};
+}
 
 // Hardcoded Movies (Obsession 2026 වැනි සෘජු චිත්‍රපට වීඩියෝ මෙතැනට)
 const CUSTOM_MOVIES_DATA = {
@@ -1063,18 +1067,36 @@ async function loadSeasonSubs(imdbID, title, year, season) {
   const playerContainer = document.getElementById('episodes-player-container');
   if (!content) return;
 
-  // ===== EPISODES PLAYER UPDATE =====
+    // ===== EPISODES PLAYER UPDATE - Movies වලටත් support කරනවා =====
   if (playerContainer) {
+    // Series සහ Movie දෙකටම බලනවා
+    let epData = null;
+    let displaySeason = season;
+
     if (EPISODES_DATA[imdbID] && EPISODES_DATA[imdbID][season]) {
-      const eps = EPISODES_DATA[imdbID][season];
+      epData = EPISODES_DATA[imdbID][season]; // Series
+    } else if (EPISODES_DATA[imdbID] && EPISODES_DATA[imdbID]['movie']) {
+      epData = EPISODES_DATA[imdbID]['movie']; // Movie
+      displaySeason = 'movie'; // Internal use
+    }
+
+    if (epData) {
+      const eps = epData;
       let epHTML = `<div class="ep-list">`;
-      
+
       for (let epNum in eps) {
         const ep = eps[epNum];
+        const epLabel = displaySeason === 'movie'? ep.name : `S${season}E${epNum} - ${ep.name}`;
+
         epHTML += `
           <div class="ep-card">
             <div class="ep-info">
-              <div class="ep-name">S${season}E${epNum} - ${ep.name}</div>
+              <div class="ep-name">
+                ${epLabel}
+                ${ep.name.includes('1080p')? '<span class="ep-quality">1080p</span>' : ''}
+                ${ep.name.includes('720p')? '<span class="ep-quality">720p</span>' : ''}
+                ${ep.name.includes('HD')? '<span class="ep-quality">HD</span>' : ''}
+              </div>
             </div>
             <div class="ep-actions">
               <button class="btn-action btn-watch" onclick="playEpisode('${ep.videoUrl}', '${ep.subtitleUrl}')">
@@ -1086,24 +1108,24 @@ async function loadSeasonSubs(imdbID, title, year, season) {
             </div>
           </div>
           <div class="video-container" id="video-player-${imdbID}-${epNum}">
-  <video controls controlsList="nodownload" playsinline>
-    <source src="${ep.videoUrl}" type="video/mp4">
-    <track src="${ep.subtitleUrl}" kind="subtitles" srclang="si" label="Sinhala" default>
-    Your browser does not support the video tag.
-  </video>
-</div>
+            <video controls controlsList="nodownload" playsinline>
+              <source src="${ep.videoUrl}" type="video/mp4">
+              <track src="${ep.subtitleUrl}" kind="subtitles" srclang="si" label="Sinhala" default>
+              Your browser does not support the video tag.
+            </video>
+          </div>
         `;
       }
       epHTML += `</div>`;
       playerContainer.innerHTML = `
         <div class="player-title" style="margin-top:15px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Available Episodes
+          Watch & Download
         </div>
         ${epHTML}
       `;
     } else {
-      playerContainer.innerHTML = ''; 
+      playerContainer.innerHTML = ''; // වෙනත් සේසන්ස් වලට නැත්නම් හිස්ව තබයි
     }
   }
 
