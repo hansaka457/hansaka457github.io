@@ -1085,13 +1085,13 @@ async function loadSeasonSubs(imdbID, title, year, season) {
               </a>
             </div>
           </div>
-          <div class="video-container" id="video-player-S${season}E${epNum}">
-            <video controls controlsList="nodownload">
-              <source src="${ep.videoUrl}" type="video/mp4">
-              <track src="${ep.subtitleUrl}" kind="subtitles" srclang="si" label="Sinhala" default>
-              Your browser does not support the video tag.
-            </video>
-          </div>
+          <div class="video-container" id="video-player-${imdbID}-${epNum}">
+  <video controls controlsList="nodownload" playsinline>
+    <source src="${ep.videoUrl}" type="video/mp4">
+    <track src="${ep.subtitleUrl}" kind="subtitles" srclang="si" label="Sinhala" default>
+    Your browser does not support the video tag.
+  </video>
+</div>
         `;
       }
       epHTML += `</div>`;
@@ -1149,12 +1149,17 @@ async function loadSeasonSubs(imdbID, title, year, season) {
 
 // ===== EPISODE PLAY FUNCTION =====
 window.playEpisode = function(videoUrl, subtitleUrl) {
+  // සියලුම වීඩියෝ ප්ලේයර්ස් මුලින්ම වසා දමන්න
   document.querySelectorAll('.video-container').forEach(el => {
     el.style.display = 'none';
     const video = el.querySelector('video');
-    if (video) video.pause();
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
   });
 
+  // දැනට ක්ලික් කල එපිසෝඩ් එක සොයාගෙන එය පෙන්වන්න
   const targetPlayerContainer = Array.from(document.querySelectorAll('.video-container')).find(el => {
     return el.querySelector('source').getAttribute('src') === videoUrl;
   });
@@ -1163,12 +1168,18 @@ window.playEpisode = function(videoUrl, subtitleUrl) {
     targetPlayerContainer.style.display = 'block';
     const videoElement = targetPlayerContainer.querySelector('video');
     if (videoElement) {
+      videoElement.muted = false; // Unmute කරන්න
+      videoElement.volume = 1.0;  // Volume 100%
       videoElement.load();
-      videoElement.play();
+      videoElement.play().catch(e => {
+        console.log('Autoplay blocked, user needs to click play:', e);
+      });
     }
+    // Video එකට scroll වෙනවා
+    targetPlayerContainer.scrollIntoView({behavior: 'smooth', block: 'center'});
   }
 };
-
+  
 function renderSeasonContent(season, content) {
   const subs = _currentSubsData[season] || [];
   if (subs.length === 0) {
