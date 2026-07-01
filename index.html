@@ -127,7 +127,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Roboto',sans-serif;m
 .back-btn:hover{background:rgba(0,0,0,.9)}
 .back-btn svg{width:24px;height:24px}
 
-/* EPISODE PLAYER SECTION */
+/* EPISODE & MOVIE PLAYER SECTION */
 .player-section {padding: 0 16px 20px;}
 .player-title {font-size: 18px;font-weight: 700;margin-bottom: 12px;display: flex;align-items: center;gap: 8px;}
 .player-title svg {width: 20px;height: 20px;color: var(--red);}
@@ -515,37 +515,37 @@ const OMDB_KEYS = ['7a316873', '51e44f67'];
 
 const SUBDL_KEY = 'subdl_4M8I70ru8mbUim5eaHftWWlLvfSC5DUs64kioqp6igs';
 const OPENSUB_API_KEY = 'bqdHXy0PfXYKXVai3bIRDkANyZpeLtSG';
-const WYZIE_KEY = 'wyzie-py8u0ol1g1xb60pf3z1kiy3ylweuug1l'; // ඔබ ලබාදුන් Wyzie API Key එක
+const WYZIE_KEY = 'wyzie-py8u0ol1g1xb60pf3z1kiy3ylweuug1l'; 
 
-// ===== HARDCODED EPISODES DATA =====
+// ===== HARDCODED EPISODES & MOVIES DATA =====
 const EPISODES_DATA = {
   'tt11198330': { // House of the Dragon IMDb ID
     '3': { // Season 3
-      '1': { // Episode 1
+      '1': { 
         videoUrl: 'https://rapidseedbox85742-secure.swift-031.seedbox.vip/media/aa287beec019e30627cb772020be67a1/House.of.the.Dragon.S03E01.720p.HMAX.WEB-DL.DDP5.1.Atmos.H.264-Draken02.mkv',
         subtitleUrl: 'houseofthedragon.srt',
         name: 'Episode 1: Season 3 Premiere'
       },
-      '2': { // Episode 2 - අලුතෙන් add කලා
+      '2': { 
         videoUrl: 'https://hub.airbender.buzz/1c962f145e53f144b539f7721c2139c4',
-        subtitleUrl: 'houseofthedragon.srt', // subtitle එකම දාන්න ඕන නම්
+        subtitleUrl: 'houseofthedragon.srt', 
         name: 'Episode 2: The Red Dragon and the Gold'
-      }
-    }
-  },
-  'tt12345678': { // Obsession (2026) - අලුතෙන්
-    'movie': { // Movie එකක් නිසා 'movie' key එක use කරනවා
-      '1': {
-        videoUrl: 'https://hub.airbender.buzz/8eda6e05bd1c6668fcc135d48c06590d?token=1782922178139',
-        subtitleUrl: 'obse.srt',
-        name: 'Obsession (2026) Full Movie'
       }
     }
   }
 };
 
+// Hardcoded Movies (Obsession 2026 වැනි සෘජු චිත්‍රපට වීඩියෝ මෙතැනට)
+const CUSTOM_MOVIES_DATA = {
+  'tt28212876': { // Obsession සඳහා අපි යොදාගත් IMDB ID එක
+    videoUrl: 'https://hub.airbender.buzz/8eda6e05bd1c6668fcc135d48c06590d?token=1782922178139',
+    subtitleUrl: 'obse.srt',
+    name: 'Obsession (2026)'
+  }
+};
+
 const HERO_SERIES = [
-  {id:'tt12345678',title:'Obsession',year:'2026',rating:'7.8',plot:'A gripping psychological thriller about love, secrets, and dangerous obsession that destroys everything.'}, // අලුතෙන්
+  {id:'tt28212876',title:'Obsession',year:'2026',rating:'8.0',plot:'A thrilling and emotional deep dive into love, mystery, and unpredictable human desire.'}, // අලුතෙන් එක් කල Obsession Poster එක
   {id:'tt11198330',title:'House of the Dragon',year:'2022',rating:'8.5',plot:'The story of the Targaryen civil war that took place about 200 years before the events of Game of Thrones.'},
   {id:'tt9813792',title:'From',year:'2022',rating:'7.8',plot:'Unravel the mystery of a city in middle U.S.A. that imprisons everyone who enters.'},
   {id:'tt13443470',title:'Wednesday',year:'2022',rating:'8.1',plot:'Follows Wednesday Addams years as a student at Nevermore Academy.'},
@@ -555,8 +555,8 @@ const HERO_SERIES = [
 ];
 
 const CATEGORIES = {
-  trending: ['tt11198330','tt9813792','tt13443470','tt10919420','tt4574334','tt0903747','tt8111088','tt3032476','tt0386676','tt0944947','tt0108778','tt2560140'],
-  hollywood: ['tt0111161','tt1375666','tt0816692','tt0468569','tt0137523','tt0109830','tt0120737','tt0167260','tt4154796','tt7286456','tt15398776','tt9362722'],
+  trending: ['tt28212876','tt11198330','tt9813792','tt13443470','tt10919420','tt4574334','tt0903747','tt8111088','tt3032476','tt0386676','tt0944947','tt0108778','tt2560140'],
+  hollywood: ['tt28212876','tt0111161','tt1375666','tt0816692','tt0468569','tt0137523','tt0109830','tt0120737','tt0167260','tt4154796','tt7286456','tt15398776','tt9362722'],
   kdrama: ['tt15266542','tt14689414','tt13370348','tt11280740','tt10262630','tt13443470','tt11198330','tt1190634','tt10850932','tt11212276'],
   bollywood: ['tt8178634','tt15327088','tt12735488','tt1187043','tt12844910','tt10648342','tt0451850','tt0816442','tt0066763','tt0347304'],
   sinhala: ['tt2386490','tt0111161','tt1375666','tt0816692','tt0468569','tt0137523']
@@ -717,6 +717,31 @@ function closeSettings() {
   document.getElementById('settingsPanel').classList.remove('open');
 }
 
+// OMDb දත්ත නොමැති නම් Mock Data (Obsession 2026 වැනි අලුත් ඒවා සඳහා) සපයන Function එකක්
+function getMockMovieData(imdbID) {
+  if (imdbID === 'tt28212876') {
+    return {
+      Title: 'Obsession',
+      Year: '2026',
+      Runtime: '1h 52min',
+      Rated: 'R',
+      imdbRating: '8.0',
+      Plot: 'A thrilling and emotional deep dive into love, mystery, and unpredictable human desire.',
+      Poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=500&auto=format&fit=crop', // Default Premium Movie Poster Placeholder
+      Genre: 'Drama, Thriller, Romance',
+      Director: 'Unknown Director',
+      Actors: 'Hollywood Stars',
+      Language: 'English',
+      Country: 'USA',
+      Awards: 'N/A',
+      Type: 'movie',
+      imdbID: 'tt28212876',
+      Response: 'True'
+    };
+  }
+  return null;
+}
+
 function updateSettingsUser() {
   const avatar = document.getElementById('settingsAvatar');
   const name = document.getElementById('settingsName');
@@ -786,6 +811,10 @@ function initTheme() {
 
 // ===== OMDb & Subtitles =====
 async function fetchOMDb(imdbID) {
+  // OMDb එකේ නැති අලුත්ම ඒවට Mock Data බලන්න
+  const mock = getMockMovieData(imdbID);
+  if (mock) return mock;
+
   for (let i = 0; i < OMDB_KEYS.length; i++) {
     try {
       const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${OMDB_KEYS[i]}&plot=full`);
@@ -871,7 +900,6 @@ async function fetchOpenSubs(imdbID, season = null, episode = null) {
   }
 }
 
-// ===== FALLBACK WYZIE API INTEGRATION =====
 async function fetchWyzieSubs(imdbID, season = null, episode = null) {
   try {
     let url = `https://api.wyzie.xyz/v1/subs?imdb_id=${imdbID}`;
@@ -925,7 +953,6 @@ async function buildSubtitlesSection(movieData) {
 
   if (isSeriesType) {
     const totalSeasons = parseInt(movieData.totalSeasons) || 1;
-    // Season tabs නිර්මාණය කරන අතරතුර අප එකතු කල Hardcoded Episode Player එකත් පෙන්වයි
     await buildSeriesSubtitles(imdbID, title, year, totalSeasons, container);
   } else {
     await buildMovieSubtitles(imdbID, title, year, container);
@@ -933,34 +960,85 @@ async function buildSubtitlesSection(movieData) {
 }
 
 async function buildMovieSubtitles(imdbID, title, year, container) {
-  let result = await fetchSubDL(imdbID);
-  let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
-
-  if (subs.length === 0) {
-    const fb = await fetchSubDLByTitle(title, year);
-    subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
+  // ===== CUSTOM MOVIE PLAYER INTEGRATION (Obsession වැනි සෘජු චිත්‍රපට සඳහා) =====
+  let customPlayerHTML = '';
+  if (CUSTOM_MOVIES_DATA[imdbID]) {
+    const customMovie = CUSTOM_MOVIES_DATA[imdbID];
+    customPlayerHTML = `
+      <div class="ep-list" style="margin-bottom: 20px;">
+        <div class="player-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Watch Movie
+        </div>
+        <div class="ep-card">
+          <div class="ep-info">
+            <div class="ep-name">${customMovie.name} - Full Movie</div>
+          </div>
+          <div class="ep-actions">
+            <button class="btn-action btn-watch" onclick="playEpisode('${customMovie.videoUrl}', '${customMovie.subtitleUrl}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Watch
+            </button>
+            <a class="btn-action btn-download" href="${customMovie.videoUrl}" download target="_blank">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download
+            </a>
+          </div>
+        </div>
+        <div class="video-container" id="video-player-movie-${imdbID}">
+          <video controls controlsList="nodownload">
+            <source src="${customMovie.videoUrl}" type="video/mp4">
+            <track src="${customMovie.subtitleUrl}" kind="subtitles" srclang="si" label="Sinhala" default>
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    `;
   }
 
-  if (subs.length === 0) {
-    const os = await fetchOpenSubs(imdbID);
-    subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
+  let subs = [];
+  // Obsession වැනි අලුත් ඒවට සෘජුවම Custom එක පමණක් මුලින්ම පෙන්වීමට API errors මගහරවමු
+  if (!CUSTOM_MOVIES_DATA[imdbID]) {
+    let result = await fetchSubDL(imdbID);
+    subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
+
+    if (subs.length === 0) {
+      const fb = await fetchSubDLByTitle(title, year);
+      subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
+    }
+
+    if (subs.length === 0) {
+      const os = await fetchOpenSubs(imdbID);
+      subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
+    }
+
+    if (subs.length === 0) {
+      subs = await fetchWyzieSubs(imdbID);
+    }
   }
 
-  if (subs.length === 0) {
-    console.log("SubDL/OpenSubs empty. Fetching from Wyzie API...");
-    subs = await fetchWyzieSubs(imdbID);
+  // Obsession 2026 සඳහා උපසිරැසි ලිස්ට් එකට එක් කිරීම
+  if (imdbID === 'tt28212876') {
+    subs.unshift({
+      lang: 'si',
+      language: 'Sinhala',
+      release_name: 'obse.srt (Local Custom Subtitle)',
+      url: 'obse.srt',
+      download_url: 'obse.srt',
+      author: 'Cinemax Elite',
+      fps: ''
+    });
   }
 
+  let subsHTML = '';
   if (subs.length === 0) {
-    container.innerHTML = renderSubsEmpty('No subtitles found for this movie.');
-    return;
+    subsHTML = renderSubsEmpty('No additional subtitles found for this movie.');
+  } else {
+    subsHTML = `<div class="subs-list">${subs.map(s => renderSubCard(s)).join('')}</div>`;
   }
 
-  container.innerHTML = `<div class="subs-list">${subs.map(s => renderSubCard(s)).join('')}</div>`;
+  container.innerHTML = customPlayerHTML + subsHTML;
 }
 
 async function buildSeriesSubtitles(imdbID, title, year, totalSeasons, container) {
-  // Season count එකට Season 3 අනිවාර්යයෙන්ම තිබෙන බව තහවුරු කරමු
   let finalSeasonsCount = Math.max(totalSeasons, 3);
   const seasons = [];
   for (let i = 1; i <= Math.min(finalSeasonsCount, 10); i++) seasons.push(i);
@@ -977,7 +1055,6 @@ async function buildSeriesSubtitles(imdbID, title, year, totalSeasons, container
     <div id="subs-season-content"><div class="subs-loading"><div class="spinner"></div></div></div>
   `;
 
-  // මුලින්ම Season 1 සඳහා දත්ත ලෝඩ් කරමු
   await loadSeasonSubs(imdbID, title, year, 1);
 }
 
@@ -986,28 +1063,18 @@ async function loadSeasonSubs(imdbID, title, year, season) {
   const playerContainer = document.getElementById('episodes-player-container');
   if (!content) return;
 
-  // ===== EPISODES PLAYER UPDATE - Movies වලටත් support කරනවා =====
+  // ===== EPISODES PLAYER UPDATE =====
   if (playerContainer) {
-    // Series සහ Movie දෙකටම බලනවා
-    let epData = null;
     if (EPISODES_DATA[imdbID] && EPISODES_DATA[imdbID][season]) {
-      epData = EPISODES_DATA[imdbID][season]; // Series
-    } else if (EPISODES_DATA[imdbID] && EPISODES_DATA[imdbID]['movie']) {
-      epData = EPISODES_DATA[imdbID]['movie']; // Movie
-      season = 'Full Movie'; // Display වෙන නම වෙනස් කරනවා
-    }
-
-    if (epData) {
-      const eps = epData;
+      const eps = EPISODES_DATA[imdbID][season];
       let epHTML = `<div class="ep-list">`;
-
+      
       for (let epNum in eps) {
         const ep = eps[epNum];
-        const epLabel = season === 'Full Movie'? 'Watch Now' : `S${season}E${epNum}`;
         epHTML += `
           <div class="ep-card">
             <div class="ep-info">
-              <div class="ep-name">${epLabel} - ${ep.name}</div>
+              <div class="ep-name">S${season}E${epNum} - ${ep.name}</div>
             </div>
             <div class="ep-actions">
               <button class="btn-action btn-watch" onclick="playEpisode('${ep.videoUrl}', '${ep.subtitleUrl}')">
@@ -1018,7 +1085,7 @@ async function loadSeasonSubs(imdbID, title, year, season) {
               </a>
             </div>
           </div>
-          <div class="video-container" id="video-player-${imdbID}-${epNum}">
+          <div class="video-container" id="video-player-S${season}E${epNum}">
             <video controls controlsList="nodownload">
               <source src="${ep.videoUrl}" type="video/mp4">
               <track src="${ep.subtitleUrl}" kind="subtitles" srclang="si" label="Sinhala" default>
@@ -1031,12 +1098,12 @@ async function loadSeasonSubs(imdbID, title, year, season) {
       playerContainer.innerHTML = `
         <div class="player-title" style="margin-top:15px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Watch & Download
+          Available Episodes
         </div>
         ${epHTML}
       `;
     } else {
-      playerContainer.innerHTML = ''; // වෙනත් සේසන්ස් වලට නැත්නම් හිස්ව තබයි
+      playerContainer.innerHTML = ''; 
     }
   }
 
@@ -1044,56 +1111,6 @@ async function loadSeasonSubs(imdbID, title, year, season) {
     renderSeasonContent(season, content);
     return;
   }
-
-  content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
-
-  let result = await fetchSubDL(imdbID, season!== 'Full Movie'? season : null);
-  let subs = result && Array.isArray(result.subtitles)? result.subtitles : [];
-
-  if (subs.length === 0) {
-    const fb = await fetchSubDLByTitle(title, year, season!== 'Full Movie'? season : null);
-    subs = fb && Array.isArray(fb.subtitles)? fb.subtitles : [];
-  }
-
-  if (subs.length === 0) {
-    const os = await fetchOpenSubs(imdbID, season!== 'Full Movie'? season : null);
-    subs = os && Array.isArray(os.subtitles)? os.subtitles : [];
-  }
-
-  if (subs.length === 0) {
-    console.log(`SubDL/OpenSubs empty for S${season}. Fetching from Wyzie API...`);
-    subs = await fetchWyzieSubs(imdbID, season!== 'Full Movie'? season : null);
-  }
-
-  // Obsession movie එකට hardcoded sub එක දානවා
-  if (imdbID === 'tt12345678') {
-    subs.unshift({
-      lang: 'si',
-      language: 'Sinhala',
-      release_name: 'obse.srt (Sinhala Subtitle)',
-      url: 'obse.srt',
-      download_url: 'obse.srt',
-      author: 'Cinemax Elite',
-      fps: ''
-    });
-  }
-
-  // ඔබ ලබාදුන් සින්හල සබ් එක Season 3 වල ලිස්ට් එකටත් එකතු කර පෙන්වමු
-  if (season === 3 && imdbID === 'tt11198330') {
-    subs.unshift({
-      lang: 'si',
-      language: 'Sinhala',
-      release_name: 'houseofthedragon.srt (Local Custom Sub)',
-      url: 'houseofthedragon.srt',
-      download_url: 'houseofthedragon.srt',
-      author: 'Cinemax Elite',
-      fps: ''
-    });
-  }
-
-  _currentSubsData[season] = subs;
-  renderSeasonContent(season, content);
-      }
 
   content.innerHTML = `<div class="subs-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t3)">Loading Season ${season}...</div></div>`;
 
@@ -1111,11 +1128,9 @@ async function loadSeasonSubs(imdbID, title, year, season) {
   }
 
   if (subs.length === 0) {
-    console.log(`SubDL/OpenSubs empty for S${season}. Fetching from Wyzie API...`);
     subs = await fetchWyzieSubs(imdbID, season);
   }
 
-  // ඔබ ලබාදුන් සින්හල සබ් එක Season 3 වල ලිස්ට් එකටත් එකතු කර පෙන්වමු
   if (season === 3 && imdbID === 'tt11198330') {
     subs.unshift({
       lang: 'si',
@@ -1134,14 +1149,12 @@ async function loadSeasonSubs(imdbID, title, year, season) {
 
 // ===== EPISODE PLAY FUNCTION =====
 window.playEpisode = function(videoUrl, subtitleUrl) {
-  // සියලුම වීඩියෝ ප්ලේයර්ස් මුලින්ම වසා දමන්න
   document.querySelectorAll('.video-container').forEach(el => {
     el.style.display = 'none';
     const video = el.querySelector('video');
     if (video) video.pause();
   });
 
-  // දැනට ක්ලික් කල එපිසෝඩ් එක සොයාගෙන එය පෙන්වන්න
   const targetPlayerContainer = Array.from(document.querySelectorAll('.video-container')).find(el => {
     return el.querySelector('source').getAttribute('src') === videoUrl;
   });
@@ -1335,6 +1348,24 @@ async function handleSearch(val) {
 
   res.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--t2)"><div class="spinner"></div>Searching...</div>';
 
+  // Obsession 2026 සෙවුම් ප්‍රතිඵලවලට මුලින්ම ගැලපේදැයි බැලීම
+  if (val.toLowerCase().includes('obsession')) {
+    const mockObs = getMockMovieData('tt28212876');
+    res.innerHTML = `
+      <div class="sr-item" onclick="showMovieDetail('${mockObs.imdbID}')">
+        <div class="sr-icon">
+          <img src="${mockObs.Poster}" alt="">
+        </div>
+        <div class="sr-text">
+          <div class="sr-title">${mockObs.Title}</div>
+          <div class="sr-sub">${mockObs.Year} · ${mockObs.Type}</div>
+        </div>
+        <div class="sr-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    `;
+    return;
+  }
+
   let searchSuccess = false;
 
   for (let i = 0; i < OMDB_KEYS.length; i++) {
@@ -1437,7 +1468,7 @@ async function showMovieDetail(imdbID) {
           <span class="detail-value">${data.Language}</span>
           <span class="detail-label">Country</span>
           <span class="detail-value">${data.Country}</span>
-          ${data.Awards!== 'N/A'? `
+          ${data.Awards!== 'N/A' && data.Awards? `
             <span class="detail-label">Awards</span>
             <span class="detail-value">${data.Awards}</span>
           ` : ''}
@@ -1448,7 +1479,7 @@ async function showMovieDetail(imdbID) {
     <div class="subs-section">
       <div class="subs-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M6 12h4M6 16h8M14 12h4"/></svg>
-        ${isSeriesType? 'Subtitles & Episodes' : 'Subtitles'}
+        ${isSeriesType? 'Subtitles & Episodes' : 'Watch & Download'}
       </div>
       <div id="subs-container"></div>
     </div>
